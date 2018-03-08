@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS mandats;
 DROP TABLE IF EXISTS acteurs;
+DROP TABLE IF EXISTS mandats_organes;
 
 CREATE TABLE acteurs (
     acteur_id VARCHAR(50) PRIMARY KEY,
@@ -19,12 +20,12 @@ create table mandats (
     cause VARCHAR(100)
 );
 
-create table mandats_organes {
+create table mandats_organes (
     mandat_id VARCHAR(50),
     organe_id VARCHAR(50),
 
     PRIMARY KEY(mandat_id, organe_id)
-}
+)
 
 
 
