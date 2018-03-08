@@ -1,0 +1,56 @@
+{
+	"organeRef": "PO730958",
+	"nombreMembresGroupe": "17",
+	"vote": {
+		"positionMajoritaire": "pour",
+		"decompteVoix": {
+			"nonVotants": "0",
+			"pour": "11",
+			"contre": "0",
+			"abstentions": "0",
+			"nonVotantsVolontaires": "0"
+		},
+		"decompteNominatif": {
+			"nonVotants": null,
+			"pours": {
+				"votant": [{
+						"acteurRef": "PA718860",
+						"mandatRef": "PM722482"
+					}, {
+						"acteurRef": "PA718868",
+						"mandatRef": "PM722484"
+					}, {
+						"acteurRef": "PA2150",
+						"mandatRef": "PM722506"
+					}, {
+						"acteurRef": "PA719676",
+						"mandatRef": "PM722728"
+					}, {
+						"acteurRef": "PA720286",
+						"mandatRef": "PM722918"
+					}, {
+						"acteurRef": "PA720422",
+						"mandatRef": "PM722960"
+					}, {
+						"acteurRef": "PA720846",
+						"mandatRef": "PM723094"
+					}, {
+						"acteurRef": "PA721202",
+						"mandatRef": "PM723202"
+					}, {
+						"acteurRef": "PA721210",
+						"mandatRef": "PM723204"
+					}, {
+						"acteurRef": "PA721226",
+						"mandatRef": "PM723208"
+					}, {
+						"acteurRef": "PA722142",
+						"mandatRef": "PM723484"
+					}
+				]
+			},
+			"contres": null,
+			"abstentions": null
+		}
+	}
+}
