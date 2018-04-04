@@ -12,4 +12,12 @@ public class VotantRef {
     public String getMandatRef() {
         return mandatRef;
     }
+
+    public void setActeurRef(String acteurRef) {
+        this.acteurRef = acteurRef;
+    }
+
+    public void setMandatRef(String mandatRef) {
+        this.mandatRef = mandatRef;
+    }
 }

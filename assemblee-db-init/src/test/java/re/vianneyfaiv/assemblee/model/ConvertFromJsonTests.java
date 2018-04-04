@@ -49,8 +49,14 @@ public class ConvertFromJsonTests {
     public void convertScrutin() throws IOException {
         Scrutin scrutin = mapper.readValue(new ClassPathResource("stubs/scrutin.json").getInputStream(), Scrutin.class);
 
-        assertThat(scrutin.getOrganeRef(), is("PO730958"));
-        assertThat(scrutin.getVote().getDecompteVoix().getPour(), is(11));
-        assertThat(scrutin.getVote().getDecompteNominatif().getPours().getVotant().get(0).getActeurRef(), is("PA718860"));
+        assertThat(scrutin.getOrganeRef(), is("PO644420"));
+        assertThat(scrutin.getTypeVote().getCodeTypeVote(), is("SPO"));
+        assertThat(scrutin.getSort().getCode(), is("adopt\u00e9"));
+        assertThat(scrutin.getSyntheseVote().getNombreVotants(), is(110));
+        assertThat(scrutin.getSyntheseVote().getDecompte().getPour(), is(61));
+        assertThat(scrutin.getVentilationVotes().getOrgane().getGroupes().getGroupe().get(0).getNombreMembresGroupe(), is(295));
+        assertThat(scrutin.getVentilationVotes().getOrgane().getGroupes().getGroupe().get(0).getVote().getPositionMajoritaire(), is("pour"));
+        assertThat(scrutin.getMiseAuPoint().getPour().getVotant().get(0).getActeurRef(), is("PA2051"));
+        assertThat(scrutin.getMiseAuPoint().getContre().getVotant().get(0).getMandatRef(), is("PM645474"));
     }
 }
