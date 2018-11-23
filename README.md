@@ -1,12 +1,11 @@
+I'm using French Assemblée Nationale Open Data in order to play with Spring Boot 2
+
 # TODO 
 
 * Enable FK
-* rest layer
-** list of députés
-** get député details
-** search for a député
-** etc.
-* multi pom
+* try with latest data (15e legislature)
+* rest layer (list of députés, get député details, search for a député, etc)
+* rest layer documentation with Spring REST Docs
 * enum for some fields
 * import details of scrutins when "modePublicationDesVotes": "DecompteNominatif"
 * front app that consumes rest layer
