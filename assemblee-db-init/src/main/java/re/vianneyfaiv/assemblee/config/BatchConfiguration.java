@@ -17,16 +17,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import re.vianneyfaiv.assemblee.batch.processor.ActeurItemProcessor;
 import re.vianneyfaiv.assemblee.batch.processor.MandatItemProcessor;
+import re.vianneyfaiv.assemblee.batch.processor.OrganeItemProcessor;
 import re.vianneyfaiv.assemblee.batch.processor.ScrutinsItemProcessor;
 import re.vianneyfaiv.assemblee.batch.reader.ActeurItemReader;
 import re.vianneyfaiv.assemblee.batch.reader.MandatItemReader;
+import re.vianneyfaiv.assemblee.batch.reader.OrganeItemReader;
 import re.vianneyfaiv.assemblee.batch.reader.ScrutinsItemReader;
-import re.vianneyfaiv.assemblee.model.db.Acteur;
-import re.vianneyfaiv.assemblee.model.db.Mandat;
-import re.vianneyfaiv.assemblee.model.db.MandatOrgane;
-import re.vianneyfaiv.assemblee.model.db.Scrutin;
+import re.vianneyfaiv.assemblee.model.db.*;
 import re.vianneyfaiv.assemblee.model.json.acteur.ActeurJson;
 import re.vianneyfaiv.assemblee.model.json.mandat.MandatJson;
+import re.vianneyfaiv.assemblee.model.json.organe.OrganeJson;
 import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinJson;
 
 import javax.sql.DataSource;
@@ -67,6 +67,12 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     @Autowired
     private ScrutinsItemProcessor processorScrutins;
 
+    @Autowired
+    private OrganeItemReader readerOrganes;
+
+    @Autowired
+    private OrganeItemProcessor processorOrganes;
+
     @Bean
     public Job importDataJob() {
         return jobBuilderFactory.get("Import-Job")
@@ -74,6 +80,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .start(stepActeurs())
                 .next(stepMandats())
                 .next(stepScrutins())
+                .next(stepOrganes())
                 .build();
     }
 
@@ -128,6 +135,15 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .build();
     }
 
+    public Step stepOrganes() {
+        return stepBuilderFactory.get("Import-Organes")
+                .<OrganeJson, Organe> chunk(50)
+                .reader(readerOrganes)
+                .processor(processorOrganes)
+                .writer(writerOrganes())
+                .build();
+    }
+
     @Bean
     public JdbcBatchItemWriter<MandatOrgane> writerMandatOrgane() {
         return new JdbcBatchItemWriterBuilder<MandatOrgane>()
@@ -164,6 +180,16 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .sql("INSERT INTO scrutins (scrutin_id, titre, numero, organe_id, legislature, session_id, seance_id, date_scrutin, type_vote, sort, demandeur, objet, mode_publication_votes, resultat_nombre_votants, resultat_pour, resultat_contre, resultat_abstention, resultat_non_votant) " +
                         "VALUES (:scrutinId, :titre, :numero, :organeId, :legislature, :sessionId, :seanceId, :dateScrutin, :typeVote, :sort, :demandeur, :objet, :modePublicationVotes, :resultatNombreVotants, :resultatPour, :resultatContre, :resultatAbstention, :resultatNonVotant)")
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Scrutin>())
+                .dataSource(dataSource)
+                .build();
+    }
+
+    @Bean
+    public ItemWriter<Organe> writerOrganes() {
+        return new JdbcBatchItemWriterBuilder()
+                .sql("INSERT INTO organes (organe_id, type, libelle, date_debut, date_fin, regime, legislature) " +
+                        "VALUES (:organeId, :type, :libelle, :dateDebut, :dateFin, :regime, :legislature)")
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Organe>())
                 .dataSource(dataSource)
                 .build();
     }

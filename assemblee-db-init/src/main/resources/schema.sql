@@ -30,12 +30,18 @@ create table IF NOT EXISTS mandats_organes (
 );
 
 create table IF NOT EXISTS organes (
-    organe_id VARCHAR(50) PRIMARY KEY
+    organe_id VARCHAR(50) PRIMARY KEY,
+    type VARCHAR(50),
+    libelle VARCHAR,
+    date_debut DATE,
+    date_fin DATE,
+    regime VARCHAR(50),
+    legislature SMALLINT
 );
 
 create table IF NOT EXISTS scrutins (
     scrutin_id VARCHAR(50) PRIMARY KEY,
-    titre VARCHAR(500),
+    titre VARCHAR,
     numero SMALLINT,
     organe_id VARCHAR(50), -- REFERENCES organes(organe_id)
     legislature SMALLINT,
@@ -45,7 +51,7 @@ create table IF NOT EXISTS scrutins (
     type_vote VARCHAR(50),
     sort VARCHAR(50),
     demandeur VARCHAR(300),
-    objet VARCHAR(500),
+    objet VARCHAR,
     mode_publication_votes VARCHAR(50),
     resultat_nombre_votants SMALLINT, -- nombre de votants présents lors de la séance. ex: 90
     resultat_pour SMALLINT, -- nombre de votants POUR ex: 60

@@ -6,6 +6,7 @@ import org.springframework.core.io.ClassPathResource;
 import re.vianneyfaiv.assemblee.config.JsonMapperConfiguration;
 import re.vianneyfaiv.assemblee.model.json.acteur.ActeurWrapper;
 import re.vianneyfaiv.assemblee.model.json.mandat.MandatWrapper;
+import re.vianneyfaiv.assemblee.model.json.organe.OrganeJson;
 import re.vianneyfaiv.assemblee.model.json.organe.OrganeWrapper;
 import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinJson;
 
@@ -42,6 +43,8 @@ public class ConvertFromJsonTests {
         OrganeWrapper organe = mapper.readValue(new ClassPathResource("stubs/organe.json").getInputStream(), OrganeWrapper.class);
 
         assertThat(organe.getOrgane().getUid(), is("PO717460"));
+        assertThat(organe.getOrgane().getCodeType(), is("ASSEMBLEE"));
+        assertThat(organe.getOrgane().getLegislature(), is(15));
     }
 
     @Test

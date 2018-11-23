@@ -1,12 +1,13 @@
 package re.vianneyfaiv.assemblee.model.json.organe;
 
-public class Organe {
+public class OrganeJson {
 
     private String uid;
     private String codeType;
     private String libelle;
     private ViMoDe viMoDe;
     private String regime;
+    private int legislature;
 
     public String getUid() {
         return uid;
@@ -26,5 +27,9 @@ public class Organe {
 
     public String getRegime() {
         return regime;
+    }
+
+    public int getLegislature() {
+        return legislature;
     }
 }

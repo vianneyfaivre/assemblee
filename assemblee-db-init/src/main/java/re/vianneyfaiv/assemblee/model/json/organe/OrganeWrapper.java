@@ -2,9 +2,9 @@ package re.vianneyfaiv.assemblee.model.json.organe;
 
 public class OrganeWrapper {
 
-    private Organe organe;
+    private OrganeJson organe;
 
-    public Organe getOrgane() {
+    public OrganeJson getOrgane() {
         return organe;
     }
 }
