@@ -8,34 +8,28 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.ItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
-import org.springframework.batch.item.support.CompositeItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import re.vianneyfaiv.assemblee.batch.processor.ActeurItemProcessor;
 import re.vianneyfaiv.assemblee.batch.processor.MandatItemProcessor;
+import re.vianneyfaiv.assemblee.batch.processor.ScrutinsItemProcessor;
 import re.vianneyfaiv.assemblee.batch.reader.ActeurItemReader;
 import re.vianneyfaiv.assemblee.batch.reader.MandatItemReader;
+import re.vianneyfaiv.assemblee.batch.reader.ScrutinsItemReader;
 import re.vianneyfaiv.assemblee.model.db.Acteur;
 import re.vianneyfaiv.assemblee.model.db.Mandat;
 import re.vianneyfaiv.assemblee.model.db.MandatOrgane;
+import re.vianneyfaiv.assemblee.model.db.Scrutin;
 import re.vianneyfaiv.assemblee.model.json.acteur.ActeurJson;
 import re.vianneyfaiv.assemblee.model.json.mandat.MandatJson;
+import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinJson;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,18 +61,25 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     @Autowired
     private ItemWriter<MandatOrgane> writerMandatOrgane;
 
+    @Autowired
+    private ScrutinsItemReader readerScrutins;
+
+    @Autowired
+    private ScrutinsItemProcessor processorScrutins;
+
     @Bean
-    public Job importActeursJob() {
-        return jobBuilderFactory.get("importActeurs")
+    public Job importDataJob() {
+        return jobBuilderFactory.get("Import-Job")
                 .incrementer(new RunIdIncrementer())
                 .start(stepActeurs())
                 .next(stepMandats())
+                .next(stepScrutins())
                 .build();
     }
 
     public Step stepActeurs() {
-        return stepBuilderFactory.get("stepActeurs")
-                .<ActeurJson, Acteur> chunk(25)
+        return stepBuilderFactory.get("Import-Acteurs")
+                .<ActeurJson, Acteur> chunk(50)
                 .reader(readerActeurs)
                 .processor(processorActeurs)
                 .writer(writerActeurs())
@@ -86,8 +87,8 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     }
 
     public Step stepMandats() {
-        return stepBuilderFactory.get("stepMandats")
-                .<MandatJson, Mandat> chunk(25)
+        return stepBuilderFactory.get("Import-Mandats")
+                .<MandatJson, Mandat> chunk(50)
                 .reader(readerMandats)
                 .processor(processorMandats)
                 .writer(writerMandats())
@@ -118,6 +119,15 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .build();
     }
 
+    public Step stepScrutins() {
+        return stepBuilderFactory.get("Import-Scrutins")
+                .<ScrutinJson, Scrutin> chunk(50)
+                .reader(readerScrutins)
+                .processor(processorScrutins)
+                .writer(writerScrutins())
+                .build();
+    }
+
     @Bean
     public JdbcBatchItemWriter<MandatOrgane> writerMandatOrgane() {
         return new JdbcBatchItemWriterBuilder<MandatOrgane>()
@@ -141,10 +151,20 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     @Bean
     public ItemWriter<Mandat> writerMandats() {
         return new JdbcBatchItemWriterBuilder()
-                        .sql("INSERT INTO mandats (mandat_id, acteur_id, organe_type, date_debut, date_prise_fonction, date_fin, num_place_hemicycle, cause) " +
-                                "VALUES (:mandatId, :acteurId, :organeType, :dateDebut, :datePriseFonction, :dateFin, :numPlaceHemicycle, :cause)")
-                        .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Mandat>())
-                        .dataSource(dataSource)
-                        .build();
+                .sql("INSERT INTO mandats (mandat_id, acteur_id, organe_type, date_debut, date_prise_fonction, date_fin, num_place_hemicycle, cause) " +
+                        "VALUES (:mandatId, :acteurId, :organeType, :dateDebut, :datePriseFonction, :dateFin, :numPlaceHemicycle, :cause)")
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Mandat>())
+                .dataSource(dataSource)
+                .build();
+    }
+
+    @Bean
+    public ItemWriter<Scrutin> writerScrutins() {
+        return new JdbcBatchItemWriterBuilder()
+                .sql("INSERT INTO scrutins (scrutin_id, titre, numero, organe_id, legislature, session_id, seance_id, date_scrutin, type_vote, sort, demandeur, objet, mode_publication_votes, resultat_nombre_votants, resultat_pour, resultat_contre, resultat_abstention, resultat_non_votant) " +
+                        "VALUES (:scrutinId, :titre, :numero, :organeId, :legislature, :sessionId, :seanceId, :dateScrutin, :typeVote, :sort, :demandeur, :objet, :modePublicationVotes, :resultatNombreVotants, :resultatPour, :resultatContre, :resultatAbstention, :resultatNonVotant)")
+                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Scrutin>())
+                .dataSource(dataSource)
+                .build();
     }
 }

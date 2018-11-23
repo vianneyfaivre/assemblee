@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
-public class Scrutin {
+public class ScrutinJson {
 
     private String uid;
     private int numero;

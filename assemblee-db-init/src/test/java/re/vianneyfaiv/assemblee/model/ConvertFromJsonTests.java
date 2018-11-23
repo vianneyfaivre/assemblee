@@ -1,6 +1,5 @@
 package re.vianneyfaiv.assemblee.model;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -8,7 +7,7 @@ import re.vianneyfaiv.assemblee.config.JsonMapperConfiguration;
 import re.vianneyfaiv.assemblee.model.json.acteur.ActeurWrapper;
 import re.vianneyfaiv.assemblee.model.json.mandat.MandatWrapper;
 import re.vianneyfaiv.assemblee.model.json.organe.OrganeWrapper;
-import re.vianneyfaiv.assemblee.model.json.scrutin.Scrutin;
+import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinJson;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -47,7 +46,7 @@ public class ConvertFromJsonTests {
 
     @Test
     public void convertScrutin() throws IOException {
-        Scrutin scrutin = mapper.readValue(new ClassPathResource("stubs/scrutin.json").getInputStream(), Scrutin.class);
+        ScrutinJson scrutin = mapper.readValue(new ClassPathResource("stubs/scrutin.json").getInputStream(), ScrutinJson.class);
 
         assertThat(scrutin.getOrganeRef(), is("PO644420"));
         assertThat(scrutin.getTypeVote().getCodeTypeVote(), is("SPO"));
