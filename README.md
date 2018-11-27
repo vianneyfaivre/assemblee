@@ -3,6 +3,9 @@ I'm using French Assemblée Nationale Open Data in order to play with Spring Boo
 # TODO 
 
 * Enable FK
+* standard error handling in rest
+* hateoas in rest 
+* pagination on mandates 
 * try with latest data (15e legislature)
 * rest layer (list of députés, get député details, search for a député, http://www2.assemblee-nationale.fr/qui, etc)
 * rest layer documentation with Spring REST Docs
@@ -13,6 +16,7 @@ I'm using French Assemblée Nationale Open Data in order to play with Spring Boo
 * create DB indexes on columns that are searched with
 * global search (député, organe, mandat, etc.)
 * person details : contact info, birth info
+* copy documentation from official doc into model classes
 
 # Data integrity issues
 

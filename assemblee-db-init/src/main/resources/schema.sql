@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS acteurs (
 
 create table IF NOT EXISTS mandats (
     mandat_id VARCHAR(50) PRIMARY KEY,
-    acteur_id VARCHAR(50), -- REFERENCES acteurs(acteur_id),
+    acteur_id VARCHAR(50) REFERENCES acteurs,
     organe_type VARCHAR(50),
     date_debut DATE,
     date_prise_fonction DATE,
@@ -55,6 +55,3 @@ create table IF NOT EXISTS scrutins (
     -- mise au point
     -- ventilation votes
 );
-
-
-
