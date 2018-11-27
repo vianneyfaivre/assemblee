@@ -1,9 +1,3 @@
-DROP TABLE IF EXISTS mandats;
-DROP TABLE IF EXISTS acteurs;
-DROP TABLE IF EXISTS mandats_organes;
-DROP TABLE IF EXISTS organes;
-DROP TABLE IF EXISTS scrutins;
-
 CREATE TABLE IF NOT EXISTS acteurs (
     acteur_id VARCHAR(50) PRIMARY KEY,
     civilite VARCHAR(5),

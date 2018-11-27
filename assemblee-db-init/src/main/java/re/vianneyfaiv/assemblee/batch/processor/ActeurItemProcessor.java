@@ -13,8 +13,8 @@ public class ActeurItemProcessor implements ItemProcessor<ActeurJson, Acteur> {
 
         String id = acteurJson.getUid().getId();
         String civilite = acteurJson.getEtatCivil().getIdent().getCiv();
-        String nom = acteurJson.getEtatCivil().getIdent().getPrenom();
-        String prenom = acteurJson.getEtatCivil().getIdent().getNom();
+        String nom = acteurJson.getEtatCivil().getIdent().getNom();
+        String prenom = acteurJson.getEtatCivil().getIdent().getPrenom();
 
         return new Acteur(id, civilite, prenom, nom);
     }
