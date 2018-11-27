@@ -1,10 +1,10 @@
-I'm using French Assemblée Nationale Open Data in order to play with Spring Boot 2
+I'm using French AssemblÃ©e Nationale Open Data in order to play with Spring Boot 2
 
 # TODO 
 
 * Enable FK
 * try with latest data (15e legislature)
-* rest layer (list of députés, get député details, search for a député, etc)
+* rest layer (list of dÃ©putÃ©s, get dÃ©putÃ© details, search for a dÃ©putÃ©, etc)
 * rest layer documentation with Spring REST Docs
 * enum for some fields
 * import details of scrutins when "modePublicationDesVotes": "DecompteNominatif"
