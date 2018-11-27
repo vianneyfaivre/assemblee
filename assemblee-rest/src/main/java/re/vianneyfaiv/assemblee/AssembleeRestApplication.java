@@ -1,4 +1,4 @@
-package re.vianneyfaiv.assembleerest;
+package re.vianneyfaiv.assemblee;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
