@@ -13,6 +13,8 @@ public class Mandate {
     private String id;
 
     /*
+    That works but that slows down the loading because of the SQL join
+
     @ManyToOne
     @JoinColumn(
             name = "acteur_id",

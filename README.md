@@ -3,9 +3,10 @@ I'm using French Assemblée Nationale Open Data in order to play with Spring Boo
 # TODO 
 
 * Enable FK
+* remove Scrutin#objet because it's the same as Scrutin#titre
 * standard error handling in rest
-* hateoas in rest 
-* pagination on mandates 
+* hateoas in rest
+* pagination on mandates
 * try with latest data (15e legislature)
 * rest layer (list of députés, get député details, search for a député, http://www2.assemblee-nationale.fr/qui, etc)
 * rest layer documentation with Spring REST Docs
