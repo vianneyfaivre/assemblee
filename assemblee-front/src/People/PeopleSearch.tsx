@@ -5,7 +5,7 @@ import Api from 'src/Api/api';
 const Autocomplete = require("react-autocomplete") as any;
 /* tslint:enable:no-var-requires */
 import PersonSearchItem from 'src/Model/PersonSearchItem';
-
+import {SelectedPeople} from './SelectedPeople';
 
 /*
  * TODO
@@ -39,7 +39,7 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
         return (
             <div>
                 <div className="field">
-                    <label htmlFor="people-search-input" className="label">Rechercher un député par nom de famille : </label>
+                    <label htmlFor="people-search-input" className="label">Par nom de famille : </label>
                     
                     <Autocomplete
                         inputProps={{ id: 'people-search-input' }}
@@ -55,8 +55,7 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                     />
                 </div>
 
-                {this.state.selectedPeople && <div>Député sélectionné : {this.state.selectedPeople.fullName}</div>}
-
+                <SelectedPeople selectedPeople={this.state.selectedPeople} />
             </div>
         )
     }
@@ -122,6 +121,9 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
         );
     }
 
+    /**
+     * Override default input renderer in order to add the css class "input"
+     */
     private renderInput(props: any) {
         return <input {...props} className="input" />
     }

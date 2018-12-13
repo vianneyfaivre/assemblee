@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import PeopleSearch from './PeopleSearch';
+import PeopleSearch from 'src/People/PeopleSearch';
 
 export default class AllPeople extends React.Component {
 
@@ -9,7 +9,7 @@ export default class AllPeople extends React.Component {
             <section className="section">
                 <div className="container">
                     <h2 className="title">
-                        Veuillez sélectionner un député
+                        Rechercher mon député
                     </h2>
 
                     <PeopleSearch />
