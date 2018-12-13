@@ -6,9 +6,15 @@ interface ISelectedPeopleProps {
 }
 
 export const SelectedPeople: React.StatelessComponent<ISelectedPeopleProps> = (props) => {
-    return (
-        <div>
-            {props.selectedPeople && <div>Mon député : {props.selectedPeople.fullName}</div>}
-        </div>
-    );
+
+    if(props.selectedPeople) {
+
+        if(props.selectedPeople.gender === "FEMALE") {
+            return <div>Ma députée : {props.selectedPeople.lastName} {props.selectedPeople.firstName}</div>;
+        } else {
+            return <div>Mon député : {props.selectedPeople.lastName} {props.selectedPeople.firstName}</div>;
+        }
+    }
+
+    return <div />;
 }

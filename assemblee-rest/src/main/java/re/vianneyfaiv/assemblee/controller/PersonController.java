@@ -5,11 +5,8 @@ import org.springframework.web.bind.annotation.*;
 import re.vianneyfaiv.assemblee.dao.PersonRepository;
 import re.vianneyfaiv.assemblee.exception.PersonNotFound;
 import re.vianneyfaiv.assemblee.model.Person;
-import re.vianneyfaiv.assemblee.model.search.PersonSearch;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @CrossOrigin("*")
 @RestController
@@ -34,11 +31,8 @@ public class PersonController {
     }
 
     @GetMapping("/persons/search")
-    public List<PersonSearch> searchByLastName(@RequestParam String lastName) {
+    public List<Person> searchByLastName(@RequestParam String lastName) {
         return this.personRepository
-                    .findByLastNameStartingWithIgnoreCaseOrderByLastName(lastName)
-                    .stream()
-                    .map(PersonSearch::new)
-                    .collect(Collectors.toList());
+                    .findByLastNameStartingWithIgnoreCaseOrderByLastName(lastName);
     }
 }

@@ -119,7 +119,7 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                 className={`${isHighlighted ? 'has-background-light' : ''}`}
                 key={item.id}
             >
-                {item.fullName}
+                {item.lastName} {item.firstName} 
             </div>
         );
     }
