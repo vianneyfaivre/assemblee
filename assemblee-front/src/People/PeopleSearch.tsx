@@ -14,7 +14,6 @@ import {SelectedPeople} from './SelectedPeople';
  * - API : create an ENV file
  * - find a solution for jsx-no-bind
  * - disable tslint rule on property order (for all files)
- * - new component for selected person
  */
 
 interface IPeopleSearchState {
@@ -42,7 +41,8 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                     <label htmlFor="people-search-input" className="label">Par nom de famille : </label>
                     
                     <Autocomplete
-                        inputProps={{ id: 'people-search-input' }}
+                        wrapperProps={{className: "control"}}
+                        inputProps={{ name: 'people-search-input', className: "input" }}
                         value={this.state.term}
                         items={this.state.people}
                         onChange={this.onInputChange.bind(this)}
@@ -50,8 +50,6 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                         getItemValue={this.renderAutocompleteItemValue}
                         renderMenu={this.renderAutocompleteItems}
                         renderItem={this.renderAutocompleteItem}
-                        wrapperProps={{className: "control"}}
-                        renderInput={this.renderInput}
                     />
                 </div>
 
@@ -119,12 +117,5 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                 {item.fullName}
             </div>
         );
-    }
-
-    /**
-     * Override default input renderer in order to add the css class "input"
-     */
-    private renderInput(props: any) {
-        return <input {...props} className="input" />
     }
 }
