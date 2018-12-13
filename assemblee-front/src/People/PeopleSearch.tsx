@@ -1,21 +1,19 @@
 import * as React from 'react';
 import Api from 'src/Api/api';
-/* tslint:disable:no-var-requires */
-// this module does not have the Typescript typings file so we must use "require"
-const Autocomplete = require("react-autocomplete") as any;
-/* tslint:enable:no-var-requires */
 import PersonSearchItem from 'src/Model/PersonSearchItem';
-import {SelectedPeople} from './SelectedPeople';
+import {SelectedPeople} from 'src/People/SelectedPeople';
+/* tslint:disable-next-line:no-var-requires 
+this module does not have the Typescript typings file so we must use "require" */
+const Autocomplete = require("react-autocomplete") as any;
 
 /*
  * TODO
- * - clear search results
- * - handle call error
+ * - faire un package "components"
+ * - handle API call error
  * - API : create an ENV file
- * - find a solution for jsx-no-bind
- * - disable tslint rule on property order (for all files)
+ * - clear search results
+ * - Display more info about the user
  */
-
 interface IPeopleSearchState {
     people: PersonSearchItem[],
     term: string,
@@ -32,8 +30,6 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
         };
     }
 
-    /* tslint:disable:jsx-no-bind */
-
     public render() {
         return (
             <div>
@@ -45,8 +41,8 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                         inputProps={{ name: 'people-search-input', className: "input" }}
                         value={this.state.term}
                         items={this.state.people}
-                        onChange={this.onInputChange.bind(this)}
-                        onSelect={this.onInputSelect.bind(this)}
+                        onChange={this.onInputChange}
+                        onSelect={this.onInputSelect}
                         getItemValue={this.renderAutocompleteItemValue}
                         renderMenu={this.renderAutocompleteItems}
                         renderItem={this.renderAutocompleteItem}
@@ -58,7 +54,7 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
         )
     }
 
-    private onInputChange(event: Event, value: string) {
+    private onInputChange = (event: Event, value: string) => {
         this.setState({
             term: value
         });
@@ -81,7 +77,7 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
         }
     }
 
-    private onInputSelect(value: string, item: PersonSearchItem) {
+    private onInputSelect = (value: string, item: PersonSearchItem) => {
         this.setState({
             selectedPeople: item
         });
