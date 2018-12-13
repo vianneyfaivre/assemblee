@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import PeopleSearch from './PeopleSearch';
 
-class AllPeople extends React.Component {
+export default class AllPeople extends React.Component {
 
     public render() {
         return (
@@ -13,5 +13,3 @@ class AllPeople extends React.Component {
         )
     }
 }
-
-export default AllPeople;
