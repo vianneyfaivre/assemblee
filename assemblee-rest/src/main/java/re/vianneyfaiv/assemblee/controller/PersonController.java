@@ -36,7 +36,7 @@ public class PersonController {
     @GetMapping("/persons/search")
     public List<PersonSearch> searchByLastName(@RequestParam String lastName) {
         return this.personRepository
-                    .findByLastNameStartingWithOrderByLastName(lastName)
+                    .findByLastNameStartingWithIgnoreCaseOrderByLastName(lastName)
                     .stream()
                     .map(PersonSearch::new)
                     .collect(Collectors.toList());

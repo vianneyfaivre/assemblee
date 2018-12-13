@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface PersonRepository extends JpaRepository<Person, String> {
 
-    List<Person> findByLastNameStartingWithOrderByLastName(String lastName);
+    /**
+     * Search for people by Last Name that starts with lastName value. Case insensitive.
+     */
+    List<Person> findByLastNameStartingWithIgnoreCaseOrderByLastName(String lastName);
 }
