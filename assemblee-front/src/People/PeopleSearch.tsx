@@ -9,8 +9,6 @@ import PersonSearchItem from 'src/Model/PersonSearchItem';
 
 /*
  * TODO
- * - Backend : case insensitive search
- * - search when value.length > 1
  * - clear search results
  * - handle call error
  * - API : create an ENV file
@@ -64,18 +62,26 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
     }
 
     private onInputChange(event: Event, value: string) {
-        
-        Api.searchPeopleByLastName(value)
-            .then(response => {
-                this.setState({
-                    people: response.data,
-                    term: value
+        this.setState({
+            term: value
+        });
+
+        if(value.length > 1) {
+            Api.searchPeopleByLastName(value)
+                .then(response => {
+                    this.setState({
+                        people: response.data,
+                    });
+                })
+                .catch(error => {
+                    // TODO handle error
+                    alert(error);
                 });
-            })
-            .catch(error => {
-                // handle error
-                alert(error);
+        } else {
+            this.setState({
+                people: [],
             });
+        }
     }
 
     private onInputSelect(value: string, item: PersonSearchItem) {
