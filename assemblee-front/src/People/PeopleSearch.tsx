@@ -14,6 +14,7 @@ import PersonSearchItem from 'src/Model/PersonSearchItem';
  * - API : create an ENV file
  * - find a solution for jsx-no-bind
  * - disable tslint rule on property order (for all files)
+ * - new component for selected person
  */
 
 interface IPeopleSearchState {
@@ -57,6 +58,7 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                 </div>
 
                 {this.state.selectedPeople && <div>Député sélectionné : {this.state.selectedPeople.fullName}</div>}
+
             </div>
         )
     }

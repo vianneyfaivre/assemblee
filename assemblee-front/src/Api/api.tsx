@@ -1,7 +1,7 @@
 import axios, { AxiosPromise } from 'axios';
 import PersonSearchItem from 'src/Model/PersonSearchItem';
 
-class Api {
+export default class Api {
 
     /**
      * Returns a promise that contains a list of PersonSearchItem
@@ -18,5 +18,3 @@ class Api {
     }
 
 }
-
-export default Api;
