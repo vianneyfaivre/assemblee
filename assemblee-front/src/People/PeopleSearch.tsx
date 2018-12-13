@@ -97,9 +97,14 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
     /**
      * DOM Wrapper element for all autocomplete items
      */
-    private renderAutocompleteItems(children: any) {
+    private renderAutocompleteItems(children: any[]) {
+
+        if(children.length === 0) {
+            return <span />;
+        }
+
         return (
-            <div className="menu">
+            <div className="box">
                 {children}
             </div>
         );
@@ -111,7 +116,7 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
     private renderAutocompleteItem(item: PersonSearchItem, isHighlighted: boolean) {
         return (
             <div
-                className={`item ${isHighlighted ? 'item-highlighted' : ''}`}
+                className={`${isHighlighted ? 'has-background-light' : ''}`}
                 key={item.id}
             >
                 {item.fullName}
