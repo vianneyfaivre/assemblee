@@ -38,15 +38,11 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
     public render() {
         return (
             <div>
-                
-                <div>
-                    <div>
-                        <label htmlFor="people-search-input">Rechercher un député : </label>
-                    </div>
+                <div className="field">
+                    <label htmlFor="people-search-input" className="label">Rechercher un député par nom de famille : </label>
                     
                     <Autocomplete
                         inputProps={{ id: 'people-search-input' }}
-                        wrapperStyle={{ position: 'relative', display: 'inline-block' }}
                         value={this.state.term}
                         items={this.state.people}
                         onChange={this.onInputChange.bind(this)}
@@ -54,6 +50,8 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                         getItemValue={this.renderAutocompleteItemValue}
                         renderMenu={this.renderAutocompleteItems}
                         renderItem={this.renderAutocompleteItem}
+                        wrapperProps={{className: "control"}}
+                        renderInput={this.renderInput}
                     />
                 </div>
 
@@ -122,5 +120,9 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                 {item.fullName}
             </div>
         );
+    }
+
+    private renderInput(props: any) {
+        return <input {...props} className="input" />
     }
 }
