@@ -13,7 +13,7 @@ export default class Api {
                 params: {
                     "lastName": lastName
                 },
-                url: 'http://localhost:8080/persons/search',
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/persons/search',
             });
     }
 
