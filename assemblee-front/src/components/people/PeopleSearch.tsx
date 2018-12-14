@@ -1,19 +1,11 @@
 import * as React from 'react';
-import Api from 'src/Api/api';
-import PersonSearchItem from 'src/Model/PersonSearchItem';
-import {SelectedPeople} from 'src/People/SelectedPeople';
+import Api from 'src/api/api';
+import PersonSearchItem from 'src/model/PersonSearchItem';
+import {SelectedPeople} from 'src/components/people/SelectedPeople';
 /* tslint:disable-next-line:no-var-requires 
 this module does not have the Typescript typings file so we must use "require" */
 const Autocomplete = require("react-autocomplete") as any;
 
-/*
- * TODO
- * - faire un package "components"
- * - handle API call error
- * - API : create an ENV file
- * - clear search results
- * - Display more info about the user
- */
 interface IPeopleSearchState {
     people: PersonSearchItem[],
     term: string,

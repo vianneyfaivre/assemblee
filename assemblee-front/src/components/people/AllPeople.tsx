@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import PeopleSearch from 'src/People/PeopleSearch';
+import PeopleSearch from 'src/components/people/PeopleSearch';
 
 export default class AllPeople extends React.Component {
 

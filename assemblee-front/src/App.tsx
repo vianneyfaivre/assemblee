@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 
-import AllPeople from './People/AllPeople';
+import AllPeople from 'src/components/people/AllPeople';
 
 import './App.css';
 

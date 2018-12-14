@@ -1,5 +1,5 @@
 import axios, { AxiosPromise } from 'axios';
-import PersonSearchItem from 'src/Model/PersonSearchItem';
+import PersonSearchItem from 'src/model/PersonSearchItem';
 
 export default class Api {
 

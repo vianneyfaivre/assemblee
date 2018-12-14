@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PersonSearchItem from 'src/Model/PersonSearchItem';
+import PersonSearchItem from 'src/model/PersonSearchItem';
 
 interface ISelectedPeopleProps {
     selectedPeople?: PersonSearchItem 
