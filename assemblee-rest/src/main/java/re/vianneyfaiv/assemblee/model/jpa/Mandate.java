@@ -1,6 +1,7 @@
-package re.vianneyfaiv.assemblee.model;
+package re.vianneyfaiv.assemblee.model.jpa;
 
 import re.vianneyfaiv.assemblee.dao.PoliticalBodyTypeConverter;
+import re.vianneyfaiv.assemblee.model.pojo.PoliticalBodyType;
 
 import javax.persistence.*;
 import java.util.Date;

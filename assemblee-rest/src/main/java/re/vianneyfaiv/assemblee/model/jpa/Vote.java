@@ -1,8 +1,10 @@
-package re.vianneyfaiv.assemblee.model;
+package re.vianneyfaiv.assemblee.model.jpa;
 
-import re.vianneyfaiv.assemblee.dao.GenderConverter;
 import re.vianneyfaiv.assemblee.dao.VoteModeConverter;
 import re.vianneyfaiv.assemblee.dao.VoteResultConverter;
+import re.vianneyfaiv.assemblee.model.pojo.VoteMode;
+import re.vianneyfaiv.assemblee.model.pojo.VoteResult;
+import re.vianneyfaiv.assemblee.model.pojo.VoteType;
 
 import javax.persistence.*;
 import java.util.Date;

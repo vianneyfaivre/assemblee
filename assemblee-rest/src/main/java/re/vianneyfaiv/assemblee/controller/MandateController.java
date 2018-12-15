@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import re.vianneyfaiv.assemblee.dao.MandateRepository;
 import re.vianneyfaiv.assemblee.exception.MandatNotFound;
-import re.vianneyfaiv.assemblee.model.Mandate;
+import re.vianneyfaiv.assemblee.model.jpa.Mandate;
 
 import java.util.List;
 

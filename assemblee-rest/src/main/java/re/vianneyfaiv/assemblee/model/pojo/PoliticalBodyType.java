@@ -1,4 +1,4 @@
-package re.vianneyfaiv.assemblee.model;
+package re.vianneyfaiv.assemblee.model.pojo;
 
 /**
  * From http://www.assemblee-nationale.fr/opendata/Schemas_Entites/AMO/Schemas_Organes.html

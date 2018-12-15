@@ -1,6 +1,7 @@
-package re.vianneyfaiv.assemblee.model;
+package re.vianneyfaiv.assemblee.model.jpa;
 
 import re.vianneyfaiv.assemblee.dao.GenderConverter;
+import re.vianneyfaiv.assemblee.model.pojo.Gender;
 
 import javax.persistence.*;
 

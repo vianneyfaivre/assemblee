@@ -1,8 +1,8 @@
-package re.vianneyfaiv.assemblee.dao.model;
+package re.vianneyfaiv.assemblee.model.pojo;
 
 import java.util.Date;
 
-public class GetPersonDetailsRow {
+public class Mandate {
 
     private String mandateId;
     private Date startDate;

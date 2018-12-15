@@ -1,6 +1,6 @@
 package re.vianneyfaiv.assemblee.dao;
 
-import re.vianneyfaiv.assemblee.model.VoteResult;
+import re.vianneyfaiv.assemblee.model.pojo.VoteResult;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

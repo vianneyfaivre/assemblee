@@ -1,6 +1,6 @@
 package re.vianneyfaiv.assemblee.dao;
 
-import re.vianneyfaiv.assemblee.model.VoteMode;
+import re.vianneyfaiv.assemblee.model.pojo.VoteMode;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

@@ -3,15 +3,14 @@ package re.vianneyfaiv.assemblee.dao;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import re.vianneyfaiv.assemblee.dao.model.GetPersonDetailsRow;
-import re.vianneyfaiv.assemblee.model.PersonDetails;
+import re.vianneyfaiv.assemblee.model.pojo.Mandate;
 
 import java.util.List;
 
 @Component
 public class PersonDetailsDao {
 
-    private static final String GET_PERSON_DETAILS =
+    private static final String QUERY_GET_PERSON_MANDATES =
             "select " +
                 "m.mandat_id as mandateId, " +
                 "m.date_debut as startDate, " +
@@ -34,12 +33,12 @@ public class PersonDetailsDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<GetPersonDetailsRow> getPersonDetails(String personId) {
+    public List<Mandate> getPersonDetails(String personId) {
 
         return jdbcTemplate.query(
-                    GET_PERSON_DETAILS,
+                QUERY_GET_PERSON_MANDATES,
                     new Object[]{personId},
-                    BeanPropertyRowMapper.newInstance(GetPersonDetailsRow.class)
+                    BeanPropertyRowMapper.newInstance(Mandate.class)
         );
     }
 }

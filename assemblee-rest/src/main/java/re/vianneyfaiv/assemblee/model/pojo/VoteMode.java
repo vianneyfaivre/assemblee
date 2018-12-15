@@ -1,4 +1,4 @@
-package re.vianneyfaiv.assemblee.model;
+package re.vianneyfaiv.assemblee.model.pojo;
 
 public enum VoteMode {
 

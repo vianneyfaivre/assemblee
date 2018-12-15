@@ -1,7 +1,7 @@
 package re.vianneyfaiv.assemblee.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import re.vianneyfaiv.assemblee.model.Person;
+import re.vianneyfaiv.assemblee.model.jpa.Person;
 
 import java.util.List;
 
