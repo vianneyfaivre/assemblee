@@ -36,7 +36,7 @@ public class PersonService {
 
         for (Mandate detail : personDetails) {
 
-            if (PoliticalBodyType.ASSEMBLEE_NATIONALE.getCode().equalsIgnoreCase(detail.getPoliticalBodyType())) {
+            if (PoliticalBodyType.ASSEMBLEE_NATIONALE == detail.getPoliticalBodyType()) {
                 assembleeMandate = detail;
             } else {
                 otherMandates.add(detail);

@@ -8,7 +8,7 @@ public class Mandate {
     private Date startDate;
     private Date endDate;
     private String politicalBodyId;
-    private String politicalBodyType;
+    private PoliticalBodyType politicalBodyType;
     private String politicalBodyLabel;
 
     public String getMandateId() {
@@ -43,12 +43,12 @@ public class Mandate {
         this.politicalBodyId = politicalBodyId;
     }
 
-    public String getPoliticalBodyType() {
+    public PoliticalBodyType getPoliticalBodyType() {
         return politicalBodyType;
     }
 
     public void setPoliticalBodyType(String politicalBodyType) {
-        this.politicalBodyType = politicalBodyType;
+        this.politicalBodyType = PoliticalBodyType.fromCode(politicalBodyType);
     }
 
     public String getPoliticalBodyLabel() {
