@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 
-import AllPeople from 'src/components/people/AllPeople';
+import PersonHomePage from 'src/components/people/PersonHomePage';
 
 import './App.css';
 
@@ -16,7 +16,7 @@ export default class App extends React.Component {
               </p>
             </nav>
 
-            <ReactRouter.Route path="/" exact={true} component={AllPeople} />
+            <ReactRouter.Route path="/" exact={true} component={PersonHomePage} />
           </div>
         </ReactRouter.BrowserRouter>
     );

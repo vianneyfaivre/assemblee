@@ -2,7 +2,14 @@ import * as React from 'react';
 
 import PeopleSearch from 'src/components/people/PeopleSearch';
 
-export default class AllPeople extends React.Component {
+/*
+ * 
+ *  TODO:
+ * rename People to Person 
+ * in SelectedPeople component, add person mandates
+ */
+ 
+export default class PersonHomePage extends React.Component {
 
     public render() {
         return (
