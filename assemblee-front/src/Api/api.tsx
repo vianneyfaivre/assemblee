@@ -1,5 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
 import PersonSearchItem from 'src/model/PersonSearchItem';
+import PersonMandates from 'src/model/PersonMandates';
 
 export default class Api {
 
@@ -14,6 +15,17 @@ export default class Api {
                     "lastName": lastName
                 },
                 url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/persons/search',
+            });
+    }
+
+    /**
+     * Returns a promise that contains the mandates a person is assigned to
+     */
+    public static getPeopleMandates(personId: string): AxiosPromise<PersonMandates> {
+        return axios.request<PersonMandates>(
+            {
+                method: 'get',
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/persons/'+personId+'/mandates',
             });
     }
 
