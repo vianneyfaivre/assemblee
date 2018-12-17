@@ -2,6 +2,7 @@ import * as React from 'react';
 import Api from 'src/api/api';
 import PersonSearchItem from 'src/model/PersonSearchItem';
 import {SelectedPerson} from 'src/components/person/SelectedPerson';
+import PersonMandates from 'src/model/PersonMandates';
 /* tslint:disable-next-line:no-var-requires 
 this module does not have the Typescript typings file so we must use "require" */
 const Autocomplete = require("react-autocomplete") as any;
@@ -9,7 +10,8 @@ const Autocomplete = require("react-autocomplete") as any;
 interface IPersonSearchState {
     person: PersonSearchItem[],
     term: string,
-    selectedPerson?: PersonSearchItem
+    selectedPerson?: PersonSearchItem,
+    selectedPersonMandates?: PersonMandates
 }
 
 export default class PersonSearch extends React.Component<{}, IPersonSearchState> {
@@ -41,11 +43,17 @@ export default class PersonSearch extends React.Component<{}, IPersonSearchState
                     />
                 </div>
 
-                <SelectedPerson selectedPerson={this.state.selectedPerson} />
+                <SelectedPerson 
+                    selectedPerson={this.state.selectedPerson}
+                    mandates={this.state.selectedPersonMandates} 
+                />
             </div>
         )
     }
 
+    /**
+     * Search for a person when something gets typed in the search box
+     */
     private onInputChange = (event: Event, value: string) => {
         this.setState({
             term: value
@@ -69,10 +77,25 @@ export default class PersonSearch extends React.Component<{}, IPersonSearchState
         }
     }
 
-    private onInputSelect = (value: string, item: PersonSearchItem) => {
+    /**
+     * Update state when a person has been selected
+     * Also, retrieve mandates of that person.
+     */
+    private onInputSelect = (value: string, selectedPerson: PersonSearchItem) => {
         this.setState({
-            selectedPerson: item
+            'selectedPerson': selectedPerson
         });
+
+        Api.getPersonMandates(selectedPerson.id)
+                .then(response => {
+                    this.setState({
+                        selectedPersonMandates: response.data,
+                    });
+                })
+                .catch(error => {
+                    // TODO handle error
+                    alert(error);
+                });
     }
 
     /**
