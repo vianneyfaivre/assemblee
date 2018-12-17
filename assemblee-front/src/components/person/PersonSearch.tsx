@@ -1,23 +1,23 @@
 import * as React from 'react';
 import Api from 'src/api/api';
 import PersonSearchItem from 'src/model/PersonSearchItem';
-import {SelectedPeople} from 'src/components/people/SelectedPeople';
+import {SelectedPerson} from 'src/components/person/SelectedPerson';
 /* tslint:disable-next-line:no-var-requires 
 this module does not have the Typescript typings file so we must use "require" */
 const Autocomplete = require("react-autocomplete") as any;
 
-interface IPeopleSearchState {
-    people: PersonSearchItem[],
+interface IPersonSearchState {
+    person: PersonSearchItem[],
     term: string,
-    selectedPeople?: PersonSearchItem
+    selectedPerson?: PersonSearchItem
 }
 
-export default class PeopleSearch extends React.Component<{}, IPeopleSearchState> {
+export default class PersonSearch extends React.Component<{}, IPersonSearchState> {
 
     constructor(props: any){
         super(props);
         this.state = { 
-            people: [],
+            person: [],
             term: ''
         };
     }
@@ -26,13 +26,13 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
         return (
             <div>
                 <div className="field">
-                    <label htmlFor="people-search-input" className="label">Par nom de famille : </label>
+                    <label htmlFor="person-search-input" className="label">Par nom de famille : </label>
                     
                     <Autocomplete
                         wrapperProps={{className: "control"}}
-                        inputProps={{ name: 'people-search-input', className: "input" }}
+                        inputProps={{ name: 'person-search-input', className: "input" }}
                         value={this.state.term}
-                        items={this.state.people}
+                        items={this.state.person}
                         onChange={this.onInputChange}
                         onSelect={this.onInputSelect}
                         getItemValue={this.renderAutocompleteItemValue}
@@ -41,7 +41,7 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                     />
                 </div>
 
-                <SelectedPeople selectedPeople={this.state.selectedPeople} />
+                <SelectedPerson selectedPerson={this.state.selectedPerson} />
             </div>
         )
     }
@@ -52,10 +52,10 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
         });
 
         if(value.length > 1) {
-            Api.searchPeopleByLastName(value)
+            Api.searchPersonByLastName(value)
                 .then(response => {
                     this.setState({
-                        people: response.data,
+                        person: response.data,
                     });
                 })
                 .catch(error => {
@@ -64,14 +64,14 @@ export default class PeopleSearch extends React.Component<{}, IPeopleSearchState
                 });
         } else {
             this.setState({
-                people: [],
+                person: [],
             });
         }
     }
 
     private onInputSelect = (value: string, item: PersonSearchItem) => {
         this.setState({
-            selectedPeople: item
+            selectedPerson: item
         });
     }
 

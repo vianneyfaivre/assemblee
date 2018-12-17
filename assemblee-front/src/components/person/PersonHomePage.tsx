@@ -1,14 +1,7 @@
 import * as React from 'react';
 
-import PeopleSearch from 'src/components/people/PeopleSearch';
+import PersonSearch from 'src/components/person/PersonSearch';
 
-/*
- * 
- *  TODO:
- * rename People to Person 
- * in SelectedPeople component, add person mandates
- */
- 
 export default class PersonHomePage extends React.Component {
 
     public render() {
@@ -19,7 +12,7 @@ export default class PersonHomePage extends React.Component {
                         Rechercher mon député
                     </h2>
 
-                    <PeopleSearch />
+                    <PersonSearch />
                 </div>
             </section>
         )

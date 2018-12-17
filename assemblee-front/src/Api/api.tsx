@@ -7,7 +7,7 @@ export default class Api {
     /**
      * Returns a promise that contains a list of PersonSearchItem
      */
-    public static searchPeopleByLastName(lastName: string): AxiosPromise<PersonSearchItem[]> {
+    public static searchPersonByLastName(lastName: string): AxiosPromise<PersonSearchItem[]> {
         return axios.request<PersonSearchItem[]>(
             {
                 method: 'get',
@@ -21,7 +21,7 @@ export default class Api {
     /**
      * Returns a promise that contains the mandates a person is assigned to
      */
-    public static getPeopleMandates(personId: string): AxiosPromise<PersonMandates> {
+    public static getPersonMandates(personId: string): AxiosPromise<PersonMandates> {
         return axios.request<PersonMandates>(
             {
                 method: 'get',

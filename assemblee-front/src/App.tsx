@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 
-import PersonHomePage from 'src/components/people/PersonHomePage';
+import PersonHomePage from 'src/components/person/PersonHomePage';
 
 import './App.css';
 
