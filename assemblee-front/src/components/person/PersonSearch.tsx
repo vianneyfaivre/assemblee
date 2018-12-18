@@ -1,20 +1,20 @@
 import * as React from 'react';
 import Api from 'src/api/api';
 import PersonSearchItem from 'src/model/PersonSearchItem';
-import {SelectedPerson} from 'src/components/person/SelectedPerson';
-import PersonMandates from 'src/model/PersonMandates';
 /* tslint:disable-next-line:no-var-requires 
 this module does not have the Typescript typings file so we must use "require" */
 const Autocomplete = require("react-autocomplete") as any;
 
-interface IPersonSearchState {
-    person: PersonSearchItem[],
-    term: string,
-    selectedPerson?: PersonSearchItem,
-    selectedPersonMandates?: PersonMandates
+interface IPersonSearchProps {
+    onPersonSelect: (value: string, selectedPerson: PersonSearchItem) => void
 }
 
-export default class PersonSearch extends React.Component<{}, IPersonSearchState> {
+interface IPersonSearchState {
+    person: PersonSearchItem[],
+    term: string
+}
+
+export default class PersonSearch extends React.Component<IPersonSearchProps, IPersonSearchState> {
 
     constructor(props: any){
         super(props);
@@ -36,17 +36,12 @@ export default class PersonSearch extends React.Component<{}, IPersonSearchState
                         value={this.state.term}
                         items={this.state.person}
                         onChange={this.onInputChange}
-                        onSelect={this.onInputSelect}
+                        onSelect={this.props.onPersonSelect}
                         getItemValue={this.renderAutocompleteItemValue}
                         renderMenu={this.renderAutocompleteItems}
                         renderItem={this.renderAutocompleteItem}
                     />
                 </div>
-
-                <SelectedPerson 
-                    selectedPerson={this.state.selectedPerson}
-                    mandates={this.state.selectedPersonMandates} 
-                />
             </div>
         )
     }
@@ -75,27 +70,6 @@ export default class PersonSearch extends React.Component<{}, IPersonSearchState
                 person: [],
             });
         }
-    }
-
-    /**
-     * Update state when a person has been selected
-     * Also, retrieve mandates of that person.
-     */
-    private onInputSelect = (value: string, selectedPerson: PersonSearchItem) => {
-        this.setState({
-            'selectedPerson': selectedPerson
-        });
-
-        Api.getPersonMandates(selectedPerson.id)
-                .then(response => {
-                    this.setState({
-                        selectedPersonMandates: response.data,
-                    });
-                })
-                .catch(error => {
-                    // TODO handle error
-                    alert(error);
-                });
     }
 
     /**
