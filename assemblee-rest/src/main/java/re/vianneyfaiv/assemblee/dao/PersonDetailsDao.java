@@ -19,7 +19,8 @@ public class PersonDetailsDao {
                 "o.\"type\" as politicalBodyType, " +
                 "o.libelle as politicalBodyLabel, " +
                 "o.legislature, " +
-                "m.cause " +
+                "m.cause, " +
+                "m.qualite as quality " +
             "from " +
                 "mandats m " +
                 "inner join acteurs a on a.acteur_id = m.acteur_id " +

@@ -12,6 +12,7 @@ public class Mandate {
     private String politicalBodyLabel;
     private int legislature;
     private String cause;
+    private String quality;
 
     public String getMandateId() {
         return mandateId;
@@ -75,5 +76,13 @@ public class Mandate {
 
     public void setCause(String cause) {
         this.cause = cause;
+    }
+
+    public String getQuality() {
+        return quality;
+    }
+
+    public void setQuality(String quality) {
+        this.quality = quality;
     }
 }

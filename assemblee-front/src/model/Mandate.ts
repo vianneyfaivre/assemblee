@@ -6,4 +6,7 @@ export default class Mandate {
     public politicalBodyId: string;
     public politicalBodyType: string; // TODO use enum
     public politicalBodyLabel: string; 
+    public legislature: number;
+    public cause?: string;
+    public quality?: string;
 }
