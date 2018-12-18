@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Api from 'src/api/api';
 import PersonSearchItem from 'src/model/PersonSearchItem';
-import { Link } from 'react-router-dom';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 /* tslint:disable-next-line:no-var-requires 
 this module does not have the Typescript typings file so we must use "require" */
 const Autocomplete = require("react-autocomplete") as any;
@@ -11,7 +11,7 @@ interface IPersonSearchState {
     term: string
 }
 
-export default class PersonSearchPage extends React.Component<{}, IPersonSearchState> {
+class PersonSearchPage extends React.Component<RouteComponentProps, IPersonSearchState> {
 
     constructor(props: any){
         super(props);
@@ -37,6 +37,7 @@ export default class PersonSearchPage extends React.Component<{}, IPersonSearchS
                             value={this.state.term}
                             items={this.state.persons}
                             onChange={this.onInputChange}
+                            onSelect={this.onItemSelect}
                             getItemValue={this.renderAutocompleteItemValue}
                             renderMenu={this.renderAutocompleteItems}
                             renderItem={this.renderAutocompleteItem}
@@ -71,6 +72,13 @@ export default class PersonSearchPage extends React.Component<{}, IPersonSearchS
                 persons: [],
             });
         }
+    }
+
+    /** 
+     * Also redirect the user when he selects an item with the Enter key stroke 
+     */
+    private onItemSelect = (event: Event, value: PersonSearchItem) => {
+        this.props.history.push('/depute/'+value.id);
     }
 
     /**
@@ -112,3 +120,5 @@ export default class PersonSearchPage extends React.Component<{}, IPersonSearchS
         );
     }
 }
+
+export default withRouter(PersonSearchPage);
