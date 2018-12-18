@@ -13,6 +13,7 @@ public class MandatJson {
     private Date dateDebut;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateFin;
+    private Qualite infosQualite;
     private OrganesWrapper organes;
     private Election election;
     private Mandature mandature;
@@ -47,5 +48,9 @@ public class MandatJson {
 
     public Mandature getMandature() {
         return mandature;
+    }
+
+    public Qualite getInfosQualite() {
+        return infosQualite;
     }
 }

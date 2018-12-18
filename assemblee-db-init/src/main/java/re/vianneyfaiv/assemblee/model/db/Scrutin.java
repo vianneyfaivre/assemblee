@@ -15,7 +15,6 @@ public class Scrutin {
     private String typeVote;
     private String sort;
     private String demandeur;
-    private String objet;
     private String modePublicationVotes;
     private int resultatNombreVotants;
     private int resultatPour;
@@ -23,7 +22,7 @@ public class Scrutin {
     private int resultatAbstention;
     private int resultatNonVotant;
 
-    public Scrutin(String scrutinId, String titre, int numero, String organeId, int legislature, String sessionId, String seanceId, Date dateScrutin, String typeVote, String sort, String demandeur, String objet, String modePublicationVotes, int resultatNombreVotants, int resultatPour, int resultatContre, int resultatAbstention, int resultatNonVotant) {
+    public Scrutin(String scrutinId, String titre, int numero, String organeId, int legislature, String sessionId, String seanceId, Date dateScrutin, String typeVote, String sort, String demandeur, String modePublicationVotes, int resultatNombreVotants, int resultatPour, int resultatContre, int resultatAbstention, int resultatNonVotant) {
         this.scrutinId = scrutinId;
         this.titre = titre;
         this.numero = numero;
@@ -35,7 +34,6 @@ public class Scrutin {
         this.typeVote = typeVote;
         this.sort = sort;
         this.demandeur = demandeur;
-        this.objet = objet;
         this.modePublicationVotes = modePublicationVotes;
         this.resultatNombreVotants = resultatNombreVotants;
         this.resultatPour = resultatPour;
@@ -86,10 +84,6 @@ public class Scrutin {
 
     public String getDemandeur() {
         return demandeur;
-    }
-
-    public String getObjet() {
-        return objet;
     }
 
     public String getModePublicationVotes() {

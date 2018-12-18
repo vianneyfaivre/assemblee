@@ -2,13 +2,10 @@ package re.vianneyfaiv.assemblee.batch.processor;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
-import re.vianneyfaiv.assemblee.model.db.Acteur;
 import re.vianneyfaiv.assemblee.model.db.Mandat;
 import re.vianneyfaiv.assemblee.model.db.MandatOrgane;
-import re.vianneyfaiv.assemblee.model.json.acteur.ActeurJson;
 import re.vianneyfaiv.assemblee.model.json.mandat.MandatJson;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,13 +14,13 @@ import java.util.stream.Collectors;
 public class MandatItemProcessor implements ItemProcessor<MandatJson, Mandat> {
 
     @Override
-    public Mandat process(MandatJson mandatJson) throws Exception {
+    public Mandat process(MandatJson mandatJson) {
 
         String id = mandatJson.getUid();
         String acteurId = mandatJson.getActeurRef();
-        String organeType = mandatJson.getTypeOrgane();
         Date dateDebut = mandatJson.getDateDebut();
         Date dateFin = mandatJson.getDateFin();
+        String qualite = mandatJson.getInfosQualite().getLibQualiteSex();
 
         Date datePriseFonction = null;
         int numPlaceHemicycle = 0;
@@ -42,6 +39,6 @@ public class MandatItemProcessor implements ItemProcessor<MandatJson, Mandat> {
                                                 .map(organeId -> new MandatOrgane(id, organeId))
                                                 .collect(Collectors.toList());
 
-        return new Mandat(id, acteurId, organeType, dateDebut, datePriseFonction, dateFin, numPlaceHemicycle, cause, organes);
+        return new Mandat(id, acteurId, dateDebut, datePriseFonction, dateFin, numPlaceHemicycle, qualite, cause, organes);
     }
 }

@@ -24,7 +24,6 @@ public class ScrutinsItemProcessor implements ItemProcessor<ScrutinJson, Scrutin
         String typeVote;
         String sort;
         String demandeur;
-        String objet;
         String modePublicationVotes;
         int resultatNombreVotants;
         int resultatPour;
@@ -43,7 +42,6 @@ public class ScrutinsItemProcessor implements ItemProcessor<ScrutinJson, Scrutin
         typeVote = scrutinJson.getTypeVote().getCodeTypeVote();
         sort = scrutinJson.getSort().getCode();
         demandeur = scrutinJson.getDemandeur().getTexte();
-        objet = scrutinJson.getObjet().getLibelle();
         modePublicationVotes = scrutinJson.getModePublicationDesVotes();
         resultatNombreVotants = scrutinJson.getSyntheseVote().getNombreVotants();
         resultatPour = scrutinJson.getSyntheseVote().getDecompte().getPour();
@@ -51,6 +49,6 @@ public class ScrutinsItemProcessor implements ItemProcessor<ScrutinJson, Scrutin
         resultatAbstention = scrutinJson.getSyntheseVote().getDecompte().getAbstentions();
         resultatNonVotant = scrutinJson.getSyntheseVote().getDecompte().getNonVotants();
 
-        return new Scrutin(scrutinId, titre, numero, organeId, legislature, sessionId, seanceId, dateScrutin, typeVote, sort, demandeur, objet, modePublicationVotes, resultatNombreVotants, resultatPour, resultatContre, resultatAbstention, resultatNonVotant);
+        return new Scrutin(scrutinId, titre, numero, organeId, legislature, sessionId, seanceId, dateScrutin, typeVote, sort, demandeur, modePublicationVotes, resultatNombreVotants, resultatPour, resultatContre, resultatAbstention, resultatNonVotant);
     }
 }

@@ -36,6 +36,7 @@ public class ConvertFromJsonTests {
         assertThat(mandat.getMandat().getActeurRef(), is("PA2150"));
         assertThat(mandat.getMandat().getMandature().getPlaceHemicycle(), is(601));
         assertThat(mandat.getMandat().getOrganes().getOrganeRef(), is(Arrays.asList("PO717460")));
+        assertThat(mandat.getMandat().getInfosQualite().getCodeQualite(), is("membre"));
     }
 
     @Test

@@ -8,11 +8,11 @@ CREATE TABLE IF NOT EXISTS acteurs (
 create table IF NOT EXISTS mandats (
     mandat_id VARCHAR(50) PRIMARY KEY,
     acteur_id VARCHAR(50) REFERENCES acteurs,
-    organe_type VARCHAR(50),
     date_debut DATE,
     date_prise_fonction DATE,
     date_fin DATE,
     num_place_hemicycle SMALLINT,
+    qualite VARCHAR,
     cause VARCHAR(100)
 );
 
@@ -45,7 +45,6 @@ create table IF NOT EXISTS scrutins (
     type_vote VARCHAR(50),
     sort VARCHAR(50),
     demandeur VARCHAR(300),
-    objet VARCHAR,
     mode_publication_votes VARCHAR(50),
     resultat_nombre_votants SMALLINT, -- nombre de votants présents lors de la séance. ex: 90
     resultat_pour SMALLINT, -- nombre de votants POUR ex: 60

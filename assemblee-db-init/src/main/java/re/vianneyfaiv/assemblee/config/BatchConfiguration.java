@@ -167,8 +167,8 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     @Bean
     public ItemWriter<Mandat> writerMandats() {
         return new JdbcBatchItemWriterBuilder()
-                .sql("INSERT INTO mandats (mandat_id, acteur_id, organe_type, date_debut, date_prise_fonction, date_fin, num_place_hemicycle, cause) " +
-                        "VALUES (:mandatId, :acteurId, :organeType, :dateDebut, :datePriseFonction, :dateFin, :numPlaceHemicycle, :cause)")
+                .sql("INSERT INTO mandats (mandat_id, acteur_id, date_debut, date_prise_fonction, date_fin, num_place_hemicycle, qualite, cause) " +
+                        "VALUES (:mandatId, :acteurId, :dateDebut, :datePriseFonction, :dateFin, :numPlaceHemicycle, :qualite, :cause)")
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Mandat>())
                 .dataSource(dataSource)
                 .build();
@@ -177,8 +177,8 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     @Bean
     public ItemWriter<Scrutin> writerScrutins() {
         return new JdbcBatchItemWriterBuilder()
-                .sql("INSERT INTO scrutins (scrutin_id, titre, numero, organe_id, legislature, session_id, seance_id, date_scrutin, type_vote, sort, demandeur, objet, mode_publication_votes, resultat_nombre_votants, resultat_pour, resultat_contre, resultat_abstention, resultat_non_votant) " +
-                        "VALUES (:scrutinId, :titre, :numero, :organeId, :legislature, :sessionId, :seanceId, :dateScrutin, :typeVote, :sort, :demandeur, :objet, :modePublicationVotes, :resultatNombreVotants, :resultatPour, :resultatContre, :resultatAbstention, :resultatNonVotant)")
+                .sql("INSERT INTO scrutins (scrutin_id, titre, numero, organe_id, legislature, session_id, seance_id, date_scrutin, type_vote, sort, demandeur, mode_publication_votes, resultat_nombre_votants, resultat_pour, resultat_contre, resultat_abstention, resultat_non_votant) " +
+                        "VALUES (:scrutinId, :titre, :numero, :organeId, :legislature, :sessionId, :seanceId, :dateScrutin, :typeVote, :sort, :demandeur, :modePublicationVotes, :resultatNombreVotants, :resultatPour, :resultatContre, :resultatAbstention, :resultatNonVotant)")
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Scrutin>())
                 .dataSource(dataSource)
                 .build();
