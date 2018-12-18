@@ -19,6 +19,17 @@ export default class Api {
     }
 
     /**
+     * Returns a promise that contains a PersonSearchItem
+     */
+    public static getPersonById(personId: string): AxiosPromise<PersonSearchItem> {
+        return axios.request<PersonSearchItem>(
+            {
+                method: 'get',
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/persons/' + personId,
+            });
+    }
+
+    /**
      * Returns a promise that contains the mandates a person is assigned to
      */
     public static getPersonMandates(personId: string): AxiosPromise<PersonMandates> {

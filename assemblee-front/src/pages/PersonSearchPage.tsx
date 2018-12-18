@@ -1,51 +1,49 @@
 import * as React from 'react';
 import Api from 'src/api/api';
 import PersonSearchItem from 'src/model/PersonSearchItem';
+import { Link } from 'react-router-dom';
 /* tslint:disable-next-line:no-var-requires 
 this module does not have the Typescript typings file so we must use "require" */
 const Autocomplete = require("react-autocomplete") as any;
 
-interface IPersonSearchProps {
-    onPersonSelect: (value: string, selectedPerson: PersonSearchItem) => void
-}
-
 interface IPersonSearchState {
-    person: PersonSearchItem[],
+    persons: PersonSearchItem[],
     term: string
 }
 
-export default class PersonSearch extends React.Component<IPersonSearchProps, IPersonSearchState> {
+export default class PersonSearchPage extends React.Component<{}, IPersonSearchState> {
 
     constructor(props: any){
         super(props);
         this.state = { 
-            person: [],
+            persons: [],
             term: ''
         };
     }
 
     public render() {
         return (
-            <div>
-                <h2 className="title">Rechercher un député</h2>
+            <section className="section">
+                <div className="container">
+                    <h2 className="title">Rechercher un député</h2>
 
-                <div className="field">
-                    <label htmlFor="person-search-input" className="label">Par nom de famille : </label>
-                    
-                    <Autocomplete
-                        wrapperProps={{className: "control"}}
-                        wrapperStyle={{ position: 'relative', display: 'inline-block' }}
-                        inputProps={{ name: 'person-search-input', className: "input" }}
-                        value={this.state.term}
-                        items={this.state.person}
-                        onChange={this.onInputChange}
-                        onSelect={this.props.onPersonSelect}
-                        getItemValue={this.renderAutocompleteItemValue}
-                        renderMenu={this.renderAutocompleteItems}
-                        renderItem={this.renderAutocompleteItem}
-                    />
+                    <div className="field">
+                        <label htmlFor="person-search-input" className="label">Par nom de famille : </label>
+                        
+                        <Autocomplete
+                            wrapperProps={{className: "control"}}
+                            wrapperStyle={{ position: 'relative', display: 'inline-block' }}
+                            inputProps={{ name: 'person-search-input', className: "input" }}
+                            value={this.state.term}
+                            items={this.state.persons}
+                            onChange={this.onInputChange}
+                            getItemValue={this.renderAutocompleteItemValue}
+                            renderMenu={this.renderAutocompleteItems}
+                            renderItem={this.renderAutocompleteItem}
+                        />
+                    </div>
                 </div>
-            </div>
+            </section>
         )
     }
 
@@ -61,7 +59,7 @@ export default class PersonSearch extends React.Component<IPersonSearchProps, IP
             Api.searchPersonByLastName(value)
                 .then(response => {
                     this.setState({
-                        person: response.data,
+                        persons: response.data,
                     });
                 })
                 .catch(error => {
@@ -70,7 +68,7 @@ export default class PersonSearch extends React.Component<IPersonSearchProps, IP
                 });
         } else {
             this.setState({
-                person: [],
+                persons: [],
             });
         }
     }
@@ -107,7 +105,9 @@ export default class PersonSearch extends React.Component<IPersonSearchProps, IP
                 className={`${isHighlighted ? 'has-background-light' : ''}`}
                 key={item.id}
             >
-                {item.lastName} {item.firstName} 
+                <Link to={'/depute/'+item.id}>
+                    {item.lastName} {item.firstName}
+                </Link> 
             </div>
         );
     }

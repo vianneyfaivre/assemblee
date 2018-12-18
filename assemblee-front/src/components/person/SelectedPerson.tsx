@@ -1,8 +1,8 @@
 import * as React from 'react';
 import PersonSearchItem from 'src/model/PersonSearchItem';
 import PersonMandates from 'src/model/PersonMandates';
-import { MandateTable } from '../mandate/MandateTable';
-import { MainMandate } from '../mandate/MainMandate';
+import { MandateTable } from 'src/components/mandate/MandateTable';
+import { MainMandate } from 'src/components/mandate/MainMandate';
 
 interface ISelectedPersonProps {
     selectedPerson: PersonSearchItem,
