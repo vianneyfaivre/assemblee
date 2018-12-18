@@ -10,7 +10,7 @@ public class Mandate {
     private String politicalBodyId;
     private PoliticalBodyType politicalBodyType;
     private String politicalBodyLabel;
-    private String legislature;
+    private int legislature;
     private String cause;
 
     public String getMandateId() {
@@ -61,11 +61,19 @@ public class Mandate {
         this.politicalBodyLabel = politicalBodyLabel;
     }
 
-    public String getLegislature() {
+    public int getLegislature() {
         return legislature;
     }
 
     public String getCause() {
         return cause;
+    }
+
+    public void setLegislature(int legislature) {
+        this.legislature = legislature;
+    }
+
+    public void setCause(String cause) {
+        this.cause = cause;
     }
 }

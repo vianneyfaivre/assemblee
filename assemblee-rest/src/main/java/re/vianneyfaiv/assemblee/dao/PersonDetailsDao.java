@@ -17,8 +17,8 @@ public class PersonDetailsDao {
                 "m.date_fin as endDate, " +
                 "o.organe_id as politicalBodyId, " +
                 "o.\"type\" as politicalBodyType, " +
-                "o.libelle as politicalBodyLabel " +
-                "o.legislature " +
+                "o.libelle as politicalBodyLabel, " +
+                "o.legislature, " +
                 "m.cause " +
             "from " +
                 "mandats m " +
