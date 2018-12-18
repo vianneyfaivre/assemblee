@@ -16,8 +16,10 @@ public class PersonDetailsDao {
                 "m.date_debut as startDate, " +
                 "m.date_fin as endDate, " +
                 "o.organe_id as politicalBodyId, " +
-                "m.organe_type as politicalBodyType, " +
+                "o.\"type\" as politicalBodyType, " +
                 "o.libelle as politicalBodyLabel " +
+                "o.legislature " +
+                "m.cause " +
             "from " +
                 "mandats m " +
                 "inner join acteurs a on a.acteur_id = m.acteur_id " +

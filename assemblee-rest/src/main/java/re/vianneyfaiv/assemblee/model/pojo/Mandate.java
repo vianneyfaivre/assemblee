@@ -10,6 +10,8 @@ public class Mandate {
     private String politicalBodyId;
     private PoliticalBodyType politicalBodyType;
     private String politicalBodyLabel;
+    private String legislature;
+    private String cause;
 
     public String getMandateId() {
         return mandateId;
@@ -57,5 +59,13 @@ public class Mandate {
 
     public void setPoliticalBodyLabel(String politicalBodyLabel) {
         this.politicalBodyLabel = politicalBodyLabel;
+    }
+
+    public String getLegislature() {
+        return legislature;
+    }
+
+    public String getCause() {
+        return cause;
     }
 }

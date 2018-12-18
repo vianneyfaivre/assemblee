@@ -58,9 +58,13 @@ public class PersonService {
             }
         }
 
+        // If no assemblée mandate has been found or if that person does not have any mandates, return nothing
         if (assembleeMandate == null || personMandates.isEmpty()) {
             return Optional.empty();
         }
+
+        // TODO Find out when a government mandate is about a minister
+
 
         return Optional.of(new PersonMandates(assembleeMandate, politicalMandates, governmentMandates, otherMandates));
     }

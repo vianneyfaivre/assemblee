@@ -1,9 +1,10 @@
 package re.vianneyfaiv.assemblee.model.jpa;
 
-import re.vianneyfaiv.assemblee.dao.PoliticalBodyTypeConverter;
 import re.vianneyfaiv.assemblee.model.pojo.PoliticalBodyType;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
 @Entity(name = "mandats")
@@ -23,9 +24,6 @@ public class Mandate {
     )*/
     @Column(name = "acteur_id")
     private String personId;
-
-    @Convert(converter = PoliticalBodyTypeConverter.class)
-    private PoliticalBodyType organeType;
 
     @Column(name = "dateDebut")
     private Date startDate;
@@ -47,10 +45,6 @@ public class Mandate {
 
     public String getPersonId() {
         return personId;
-    }
-
-    public PoliticalBodyType getOrganeType() {
-        return organeType;
     }
 
     public Date getStartDate() {
@@ -78,7 +72,6 @@ public class Mandate {
         return "Mandate{" +
                 "id='" + id + '\'' +
                 ", personId=" + personId +
-                ", organeType='" + organeType + '\'' +
                 ", startDate=" + startDate +
                 ", workStartDate=" + workStartDate +
                 ", endDate=" + endDate +
