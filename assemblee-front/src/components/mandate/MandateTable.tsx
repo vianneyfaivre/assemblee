@@ -34,10 +34,10 @@ export const MandateTable : React.StatelessComponent<IMandateTableProps> = (prop
     );
 
     return (
-        <div>
-            <h3 className="title">{props.title} : </h3>
+        <div style={{marginTop: '50px'}}>
+            <h3 className="subtitle">{props.title} : </h3>
 
-            <table className="table">
+            <table className="table is-bordered is-narrow is-hoverable is-striped">
 
                 <thead>
                     <tr>

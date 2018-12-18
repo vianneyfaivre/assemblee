@@ -22,18 +22,19 @@ export default class PersonHomePage extends React.Component<{}, IPersonHomePageS
         return (
             <section className="section">
                 <div className="container">
-                    <h2 className="title">
-                        Rechercher mon député
-                    </h2>
 
-                    <PersonSearch 
-                        onPersonSelect={this.onPersonSelect}
-                    />
+                    {!this.state.selectedPerson && 
+                        <PersonSearch 
+                            onPersonSelect={this.onPersonSelect}
+                        />
+                    }
 
-                    <SelectedPerson 
-                        selectedPerson={this.state.selectedPerson}
-                        mandates={this.state.selectedPersonMandates} 
-                    />
+                    {this.state.selectedPerson && 
+                        <SelectedPerson 
+                            selectedPerson={this.state.selectedPerson}
+                            mandates={this.state.selectedPersonMandates} 
+                        />
+                    }
                 </div>
             </section>
         )

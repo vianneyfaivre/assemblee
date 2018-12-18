@@ -3,8 +3,6 @@ import * as ReactRouter from 'react-router-dom';
 
 import PersonHomePage from 'src/components/person/PersonHomePage';
 
-import './App.css';
-
 export default class App extends React.Component {
   public render() {
     return (
@@ -12,7 +10,7 @@ export default class App extends React.Component {
           <div>
             <nav className="level-left">
               <p className="level-item has-text-centered">
-                <ReactRouter.Link to="/" className="link is-info">Députés</ReactRouter.Link>
+                <ReactRouter.Link to="/" className="link is-info">Rechercher un député</ReactRouter.Link>
               </p>
             </nav>
 
