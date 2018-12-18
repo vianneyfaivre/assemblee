@@ -11,12 +11,19 @@ export const MandateTable : React.StatelessComponent<IMandateTableProps> = (prop
     if(!props.mandates || props.mandates.length === 0) {
         return <div />;
     }
-
+    
     const rows = props.mandates.map((mandate) => {
         return (
             <tr key={mandate.mandateId}>
-                <td>{mandate.politicalBodyLabel}</td>
-                <td>{mandate.politicalBodyType}</td>
+                <td>
+                    {mandate.politicalBodyLabel} 
+                    {mandate.legislature > 0 && <span> ({mandate.legislature}è législature)</span>}
+                </td>
+                <td>
+                    {mandate.politicalBodyType} 
+                    <br />
+                    {mandate.quality} 
+                </td>
                 <td>
                     {mandate.endDate && <span>du {mandate.startDate.toLocaleDateString('fr-FR')} au {mandate.endDate.toLocaleDateString('fr-FR')}</span>}
                     {!mandate.endDate && <span>depuis le {mandate.startDate.toLocaleDateString('fr-FR')}</span>}
@@ -35,7 +42,7 @@ export const MandateTable : React.StatelessComponent<IMandateTableProps> = (prop
                 <thead>
                     <tr>
                         <th>Nom du mandat</th>
-                        <th>Type de mandat</th>
+                        <th>Type de mandat<br />Rôle</th>
                         <th>Période</th>
                     </tr>
                 </thead>
