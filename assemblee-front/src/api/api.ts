@@ -1,6 +1,7 @@
 import axios, { AxiosPromise, AxiosTransformer } from 'axios';
 import PersonSearchItem from 'src/model/PersonSearchItem';
 import PersonMandates from 'src/model/PersonMandates';
+import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
 
 export default class Api {
 
@@ -71,6 +72,42 @@ export default class Api {
             {
                 method: 'get',
                 url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/persons/'+personId+'/mandates',
+                transformResponse:  responseTransformers
+            });
+    }
+
+    /**
+     * Returns a promise that contains the members of a political body
+     */
+    public static getPoliticalBodyMembers(politicalBodyId: string): AxiosPromise<PoliticalBodyMember[]> {
+
+        let responseTransformers: AxiosTransformer[] = [];
+        if(axios.defaults.transformResponse){
+            responseTransformers = responseTransformers.concat(axios.defaults.transformResponse);
+        }
+
+        // Function that convert ISO dates (string) to Javascript Date for PoliticalBodyMember type
+        const convertPoliticalBodyMemberDates = (politicalBodyMember: any) => {
+            politicalBodyMember.startDate = new Date(Date.parse(politicalBodyMember.startDate));
+            if(politicalBodyMember.endDate) {
+                politicalBodyMember.endDate = new Date(Date.parse(politicalBodyMember.endDate));
+            }
+        };
+
+        // Axios transformer that will be called after the response has been received
+        responseTransformers.push((data, headers) => {
+
+            data.forEach((politicalBodyMember: any) => {
+                convertPoliticalBodyMemberDates(politicalBodyMember);
+            });
+
+            return data;
+        });
+
+        return axios.request<PoliticalBodyMember[]>(
+            {
+                method: 'get',
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/political-bodies/' + politicalBodyId + '/members',
                 transformResponse:  responseTransformers
             });
     }

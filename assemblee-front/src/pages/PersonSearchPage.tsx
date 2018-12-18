@@ -78,7 +78,7 @@ class PersonSearchPage extends React.Component<RouteComponentProps, IPersonSearc
      * Also redirect the user when he selects an item with the Enter key stroke 
      */
     private onItemSelect = (event: Event, value: PersonSearchItem) => {
-        this.props.history.push('/depute/'+value.id);
+        this.props.history.push('/deputes/'+value.id);
     }
 
     /**
@@ -113,7 +113,7 @@ class PersonSearchPage extends React.Component<RouteComponentProps, IPersonSearc
                 className={`${isHighlighted ? 'has-background-light' : ''}`}
                 key={item.id}
             >
-                <Link to={'/depute/'+item.id}>
+                <Link to={'/deputes/'+item.id}>
                     {item.lastName} {item.firstName}
                 </Link> 
             </div>

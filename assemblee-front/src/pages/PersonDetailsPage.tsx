@@ -15,8 +15,8 @@ export default class PersonDetailsPage extends React.Component<{}, IPersonDetail
     constructor(props: any){
         super(props);
 
-        // pathName == /depute/:personId (see routing in App.tsx)
-        // => parts: 0='' 1=depute 2=:personId
+        // pathName == /deputes/:personId (see routing in App.tsx)
+        // => parts: 0='' 1=deputes 2=:personId
         const pathNameParts: string[] = location.pathname.split('/');
 
         this.state = {
