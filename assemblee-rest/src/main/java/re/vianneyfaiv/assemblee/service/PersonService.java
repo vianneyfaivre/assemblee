@@ -10,6 +10,7 @@ import re.vianneyfaiv.assemblee.model.pojo.PersonMandates;
 import re.vianneyfaiv.assemblee.model.pojo.PoliticalBodyType;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,25 +30,39 @@ public class PersonService {
     }
 
     public Optional<PersonMandates> getPersonDetails(String personId) {
-        List<Mandate> personDetails = this.dao.getPersonDetails(personId);
+        List<Mandate> personMandates = this.dao.getPersonMandates(personId);
 
         Mandate assembleeMandate = null;
+        List<Mandate> politicalMandates = new ArrayList<>();
+        List<Mandate> governmentMandates = new ArrayList<>();
         List<Mandate> otherMandates = new ArrayList<>();
 
-        for (Mandate detail : personDetails) {
+        EnumSet<PoliticalBodyType> politicalTypes = EnumSet.of(PoliticalBodyType.GROUPE_POLITIQUE, PoliticalBodyType.PARTI_POLITIQUE);
+        EnumSet<PoliticalBodyType> governmentTypes = EnumSet.of(PoliticalBodyType.GOUVERNEMENT, PoliticalBodyType.MINISTERE);
 
-            if (PoliticalBodyType.ASSEMBLEE_NATIONALE == detail.getPoliticalBodyType()) {
-                assembleeMandate = detail;
-            } else {
-                otherMandates.add(detail);
+        // Let's group mandates
+        for (Mandate mandate : personMandates) {
+
+            PoliticalBodyType type = mandate.getPoliticalBodyType();
+
+            if (PoliticalBodyType.ASSEMBLEE_NATIONALE == type) {
+                assembleeMandate = mandate;
+            }
+            else if(politicalTypes.contains(type)) {
+                politicalMandates.add(mandate);
+            }
+            else if(governmentTypes.contains(type)) {
+                governmentMandates.add(mandate);
+            } else{
+                otherMandates.add(mandate);
             }
         }
 
-        if (assembleeMandate == null || personDetails.isEmpty()) {
+        if (assembleeMandate == null || personMandates.isEmpty()) {
             return Optional.empty();
         }
 
-        return Optional.of(new PersonMandates(assembleeMandate, otherMandates));
+        return Optional.of(new PersonMandates(assembleeMandate, politicalMandates, governmentMandates, otherMandates));
     }
 
     public Optional<Person> findById(String personId) {

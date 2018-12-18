@@ -33,7 +33,7 @@ public class PersonDetailsDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Mandate> getPersonDetails(String personId) {
+    public List<Mandate> getPersonMandates(String personId) {
 
         return jdbcTemplate.query(
                 QUERY_GET_PERSON_MANDATES,
