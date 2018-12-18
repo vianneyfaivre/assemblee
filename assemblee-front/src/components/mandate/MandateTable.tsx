@@ -8,7 +8,7 @@ interface IMandateTableProps {
 
 export const MandateTable : React.StatelessComponent<IMandateTableProps> = (props) => {
     
-    if(!props.mandates) {
+    if(!props.mandates || props.mandates.length === 0) {
         return <div />;
     }
 
