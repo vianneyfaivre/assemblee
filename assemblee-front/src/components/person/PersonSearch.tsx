@@ -4,6 +4,7 @@ import PersonSearchItem from 'src/model/PersonSearchItem';
 /* tslint:disable-next-line:no-var-requires 
 this module does not have the Typescript typings file so we must use "require" */
 const Autocomplete = require("react-autocomplete") as any;
+import './PersonSearch.css';
 
 interface IPersonSearchProps {
     onPersonSelect: (value: string, selectedPerson: PersonSearchItem) => void
@@ -32,6 +33,7 @@ export default class PersonSearch extends React.Component<IPersonSearchProps, IP
                     
                     <Autocomplete
                         wrapperProps={{className: "control"}}
+                        wrapperStyle={{ position: 'relative', display: 'inline-block' }}
                         inputProps={{ name: 'person-search-input', className: "input" }}
                         value={this.state.term}
                         items={this.state.person}
@@ -89,7 +91,7 @@ export default class PersonSearch extends React.Component<IPersonSearchProps, IP
         }
 
         return (
-            <div className="box">
+            <div className="box on-top">
                 {children}
             </div>
         );
