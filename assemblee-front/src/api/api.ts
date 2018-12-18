@@ -32,11 +32,17 @@ export default class Api {
         responseTransformers.push((data, headers) => {
 
             data.mainMandate.startDate = new Date(Date.parse(data.mainMandate.startDate));
-            data.mainMandate.endDate = new Date(Date.parse(data.mainMandate.endDate));
+
+            if(data.mainMandate.endDate) {
+                data.mainMandate.endDate = new Date(Date.parse(data.mainMandate.endDate));
+            }
 
             data.otherMandates.forEach((mandate: any) => {
                 mandate.startDate = new Date(Date.parse(mandate.startDate));
-                mandate.endDate = new Date(Date.parse(mandate.endDate));
+
+                if(mandate.endDate){
+                    mandate.endDate = new Date(Date.parse(mandate.endDate));
+                }   
             });
 
             return data;
