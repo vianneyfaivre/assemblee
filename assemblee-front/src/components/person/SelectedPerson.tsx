@@ -30,7 +30,11 @@ export const SelectedPerson: React.StatelessComponent<ISelectedPersonProps> = (p
                         <span>(depuis le {props.mandates.mainMandate.startDate.toLocaleDateString('fr-FR')})</span>
                     }
 
-                    <MandateTable title='Ses Mandats' mandates={props.mandates.otherMandates} />
+                    <MandateTable title='Ses participations au gouvernement' mandates={props.mandates.governmentMandates} />
+
+                    <MandateTable title='Ses appartenances à des partis/groupes politiques' mandates={props.mandates.politicalMandates} />
+
+                    <MandateTable title='Ses autres mandats' mandates={props.mandates.otherMandates} />
 
                 </div>
             </div>

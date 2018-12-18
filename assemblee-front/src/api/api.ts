@@ -28,21 +28,29 @@ export default class Api {
             responseTransformers = responseTransformers.concat(axios.defaults.transformResponse);
         }
 
-        // Convert ISO dates (string) to Javascript Date
+        // Function that convert ISO dates (string) to Javascript Date for Mandate type
+        const convertMandatToDate = (mandate: any) => {
+            mandate.startDate = new Date(Date.parse(mandate.startDate));
+            if(mandate.endDate) {
+                mandate.endDate = new Date(Date.parse(mandate.endDate));
+            }
+        };
+
+        // Axios transformer that will be called after the response has been received
         responseTransformers.push((data, headers) => {
 
-            data.mainMandate.startDate = new Date(Date.parse(data.mainMandate.startDate));
+            convertMandatToDate(data.mainMandate);
 
-            if(data.mainMandate.endDate) {
-                data.mainMandate.endDate = new Date(Date.parse(data.mainMandate.endDate));
-            }
+            data.politicalMandates.forEach((mandate: any) => {
+                convertMandatToDate(mandate);
+            });
+
+            data.governmentMandates.forEach((mandate: any) => {
+                convertMandatToDate(mandate);
+            });
 
             data.otherMandates.forEach((mandate: any) => {
-                mandate.startDate = new Date(Date.parse(mandate.startDate));
-
-                if(mandate.endDate){
-                    mandate.endDate = new Date(Date.parse(mandate.endDate));
-                }   
+                convertMandatToDate(mandate);
             });
 
             return data;
