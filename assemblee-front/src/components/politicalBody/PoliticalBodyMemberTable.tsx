@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Link} from 'react-router-dom';
 import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
 import { DatePeriodLabel } from 'src/components/mandate/DatePeriodLabel';
+import LabelService from 'src/util/LabelService';
 
 interface IPoliticalBodyMemberTableProps {
     members: PoliticalBodyMember[],
@@ -18,11 +19,10 @@ export const PoliticalBodyMemberTable : React.StatelessComponent<IPoliticalBodyM
         const genderPrefix: string = member.gender === 'FEMALE' ? 'Mme.' : 'Mr.';
         
         const mandates = member.mandates.map((mandate) => {
-            const qualitySuffix= mandate.quality && (mandate.quality.endsWith('du') || mandate.quality.endsWith('au')) ? 'groupe' : '';
 
             return (
                 <div key={mandate.mandateId}>
-                    {mandate.quality} {qualitySuffix} <DatePeriodLabel startDate={mandate.startDate} endDate={mandate.endDate} />
+                    {LabelService.getQuality(mandate)} <DatePeriodLabel startDate={mandate.startDate} endDate={mandate.endDate} />
                 </div>
             );
         });

@@ -2,6 +2,8 @@ import * as React from 'react';
 import {Link} from 'react-router-dom';
 import { DatePeriodLabel } from 'src/components/mandate/DatePeriodLabel';
 import MandateGrouped from 'src/model/MandateGrouped';
+import POLITICAL_BODY_TYPES from 'src/model/PoliticalBodyType';
+import LabelService from 'src/util/LabelService';
 
 interface IMandateTableProps {
     title: string,
@@ -17,11 +19,11 @@ export const MandateTable : React.StatelessComponent<IMandateTableProps> = (prop
     const rows = props.mandatesGrouped.map((mandateGrouped) => {
 
         const mandates = mandateGrouped.mandates.map((mandate) => {
-            const qualitySuffix= mandate.quality && (mandate.quality.endsWith('du') || mandate.quality.endsWith('au')) ? 'groupe' : '';
-    
+
             return (
                 <div key={mandate.mandateId}>
-                    {mandate.quality} {qualitySuffix} <DatePeriodLabel startDate={mandate.startDate} endDate={mandate.endDate} />
+                    {LabelService.getQuality(mandate)} {POLITICAL_BODY_TYPES.get(mandate.politicalBodyType)}&nbsp;
+                    <DatePeriodLabel startDate={mandate.startDate} endDate={mandate.endDate} />
                 </div>
             );
         });

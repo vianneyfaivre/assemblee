@@ -42,17 +42,16 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
         let body = <div />;
         
         if(this.state.politicalBodyDetails) {
-            
-            if(this.state.politicalBodyDetails.legislature > 0) {
-                title = this.state.politicalBodyDetails.politicalBodyLabel + ' (' + this.state.politicalBodyDetails.legislature + 'è législature)';
-            } else {
-                title = this.state.politicalBodyDetails.politicalBodyLabel;
-            }
+
+            title = PoliticalBodyDetailsPage.getTitle(this.state.politicalBodyDetails);
 
             body = (
                 <div>
                     <PoliticalBodyDetailsPanel details={this.state.politicalBodyDetails} />
-                    <PoliticalBodyMemberTable members={this.state.politicalBodyDetails.members} />
+                    
+                    <div style={{marginTop: '50px'}}>
+                        <PoliticalBodyMemberTable members={this.state.politicalBodyDetails.members} />
+                    </div>
                 </div>
             );
         }
@@ -66,5 +65,23 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
                 </div>
             </section>
         );
+    }
+
+    private static getTitle(politicalBodyDetails: PoliticalBodyDetails) : string {
+        let title = '';
+
+        let period = 'du ' + politicalBodyDetails.startDate.toLocaleDateString('fr-FR') + ' à ce jour';
+        if(politicalBodyDetails.endDate) {
+            period = 'du ' + politicalBodyDetails.startDate.toLocaleDateString('fr-FR') + ' au ' + politicalBodyDetails.endDate.toLocaleDateString('fr-FR');
+        }
+        
+        if(politicalBodyDetails.legislature > 0) {
+            title = politicalBodyDetails.politicalBodyLabel 
+                    + ' (' + period + ', ' + politicalBodyDetails.legislature + 'è législature)';
+        } else {
+            title = politicalBodyDetails.politicalBodyLabel + ' (' + period + ')';
+        }
+
+        return title;
     }
 }
