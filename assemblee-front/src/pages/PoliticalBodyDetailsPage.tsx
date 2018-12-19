@@ -1,12 +1,12 @@
 import * as React from 'react';
 import Api from 'src/api/api';
-import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
 import { PoliticalBodyMemberTable } from 'src/components/politicalBody/PoliticalBodyMemberTable';
+import PoliticalBodyDetails from 'src/model/PoliticalBodyDetails';
+import { DatePeriodLabel } from 'src/components/mandate/DatePeriodLabel';
 
 interface IPoliticalBodyDetailsPageState {
     organeId: string,
-    politicalBodyLabel: string,
-    members: PoliticalBodyMember[]
+    politicalBodyDetails?: PoliticalBodyDetails
 }
 
 export default class PoliticalBodyDetailsPage extends React.Component<{}, IPoliticalBodyDetailsPageState> {
@@ -20,29 +20,14 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
 
         this.state = {
             organeId: pathNameParts[2],
-            politicalBodyLabel: '',
-            members: []
         }
     }
 
     public componentDidMount() {
         Api.getPoliticalBodyMembers(this.state.organeId)
             .then(response => {
-
-                let label = '';
-                if(response.data.length > 0) {
-                    const firstMember = response.data[0];
-
-                    if(firstMember.legislature > 0) {
-                        label = firstMember.politicalBodyLabel + ' (' + firstMember.legislature + 'è législature)';
-                    } else {
-                        label = firstMember.politicalBodyLabel;
-                    }
-                }
-
                 this.setState({
-                    members: response.data,
-                    politicalBodyLabel: label
+                    politicalBodyDetails: response.data,
                 });
             })
             .catch(error => {
@@ -52,12 +37,25 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
     }
 
     public render() {
+
+        let title = '';
+        if(this.state.politicalBodyDetails) {
+            
+            if(this.state.politicalBodyDetails.legislature > 0) {
+                title = this.state.politicalBodyDetails.politicalBodyLabel + ' (' + this.state.politicalBodyDetails.legislature + 'è législature)';
+            } else {
+                title = this.state.politicalBodyDetails.politicalBodyLabel;
+            }
+        }
+
         return (
             <section className="section">
                 <div className="container">
-                    <h2 className="title">Détail de l'organe {this.state.politicalBodyLabel}</h2>
+                    <h2 className="title">Détail de l'organe {title}</h2>
                 
-                    <PoliticalBodyMemberTable members={this.state.members} />
+                    {this.state.politicalBodyDetails && 
+                        <div><DatePeriodLabel startDate={this.state.politicalBodyDetails.startDate} endDate={this.state.politicalBodyDetails.endDate} /></div> &&
+                        <PoliticalBodyMemberTable members={this.state.politicalBodyDetails.members} />}
                 </div>
             </section>
         );

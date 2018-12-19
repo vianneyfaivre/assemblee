@@ -1,6 +1,7 @@
 import axios, { AxiosPromise, AxiosTransformer } from 'axios';
 import PersonSearchItem from 'src/model/PersonSearchItem';
 import PersonMandates from 'src/model/PersonMandates';
+import PoliticalBodyDetails from 'src/model/PoliticalBodyDetails';
 import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
 
 export default class Api {
@@ -40,29 +41,21 @@ export default class Api {
             responseTransformers = responseTransformers.concat(axios.defaults.transformResponse);
         }
 
-        // Function that convert ISO dates (string) to Javascript Date for Mandate type
-        const convertMandatToDate = (mandate: any) => {
-            mandate.startDate = new Date(Date.parse(mandate.startDate));
-            if(mandate.endDate) {
-                mandate.endDate = new Date(Date.parse(mandate.endDate));
-            }
-        };
-
         // Axios transformer that will be called after the response has been received
         responseTransformers.push((data, headers) => {
 
-            convertMandatToDate(data.mainMandate);
+            Api.convertMandatToDate(data.mainMandate);
 
             data.politicalMandates.forEach((mandate: any) => {
-                convertMandatToDate(mandate);
+                Api.convertMandatToDate(mandate);
             });
 
             data.governmentMandates.forEach((mandate: any) => {
-                convertMandatToDate(mandate);
+                Api.convertMandatToDate(mandate);
             });
 
             data.otherMandates.forEach((mandate: any) => {
-                convertMandatToDate(mandate);
+                Api.convertMandatToDate(mandate);
             });
 
             return data;
@@ -79,32 +72,27 @@ export default class Api {
     /**
      * Returns a promise that contains the members of a political body
      */
-    public static getPoliticalBodyMembers(politicalBodyId: string): AxiosPromise<PoliticalBodyMember[]> {
+    public static getPoliticalBodyMembers(politicalBodyId: string): AxiosPromise<PoliticalBodyDetails> {
 
         let responseTransformers: AxiosTransformer[] = [];
         if(axios.defaults.transformResponse){
             responseTransformers = responseTransformers.concat(axios.defaults.transformResponse);
         }
 
-        // Function that convert ISO dates (string) to Javascript Date for PoliticalBodyMember type
-        const convertPoliticalBodyMemberDates = (politicalBodyMember: any) => {
-            politicalBodyMember.startDate = new Date(Date.parse(politicalBodyMember.startDate));
-            if(politicalBodyMember.endDate) {
-                politicalBodyMember.endDate = new Date(Date.parse(politicalBodyMember.endDate));
-            }
-        };
-
         // Axios transformer that will be called after the response has been received
-        responseTransformers.push((data, headers) => {
+        responseTransformers.push((data: PoliticalBodyDetails, headers) => {
 
-            data.forEach((politicalBodyMember: any) => {
-                convertPoliticalBodyMemberDates(politicalBodyMember);
+            data.members.forEach((politicalBodyMember: PoliticalBodyMember) => {
+
+                politicalBodyMember.mandates.forEach((mandate: any) => {
+                    Api.convertMandatToDate(mandate);
+                });
             });
 
             return data;
         });
 
-        return axios.request<PoliticalBodyMember[]>(
+        return axios.request<PoliticalBodyDetails>(
             {
                 method: 'get',
                 url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/political-bodies/' + politicalBodyId + '/members',
@@ -112,4 +100,13 @@ export default class Api {
             });
     }
 
+    /**
+     *  Function that convert ISO dates (string) to Javascript Date for Mandate type
+     */
+    private static convertMandatToDate(mandate: any) {
+        mandate.startDate = new Date(Date.parse(mandate.startDate));
+        if(mandate.endDate) {
+            mandate.endDate = new Date(Date.parse(mandate.endDate));
+        }
+    };
 }

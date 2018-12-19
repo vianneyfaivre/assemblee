@@ -16,20 +16,26 @@ export const PoliticalBodyMemberTable : React.StatelessComponent<IPoliticalBodyM
     const rows = props.members.map((member) => {
 
         const genderPrefix: string = member.gender === 'FEMALE' ? 'Mme.' : 'Mr.';
-        const qualitySuffix: string = member.quality.endsWith('du') || member.quality.endsWith('au') ? 'groupe' : '';
+        
+        const mandates = member.mandates.map((mandate) => {
+            const qualitySuffix= mandate.quality && (mandate.quality.endsWith('du') || mandate.quality.endsWith('au')) ? 'groupe' : '';
+
+            return (
+                <div key={mandate.mandateId}>
+                    {mandate.quality} {qualitySuffix} <DatePeriodLabel startDate={mandate.startDate} endDate={mandate.endDate} />
+                </div>
+            );
+        });
 
         return (
-            <tr key={member.mandateId}>
+            <tr key={member.personId}>
                 <td>
                     <Link to={'/deputes/'+member.personId}>
                         {genderPrefix} {member.lastName} {member.firstName} 
                     </Link>
                 </td>
                 <td>
-                    {member.quality} {qualitySuffix}
-                </td>
-                <td>
-                    <DatePeriodLabel startDate={member.startDate} endDate={member.endDate} />
+                    {mandates}
                 </td>
             </tr>
         )
@@ -42,8 +48,7 @@ export const PoliticalBodyMemberTable : React.StatelessComponent<IPoliticalBodyM
             <thead>
                 <tr>
                     <th>Nom et prénom</th>
-                    <th>Rôle</th>
-                    <th>Période</th>
+                    <th>Rôles</th>
                 </tr>
             </thead>
 
