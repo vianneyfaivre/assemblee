@@ -5,6 +5,7 @@ import { PoliticalBodyMemberTable } from 'src/components/politicalBody/Political
 
 interface IPoliticalBodyDetailsPageState {
     organeId: string,
+    politicalBodyLabel: string,
     members: PoliticalBodyMember[]
 }
 
@@ -19,6 +20,7 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
 
         this.state = {
             organeId: pathNameParts[2],
+            politicalBodyLabel: '',
             members: []
         }
     }
@@ -26,8 +28,21 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
     public componentDidMount() {
         Api.getPoliticalBodyMembers(this.state.organeId)
             .then(response => {
+
+                let label = '';
+                if(response.data.length > 0) {
+                    const firstMember = response.data[0];
+
+                    if(firstMember.legislature > 0) {
+                        label = firstMember.politicalBodyLabel + ' (' + firstMember.legislature + 'è législature)';
+                    } else {
+                        label = firstMember.politicalBodyLabel;
+                    }
+                }
+
                 this.setState({
                     members: response.data,
+                    politicalBodyLabel: label
                 });
             })
             .catch(error => {
@@ -40,7 +55,7 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
         return (
             <section className="section">
                 <div className="container">
-                    <h2 className="title">Détail de l'organe politique "TODO"</h2>
+                    <h2 className="title">Détail de l'organe {this.state.politicalBodyLabel}</h2>
                 
                     <PoliticalBodyMemberTable members={this.state.members} />
                 </div>
