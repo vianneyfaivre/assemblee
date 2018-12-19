@@ -73,10 +73,12 @@ public class PoliticalBodyService {
                 LOGGER.warn("The person with id {} has no mandates", person.getKey());
                 continue;
             }
+            mandates.sort(Comparator.comparing(Mandate::getStartDate));
 
             PoliticalBodyMemberRow firstMandate = person.getValue().get(0);
             politicalBodyLabel = firstMandate.getPoliticalBodyLabel();
             legislature = firstMandate.getLegislature();
+
             members.add(new PoliticalBodyMember(person.getKey(), firstMandate.getGender(),
                                                 firstMandate.getFirstName(), firstMandate.getLastName(), mandates));
         }
