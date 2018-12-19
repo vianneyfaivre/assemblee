@@ -29,10 +29,12 @@ export const MandateTable : React.StatelessComponent<IMandateTableProps> = (prop
         return (
             <tr key={mandateGrouped.politicalBodyId}>
                 <td>
-                    <Link to={'/organes/'+mandateGrouped.politicalBodyId}>
-                        {mandateGrouped.politicalBodyLabel} 
-                        {mandateGrouped.legislature > 0 && <span> ({mandateGrouped.legislature}è législature)</span>}
-                    </Link>
+                    <div style={{maxWidth: '600px'}}>
+                        <Link to={'/organes/'+mandateGrouped.politicalBodyId}>
+                            {mandateGrouped.politicalBodyLabel} 
+                            {mandateGrouped.legislature > 0 && <span> ({mandateGrouped.legislature}è législature)</span>}
+                        </Link>
+                    </div>
                 </td>
                 <td>
                     {mandates}
