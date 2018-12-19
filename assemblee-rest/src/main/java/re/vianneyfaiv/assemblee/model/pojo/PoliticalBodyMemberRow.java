@@ -2,8 +2,15 @@ package re.vianneyfaiv.assemblee.model.pojo;
 
 import java.util.Date;
 
-public class Mandate {
+/**
+ * This class may contain "duplicates" as a person may have multiple memberships in the same political body (because his role can change)
+ */
+public class PoliticalBodyMemberRow {
 
+    private String personId;
+    private Gender gender;
+    private String firstName;
+    private String lastName;
     private String mandateId;
     private Date startDate;
     private Date endDate;
@@ -14,19 +21,36 @@ public class Mandate {
     private String cause;
     private String quality;
 
-    public Mandate() {
+    public String getPersonId() {
+        return personId;
     }
 
-    public Mandate(PoliticalBodyMemberRow row) {
-        this.mandateId = row.getMandateId();
-        this.startDate = row.getStartDate();
-        this.endDate = row.getEndDate();
-        this.politicalBodyId = row.getPoliticalBodyId();
-        this.politicalBodyType = row.getPoliticalBodyType();
-        this.politicalBodyLabel = row.getPoliticalBodyLabel();
-        this.legislature = row.getLegislature();
-        this.cause = row.getCause();
-        this.quality = row.getQuality();
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(String civilite) {
+        this.gender = Gender.fromCivilite(civilite);
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getMandateId() {
@@ -81,12 +105,12 @@ public class Mandate {
         return legislature;
     }
 
-    public String getCause() {
-        return cause;
-    }
-
     public void setLegislature(int legislature) {
         this.legislature = legislature;
+    }
+
+    public String getCause() {
+        return cause;
     }
 
     public void setCause(String cause) {

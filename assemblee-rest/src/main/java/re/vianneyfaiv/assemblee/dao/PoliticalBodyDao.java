@@ -3,7 +3,7 @@ package re.vianneyfaiv.assemblee.dao;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import re.vianneyfaiv.assemblee.model.pojo.PoliticalBodyMember;
+import re.vianneyfaiv.assemblee.model.pojo.PoliticalBodyMemberRow;
 
 import java.util.List;
 
@@ -40,12 +40,12 @@ public class PoliticalBodyDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<PoliticalBodyMember> getPoliticalBodyMembers(String politicalBodyId) {
+    public List<PoliticalBodyMemberRow> getPoliticalBodyMembers(String politicalBodyId) {
 
         return jdbcTemplate.query(
                 QUERY_GET_POLITICAL_BODY_MEMBERS,
                 new Object[]{politicalBodyId},
-                BeanPropertyRowMapper.newInstance(PoliticalBodyMember.class)
+                BeanPropertyRowMapper.newInstance(PoliticalBodyMemberRow.class)
         );
     }
 }
