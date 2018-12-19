@@ -4,11 +4,42 @@ import PersonMandates from 'src/model/PersonMandates';
 import PoliticalBodyDetails from 'src/model/PoliticalBodyDetails';
 import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
 import MandateGrouped from 'src/model/MandateGrouped';
+import PoliticalBodySearchItem from 'src/model/PoliticalBodySearchItem';
 
 export default class Api {
 
     /**
-     * Returns a promise that contains a list of PersonSearchItem
+     * Returns a list of political bodies by searching by a name
+     */
+    public static searchPoliticalBodyByName(name: string): AxiosPromise<PoliticalBodySearchItem[]> {
+        
+        let responseTransformers: AxiosTransformer[] = [];
+        if(axios.defaults.transformResponse){
+            responseTransformers = responseTransformers.concat(axios.defaults.transformResponse);
+        }
+
+        // Axios transformer that will be called after the response has been received
+        responseTransformers.push((data: PoliticalBodySearchItem[], headers) => {
+            data.forEach((politicalBody: PoliticalBodySearchItem) => {
+                Api.convertDateFields(politicalBody);
+            });
+
+            return data;
+        });
+        
+        return axios.request<PoliticalBodySearchItem[]>(
+            {
+                method: 'get',
+                params: {
+                    "name": name
+                },
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/political-bodies/search',
+                transformResponse:  responseTransformers
+            });
+    }
+
+    /**
+     * Returns a list of persons by searching by a last name 
      */
     public static searchPersonByLastName(lastName: string): AxiosPromise<PersonSearchItem[]> {
         return axios.request<PersonSearchItem[]>(
@@ -22,7 +53,7 @@ export default class Api {
     }
 
     /**
-     * Returns a promise that contains a PersonSearchItem
+     * Returns a person by its id
      */
     public static getPersonById(personId: string): AxiosPromise<PersonSearchItem> {
         return axios.request<PersonSearchItem>(
@@ -33,7 +64,7 @@ export default class Api {
     }
 
     /**
-     * Returns a promise that contains the mandates a person is assigned to
+     * Returns the mandates a person is assigned to
      */
     public static getPersonMandates(personId: string): AxiosPromise<PersonMandates> {
 
@@ -45,23 +76,23 @@ export default class Api {
         // Axios transformer that will be called after the response has been received
         responseTransformers.push((data, headers) => {
 
-            Api.convertMandatToDate(data.mainMandate);
+            Api.convertDateFields(data.mainMandate);
 
             data.politicalMandates.forEach((mandatesGrouped: MandateGrouped) => {
                 mandatesGrouped.mandates.forEach(mandate => {
-                    Api.convertMandatToDate(mandate);
+                    Api.convertDateFields(mandate);
                 });
             });
 
             data.governmentMandates.forEach((mandatesGrouped: MandateGrouped) => {
                 mandatesGrouped.mandates.forEach(mandate => {
-                    Api.convertMandatToDate(mandate);
+                    Api.convertDateFields(mandate);
                 });
             });
 
             data.otherMandates.forEach((mandatesGrouped: MandateGrouped) => {
                 mandatesGrouped.mandates.forEach(mandate => {
-                    Api.convertMandatToDate(mandate);
+                    Api.convertDateFields(mandate);
                 });
             });
 
@@ -77,7 +108,7 @@ export default class Api {
     }
 
     /**
-     * Returns a promise that contains the members of a political body
+     * Returns the members of a political body
      */
     public static getPoliticalBodyMembers(politicalBodyId: string): AxiosPromise<PoliticalBodyDetails> {
 
@@ -98,7 +129,7 @@ export default class Api {
             data.members.forEach((politicalBodyMember: PoliticalBodyMember) => {
 
                 politicalBodyMember.mandates.forEach((mandate: any) => {
-                    Api.convertMandatToDate(mandate);
+                    Api.convertDateFields(mandate);
                 });
             });
 
@@ -114,9 +145,9 @@ export default class Api {
     }
 
     /**
-     *  Function that convert ISO dates (string) to Javascript Date for Mandate type
+     * Function that convert ISO dates (string) to Javascript Date for Mandate type
      */
-    private static convertMandatToDate(mandate: any) {
+    private static convertDateFields(mandate: any) {
         mandate.startDate = new Date(Date.parse(mandate.startDate));
         if(mandate.endDate) {
             mandate.endDate = new Date(Date.parse(mandate.endDate));

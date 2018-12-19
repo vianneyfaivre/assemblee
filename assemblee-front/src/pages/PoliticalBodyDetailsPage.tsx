@@ -3,6 +3,7 @@ import Api from 'src/api/api';
 import { PoliticalBodyMemberTable } from 'src/components/politicalBody/PoliticalBodyMemberTable';
 import PoliticalBodyDetails from 'src/model/PoliticalBodyDetails';
 import { PoliticalBodyDetailsPanel } from 'src/components/politicalBody/PoliticalBodyDetailsPanel';
+import LabelService from 'src/util/LabelService';
 
 interface IPoliticalBodyDetailsPageState {
     organeId: string,
@@ -43,7 +44,7 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
         
         if(this.state.politicalBodyDetails) {
 
-            title = PoliticalBodyDetailsPage.getTitle(this.state.politicalBodyDetails);
+            title = LabelService.getPageTitle(this.state.politicalBodyDetails);
 
             body = (
                 <div>
@@ -65,23 +66,5 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
                 </div>
             </section>
         );
-    }
-
-    private static getTitle(politicalBodyDetails: PoliticalBodyDetails) : string {
-        let title = '';
-
-        let period = 'du ' + politicalBodyDetails.startDate.toLocaleDateString('fr-FR') + ' à ce jour';
-        if(politicalBodyDetails.endDate) {
-            period = 'du ' + politicalBodyDetails.startDate.toLocaleDateString('fr-FR') + ' au ' + politicalBodyDetails.endDate.toLocaleDateString('fr-FR');
-        }
-        
-        if(politicalBodyDetails.legislature > 0) {
-            title = politicalBodyDetails.politicalBodyLabel 
-                    + ' (' + period + ', ' + politicalBodyDetails.legislature + 'è législature)';
-        } else {
-            title = politicalBodyDetails.politicalBodyLabel + ' (' + period + ')';
-        }
-
-        return title;
     }
 }

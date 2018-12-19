@@ -1,9 +1,7 @@
 package re.vianneyfaiv.assemblee.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import re.vianneyfaiv.assemblee.model.jpa.Person;
 import re.vianneyfaiv.assemblee.model.jpa.PoliticalBody;
 import re.vianneyfaiv.assemblee.model.pojo.PoliticalBodyDetails;
 import re.vianneyfaiv.assemblee.service.PoliticalBodyService;
@@ -28,5 +26,10 @@ public class PoliticalBodyController {
     @GetMapping("/political-bodies/{politicalBodyId}/members")
     public PoliticalBodyDetails getPoliticalBodyMembers(@PathVariable String politicalBodyId) {
         return this.service.getPoliticalBodyMembers(politicalBodyId);
+    }
+
+    @GetMapping("/political-bodies/search")
+    public List<PoliticalBody> searchByName(@RequestParam String name) {
+        return this.service.searchByLastName(name);
     }
 }

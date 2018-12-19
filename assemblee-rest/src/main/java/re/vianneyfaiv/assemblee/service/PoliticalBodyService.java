@@ -92,4 +92,8 @@ public class PoliticalBodyService {
 
         return new PoliticalBodyDetails(startDate, endDate, politicalBodyLabel, legislature, members);
     }
+
+    public List<PoliticalBody> searchByLastName(String name) {
+        return this.repo.findByLabelStartingWithIgnoreCaseOrderByLabelAscStartDateAsc(name);
+    }
 }
