@@ -39,6 +39,8 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
     public render() {
 
         let title = '';
+        let body = <div />;
+        
         if(this.state.politicalBodyDetails) {
             
             if(this.state.politicalBodyDetails.legislature > 0) {
@@ -46,6 +48,18 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
             } else {
                 title = this.state.politicalBodyDetails.politicalBodyLabel;
             }
+
+            let labelValidityPrefix = 'Cet organe existe depuis le';
+            if(this.state.politicalBodyDetails.endDate) {
+                labelValidityPrefix = 'Cet organe a existé'
+            }
+
+            body = (
+                <div>
+                    {labelValidityPrefix} <DatePeriodLabel startDate={this.state.politicalBodyDetails.startDate} endDate={this.state.politicalBodyDetails.endDate} />
+                    <PoliticalBodyMemberTable members={this.state.politicalBodyDetails.members} />
+                </div>
+            );
         }
 
         return (
@@ -53,9 +67,7 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
                 <div className="container">
                     <h2 className="title">Détail de l'organe {title}</h2>
                 
-                    {this.state.politicalBodyDetails && 
-                        <div><DatePeriodLabel startDate={this.state.politicalBodyDetails.startDate} endDate={this.state.politicalBodyDetails.endDate} /></div> &&
-                        <PoliticalBodyMemberTable members={this.state.politicalBodyDetails.members} />}
+                    {this.state.politicalBodyDetails && body}
                 </div>
             </section>
         );

@@ -43,19 +43,23 @@ export const PoliticalBodyMemberTable : React.StatelessComponent<IPoliticalBodyM
     );
 
     return (
-        <table className="table is-bordered is-narrow is-hoverable is-striped">
+        <div>
+            <h3 className="subtitle">Liste des membres :</h3>
 
-            <thead>
-                <tr>
-                    <th>Nom et prénom</th>
-                    <th>Rôles</th>
-                </tr>
-            </thead>
+            <table className="table is-bordered is-narrow is-hoverable is-striped">
 
-            <tbody>
-                {rows}
-            </tbody>
+                <thead>
+                    <tr>
+                        <th>Nom et prénom</th>
+                        <th>Rôles</th>
+                    </tr>
+                </thead>
 
-        </table>
+                <tbody>
+                    {rows}
+                </tbody>
+
+            </table>
+        </div>
     );
 }

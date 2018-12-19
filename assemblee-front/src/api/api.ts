@@ -80,7 +80,13 @@ export default class Api {
         }
 
         // Axios transformer that will be called after the response has been received
-        responseTransformers.push((data: PoliticalBodyDetails, headers) => {
+        responseTransformers.push((data, headers) => {
+
+            data.startDate = new Date(Date.parse(data.startDate));
+
+            if(data.endDate) {
+                data.endDate = new Date(Date.parse(data.endDate));
+            }
 
             data.members.forEach((politicalBodyMember: PoliticalBodyMember) => {
 
