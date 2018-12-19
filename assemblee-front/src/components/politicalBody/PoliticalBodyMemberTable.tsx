@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
+import { DatePeriodLabel } from 'src/components/mandate/DatePeriodLabel';
 
 interface IPoliticalBodyMemberTableProps {
     members: PoliticalBodyMember[],
@@ -28,8 +29,7 @@ export const PoliticalBodyMemberTable : React.StatelessComponent<IPoliticalBodyM
                     {member.quality} {qualitySuffix}
                 </td>
                 <td>
-                    {member.endDate && <span>du {member.startDate.toLocaleDateString('fr-FR')} au {member.endDate.toLocaleDateString('fr-FR')}</span>}
-                    {!member.endDate && <span>depuis le {member.startDate.toLocaleDateString('fr-FR')}</span>}
+                    <DatePeriodLabel startDate={member.startDate} endDate={member.endDate} />
                 </td>
             </tr>
         )

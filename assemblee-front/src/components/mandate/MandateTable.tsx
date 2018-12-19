@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Mandate from 'src/model/Mandate';
 import {Link} from 'react-router-dom';
+import { DatePeriodLabel } from 'src/components/mandate/DatePeriodLabel';
 
 interface IMandateTableProps {
     title: string,
@@ -28,8 +29,7 @@ export const MandateTable : React.StatelessComponent<IMandateTableProps> = (prop
                     {mandate.quality} 
                 </td>
                 <td>
-                    {mandate.endDate && <span>du {mandate.startDate.toLocaleDateString('fr-FR')} au {mandate.endDate.toLocaleDateString('fr-FR')}</span>}
-                    {!mandate.endDate && <span>depuis le {mandate.startDate.toLocaleDateString('fr-FR')}</span>}
+                    <DatePeriodLabel startDate={mandate.startDate} endDate={mandate.endDate} />
                 </td>
             </tr>
         )
