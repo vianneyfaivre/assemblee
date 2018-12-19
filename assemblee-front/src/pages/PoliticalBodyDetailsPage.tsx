@@ -2,7 +2,7 @@ import * as React from 'react';
 import Api from 'src/api/api';
 import { PoliticalBodyMemberTable } from 'src/components/politicalBody/PoliticalBodyMemberTable';
 import PoliticalBodyDetails from 'src/model/PoliticalBodyDetails';
-import { DatePeriodLabel } from 'src/components/mandate/DatePeriodLabel';
+import { PoliticalBodyDetailsPanel } from 'src/components/politicalBody/PoliticalBodyDetailsPanel';
 
 interface IPoliticalBodyDetailsPageState {
     organeId: string,
@@ -49,14 +49,9 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
                 title = this.state.politicalBodyDetails.politicalBodyLabel;
             }
 
-            let labelValidityPrefix = 'Cet organe existe depuis le';
-            if(this.state.politicalBodyDetails.endDate) {
-                labelValidityPrefix = 'Cet organe a existé'
-            }
-
             body = (
                 <div>
-                    {labelValidityPrefix} <DatePeriodLabel startDate={this.state.politicalBodyDetails.startDate} endDate={this.state.politicalBodyDetails.endDate} />
+                    <PoliticalBodyDetailsPanel details={this.state.politicalBodyDetails} />
                     <PoliticalBodyMemberTable members={this.state.politicalBodyDetails.members} />
                 </div>
             );
