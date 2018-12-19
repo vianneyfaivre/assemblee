@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Need a specific JSON deserializer because the data source can be weird
+ */
 public class VotantsWrapperDeserializer extends JsonDeserializer<VotantsWrapper> {
 
     @Override

@@ -1,4 +1,4 @@
-package re.vianneyfaiv.assemblee.config;
+package re.vianneyfaiv.assemblee.batch;
 
 import org.springframework.batch.core.ItemWriteListener;
 import org.springframework.batch.core.Job;
@@ -9,9 +9,6 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,10 +50,16 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     private ActeurItemProcessor processorActeurs;
 
     @Autowired
+    private ItemWriter<Acteur> writerActeurs;
+
+    @Autowired
     private MandatItemReader readerMandats;
 
     @Autowired
     private MandatItemProcessor processorMandats;
+
+    @Autowired
+    private ItemWriter<Mandat> writerMandats;
 
     @Autowired
     private ItemWriter<MandatOrgane> writerMandatOrgane;
@@ -68,19 +71,25 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     private ScrutinsItemProcessor processorScrutins;
 
     @Autowired
+    private ItemWriter<Scrutin> writerScrutins;
+
+    @Autowired
     private OrganeItemReader readerOrganes;
 
     @Autowired
     private OrganeItemProcessor processorOrganes;
+
+    @Autowired
+    private ItemWriter<Organe> writerOrganes;
 
     @Bean
     public Job importDataJob() {
         return jobBuilderFactory.get("Import-Job")
                 .incrementer(new RunIdIncrementer())
                 .start(stepActeurs())
+                .next(stepOrganes())
                 .next(stepMandats())
                 .next(stepScrutins())
-                .next(stepOrganes())
                 .build();
     }
 
@@ -89,7 +98,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .<ActeurJson, Acteur> chunk(50)
                 .reader(readerActeurs)
                 .processor(processorActeurs)
-                .writer(writerActeurs())
+                .writer(writerActeurs)
                 .build();
     }
 
@@ -98,7 +107,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .<MandatJson, Mandat> chunk(50)
                 .reader(readerMandats)
                 .processor(processorMandats)
-                .writer(writerMandats())
+                .writer(writerMandats)
                 .listener(new ItemWriteListener<Mandat>() {
                     @Override
                     public void beforeWrite(List<? extends Mandat> items) {
@@ -131,7 +140,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .<ScrutinJson, Scrutin> chunk(50)
                 .reader(readerScrutins)
                 .processor(processorScrutins)
-                .writer(writerScrutins())
+                .writer(writerScrutins)
                 .build();
     }
 
@@ -140,57 +149,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .<OrganeJson, Organe> chunk(50)
                 .reader(readerOrganes)
                 .processor(processorOrganes)
-                .writer(writerOrganes())
-                .build();
-    }
-
-    @Bean
-    public JdbcBatchItemWriter<MandatOrgane> writerMandatOrgane() {
-        return new JdbcBatchItemWriterBuilder<MandatOrgane>()
-                .dataSource(dataSource)
-                .sql("INSERT INTO mandats_organes (mandat_id, organe_id) " +
-                        "VALUES (:mandatId, :organeId)")
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<MandatOrgane>())
-                .build();
-    }
-
-    @Bean
-    public JdbcBatchItemWriter<Acteur> writerActeurs() {
-        return new JdbcBatchItemWriterBuilder()
-                .sql("INSERT INTO acteurs (acteur_id, civilite, prenom, nom) " +
-                        "VALUES (:acteurId, :civilite, :prenom, :nom)")
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Acteur>())
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
-    public ItemWriter<Mandat> writerMandats() {
-        return new JdbcBatchItemWriterBuilder()
-                .sql("INSERT INTO mandats (mandat_id, acteur_id, date_debut, date_prise_fonction, date_fin, num_place_hemicycle, qualite, cause) " +
-                        "VALUES (:mandatId, :acteurId, :dateDebut, :datePriseFonction, :dateFin, :numPlaceHemicycle, :qualite, :cause)")
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Mandat>())
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
-    public ItemWriter<Scrutin> writerScrutins() {
-        return new JdbcBatchItemWriterBuilder()
-                .sql("INSERT INTO scrutins (scrutin_id, titre, numero, organe_id, legislature, session_id, seance_id, date_scrutin, type_vote, sort, demandeur, mode_publication_votes, resultat_nombre_votants, resultat_pour, resultat_contre, resultat_abstention, resultat_non_votant) " +
-                        "VALUES (:scrutinId, :titre, :numero, :organeId, :legislature, :sessionId, :seanceId, :dateScrutin, :typeVote, :sort, :demandeur, :modePublicationVotes, :resultatNombreVotants, :resultatPour, :resultatContre, :resultatAbstention, :resultatNonVotant)")
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Scrutin>())
-                .dataSource(dataSource)
-                .build();
-    }
-
-    @Bean
-    public ItemWriter<Organe> writerOrganes() {
-        return new JdbcBatchItemWriterBuilder()
-                .sql("INSERT INTO organes (organe_id, type, libelle, date_debut, date_fin, regime, legislature) " +
-                        "VALUES (:organeId, :type, :libelle, :dateDebut, :dateFin, :regime, :legislature)")
-                .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Organe>())
-                .dataSource(dataSource)
+                .writer(writerOrganes)
                 .build();
     }
 }

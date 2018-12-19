@@ -5,6 +5,16 @@ CREATE TABLE IF NOT EXISTS acteurs (
     nom VARCHAR(50)
 );
 
+create table IF NOT EXISTS organes (
+    organe_id VARCHAR(50) PRIMARY KEY,
+    type VARCHAR(50),
+    libelle VARCHAR,
+    date_debut DATE,
+    date_fin DATE,
+    regime VARCHAR(50),
+    legislature SMALLINT
+);
+
 create table IF NOT EXISTS mandats (
     mandat_id VARCHAR(50) PRIMARY KEY,
     acteur_id VARCHAR(50) REFERENCES acteurs,
@@ -17,27 +27,17 @@ create table IF NOT EXISTS mandats (
 );
 
 create table IF NOT EXISTS mandats_organes (
-    mandat_id VARCHAR(50),
-    organe_id VARCHAR(50),
+    mandat_id VARCHAR(50) references mandats,
+    organe_id VARCHAR(50) references organes,
 
     PRIMARY KEY(mandat_id, organe_id)
-);
-
-create table IF NOT EXISTS organes (
-    organe_id VARCHAR(50) PRIMARY KEY,
-    type VARCHAR(50),
-    libelle VARCHAR,
-    date_debut DATE,
-    date_fin DATE,
-    regime VARCHAR(50),
-    legislature SMALLINT
 );
 
 create table IF NOT EXISTS scrutins (
     scrutin_id VARCHAR(50) PRIMARY KEY,
     titre VARCHAR,
     numero SMALLINT,
-    organe_id VARCHAR(50), -- REFERENCES organes(organe_id)
+    organe_id VARCHAR(50) references organes,
     legislature SMALLINT,
     session_id VARCHAR(50),
     seance_id VARCHAR(50),
