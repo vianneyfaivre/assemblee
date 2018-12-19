@@ -3,7 +3,6 @@ package re.vianneyfaiv.assemblee.dao;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import re.vianneyfaiv.assemblee.model.pojo.Mandate;
 import re.vianneyfaiv.assemblee.model.pojo.PoliticalBodyMember;
 
 import java.util.List;
