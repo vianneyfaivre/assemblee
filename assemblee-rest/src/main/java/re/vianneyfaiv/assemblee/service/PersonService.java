@@ -1,21 +1,23 @@
 package re.vianneyfaiv.assemblee.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import re.vianneyfaiv.assemblee.dao.PersonDetailsDao;
 import re.vianneyfaiv.assemblee.dao.PersonRepository;
-import re.vianneyfaiv.assemblee.model.pojo.Mandate;
 import re.vianneyfaiv.assemblee.model.jpa.Person;
+import re.vianneyfaiv.assemblee.model.pojo.Mandate;
+import re.vianneyfaiv.assemblee.model.pojo.MandateGrouped;
 import re.vianneyfaiv.assemblee.model.pojo.PersonMandates;
 import re.vianneyfaiv.assemblee.model.pojo.PoliticalBodyType;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class PersonService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
 
     private PersonRepository repo;
     private PersonDetailsDao dao;
@@ -40,7 +42,7 @@ public class PersonService {
         EnumSet<PoliticalBodyType> politicalTypes = EnumSet.of(PoliticalBodyType.GROUPE_POLITIQUE, PoliticalBodyType.PARTI_POLITIQUE);
         EnumSet<PoliticalBodyType> governmentTypes = EnumSet.of(PoliticalBodyType.GOUVERNEMENT, PoliticalBodyType.MINISTERE);
 
-        // Let's group mandates
+        // Sort mandates based on their type
         for (Mandate mandate : personMandates) {
 
             PoliticalBodyType type = mandate.getPoliticalBodyType();
@@ -63,10 +65,12 @@ public class PersonService {
             return Optional.empty();
         }
 
-        // TODO Find out when a government mandate is about a minister
+        // Group all mandates list by political body (because the same person may have had multiple roles in the same political body)
+        List<MandateGrouped> politicalMandatesGrouped = groupByPoliticalBody(personId, politicalMandates);
+        List<MandateGrouped> governmentMandatesGrouped = groupByPoliticalBody(personId, governmentMandates);
+        List<MandateGrouped> otherMandatesGrouped = groupByPoliticalBody(personId, otherMandates);
 
-
-        return Optional.of(new PersonMandates(assembleeMandate, politicalMandates, governmentMandates, otherMandates));
+        return Optional.of(new PersonMandates(assembleeMandate, politicalMandatesGrouped, governmentMandatesGrouped, otherMandatesGrouped));
     }
 
     public Optional<Person> findById(String personId) {
@@ -75,5 +79,46 @@ public class PersonService {
 
     public List<Person> findAll() {
         return this.repo.findAll(Sort.by("lastName", "firstName"));
+    }
+
+    private List<MandateGrouped> groupByPoliticalBody(String personId, List<Mandate> allMandates) {
+        // Group members who had multiple roles in the same political body member by political body ID
+        Map<String, List<Mandate>> groupedByPoliticalBodyId = new HashMap<>();
+        for(Mandate mandate : allMandates) {
+
+            List<Mandate> mandates = groupedByPoliticalBodyId.getOrDefault(mandate.getPoliticalBodyId(), new ArrayList<>());
+            mandates.add(mandate);
+            groupedByPoliticalBodyId.put(mandate.getPoliticalBodyId(), mandates);
+        }
+
+        List<MandateGrouped> mandatesGrouped = new ArrayList<>();
+
+        // Then convert the map to a list
+        for(Map.Entry<String, List<Mandate>> politicalBody : groupedByPoliticalBodyId.entrySet()) {
+
+            List<Mandate> mandates = politicalBody.getValue();
+            if(mandates.isEmpty()) {
+                LOGGER.warn("The person with id {} has no mandates for the political body with id {}", personId, politicalBody.getKey());
+                continue;
+            }
+
+            mandates.sort(Comparator.comparing(Mandate::getStartDate));
+
+            String politicalBodyId = politicalBody.getKey();
+            String politicalBodyLabel = mandates.get(0).getPoliticalBodyLabel();
+            int legislature = mandates.get(0).getLegislature();
+
+            mandatesGrouped.add(new MandateGrouped(politicalBodyId, politicalBodyLabel, legislature, mandates));
+        }
+
+        // Sort all mandates grouped, by the start date of the very first mandate
+        mandatesGrouped.sort((o1, o2) -> {
+            Date minDate1 = o1.getMandates().get(0).getStartDate();
+            Date minDate2 = o2.getMandates().get(0).getStartDate();
+
+            return minDate1.compareTo(minDate2);
+        });
+
+        return mandatesGrouped;
     }
 }

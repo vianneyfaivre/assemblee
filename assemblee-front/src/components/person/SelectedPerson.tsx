@@ -21,11 +21,11 @@ export const SelectedPerson: React.StatelessComponent<ISelectedPersonProps> = (p
                 <div>
                     <MainMandate mandate={props.mandates.mainMandate} />
 
-                    <MandateTable title='Ses participations au gouvernement' mandates={props.mandates.governmentMandates} />
+                    <MandateTable title='Ses participations au gouvernement' mandatesGrouped={props.mandates.governmentMandates} />
 
-                    <MandateTable title='Ses appartenances à des partis/groupes politiques' mandates={props.mandates.politicalMandates} />
+                    <MandateTable title='Ses appartenances à des partis/groupes politiques' mandatesGrouped={props.mandates.politicalMandates} />
 
-                    <MandateTable title='Ses autres mandats' mandates={props.mandates.otherMandates} />
+                    <MandateTable title='Ses autres mandats' mandatesGrouped={props.mandates.otherMandates} />
                 </div>
             }
         </div>

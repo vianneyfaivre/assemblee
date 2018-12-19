@@ -5,11 +5,11 @@ import java.util.List;
 public class PersonMandates {
 
     private Mandate mainMandate;
-    private List<Mandate> politicalMandates;
-    private List<Mandate> governmentMandates;
-    private List<Mandate> otherMandates;
+    private List<MandateGrouped> politicalMandates;
+    private List<MandateGrouped> governmentMandates;
+    private List<MandateGrouped> otherMandates;
 
-    public PersonMandates(Mandate mainMandate, List<Mandate> politicalMandates, List<Mandate> governmentMandates, List<Mandate> otherMandates) {
+    public PersonMandates(Mandate mainMandate, List<MandateGrouped> politicalMandates, List<MandateGrouped> governmentMandates, List<MandateGrouped> otherMandates) {
         this.mainMandate = mainMandate;
         this.politicalMandates = politicalMandates;
         this.governmentMandates = governmentMandates;
@@ -20,15 +20,15 @@ public class PersonMandates {
         return mainMandate;
     }
 
-    public List<Mandate> getPoliticalMandates() {
+    public List<MandateGrouped> getPoliticalMandates() {
         return politicalMandates;
     }
 
-    public List<Mandate> getGovernmentMandates() {
+    public List<MandateGrouped> getGovernmentMandates() {
         return governmentMandates;
     }
 
-    public List<Mandate> getOtherMandates() {
+    public List<MandateGrouped> getOtherMandates() {
         return otherMandates;
     }
 

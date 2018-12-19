@@ -1,35 +1,41 @@
 import * as React from 'react';
-import Mandate from 'src/model/Mandate';
 import {Link} from 'react-router-dom';
 import { DatePeriodLabel } from 'src/components/mandate/DatePeriodLabel';
+import MandateGrouped from 'src/model/MandateGrouped';
 
 interface IMandateTableProps {
     title: string,
-    mandates?: Mandate[],
+    mandatesGrouped?: MandateGrouped[],
 }
 
 export const MandateTable : React.StatelessComponent<IMandateTableProps> = (props) => {
     
-    if(!props.mandates || props.mandates.length === 0) {
+    if(!props.mandatesGrouped || props.mandatesGrouped.length === 0) {
         return <div />;
     }
     
-    const rows = props.mandates.map((mandate) => {
+    const rows = props.mandatesGrouped.map((mandateGrouped) => {
+
+        const mandates = mandateGrouped.mandates.map((mandate) => {
+            const qualitySuffix= mandate.quality && (mandate.quality.endsWith('du') || mandate.quality.endsWith('au')) ? 'groupe' : '';
+    
+            return (
+                <div key={mandate.mandateId}>
+                    {mandate.quality} {qualitySuffix} <DatePeriodLabel startDate={mandate.startDate} endDate={mandate.endDate} />
+                </div>
+            );
+        });
+
         return (
-            <tr key={mandate.mandateId}>
+            <tr key={mandateGrouped.politicalBodyId}>
                 <td>
-                    <Link to={'/organes/'+mandate.politicalBodyId}>
-                        {mandate.politicalBodyLabel} 
-                        {mandate.legislature > 0 && <span> ({mandate.legislature}è législature)</span>}
+                    <Link to={'/organes/'+mandateGrouped.politicalBodyId}>
+                        {mandateGrouped.politicalBodyLabel} 
+                        {mandateGrouped.legislature > 0 && <span> ({mandateGrouped.legislature}è législature)</span>}
                     </Link>
                 </td>
                 <td>
-                    {mandate.politicalBodyType} 
-                    <br />
-                    {mandate.quality} 
-                </td>
-                <td>
-                    <DatePeriodLabel startDate={mandate.startDate} endDate={mandate.endDate} />
+                    {mandates}
                 </td>
             </tr>
         )
@@ -45,8 +51,7 @@ export const MandateTable : React.StatelessComponent<IMandateTableProps> = (prop
                 <thead>
                     <tr>
                         <th>Nom du mandat</th>
-                        <th>Type de mandat<br />Rôle</th>
-                        <th>Période</th>
+                        <th>Rôles</th>
                     </tr>
                 </thead>
 

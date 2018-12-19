@@ -3,6 +3,7 @@ import PersonSearchItem from 'src/model/PersonSearchItem';
 import PersonMandates from 'src/model/PersonMandates';
 import PoliticalBodyDetails from 'src/model/PoliticalBodyDetails';
 import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
+import MandateGrouped from 'src/model/MandateGrouped';
 
 export default class Api {
 
@@ -46,16 +47,22 @@ export default class Api {
 
             Api.convertMandatToDate(data.mainMandate);
 
-            data.politicalMandates.forEach((mandate: any) => {
-                Api.convertMandatToDate(mandate);
+            data.politicalMandates.forEach((mandatesGrouped: MandateGrouped) => {
+                mandatesGrouped.mandates.forEach(mandate => {
+                    Api.convertMandatToDate(mandate);
+                });
             });
 
-            data.governmentMandates.forEach((mandate: any) => {
-                Api.convertMandatToDate(mandate);
+            data.governmentMandates.forEach((mandatesGrouped: MandateGrouped) => {
+                mandatesGrouped.mandates.forEach(mandate => {
+                    Api.convertMandatToDate(mandate);
+                });
             });
 
-            data.otherMandates.forEach((mandate: any) => {
-                Api.convertMandatToDate(mandate);
+            data.otherMandates.forEach((mandatesGrouped: MandateGrouped) => {
+                mandatesGrouped.mandates.forEach(mandate => {
+                    Api.convertMandatToDate(mandate);
+                });
             });
 
             return data;

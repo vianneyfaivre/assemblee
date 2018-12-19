@@ -60,7 +60,7 @@ export default class PoliticalBodyDetailsPage extends React.Component<{}, IPolit
         return (
             <section className="section">
                 <div className="container">
-                    <h2 className="title">Détail de l'organe {title}</h2>
+                    <h2 className="title">{title}</h2>
                 
                     {this.state.politicalBodyDetails && body}
                 </div>
