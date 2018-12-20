@@ -10,7 +10,7 @@ export const MainMandate : React.StatelessComponent<IMainMandateProps> = (props)
 
     return (
         <div>
-            Mandat principal à l'{props.mandate.politicalBodyLabel}&nbsp;
+            Député de l'{props.mandate.politicalBodyLabel}&nbsp;
 
             <DatePeriodLabel startDate={props.mandate.startDate} endDate={props.mandate.endDate} />
         </div>
