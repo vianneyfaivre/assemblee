@@ -3,7 +3,7 @@ import PersonSearchItem from 'src/model/PersonSearchItem';
 import PersonMandates from 'src/model/PersonMandates';
 import { MandateTable } from 'src/components/mandate/MandateTable';
 import { MainMandate } from 'src/components/mandate/MainMandate';
-import Mandate from 'src/model/Mandate';
+import { ProfilePicture } from 'src/components/person/ProfilePicture';
 
 interface ISelectedPersonProps {
     selectedPerson: PersonSearchItem,
@@ -14,17 +14,13 @@ export const SelectedPerson: React.StatelessComponent<ISelectedPersonProps> = (p
 
     const genderLabel = props.selectedPerson.gender === "FEMALE" ? 'Ma députée' : 'Mon député';
 
-    const getProfilePic = (mainMandate: Mandate, selectedPerson: PersonSearchItem) => {
-       return `http://www2.assemblee-nationale.fr/static/tribun/${mainMandate.legislature}/photos/${selectedPerson.id.split("PA")[1]}.jpg`;
-    };
-
     return (
         <div>
             <h2 className="title">{genderLabel} : {props.selectedPerson.lastName} {props.selectedPerson.firstName}</h2>
 
             {props.mandates &&
                 <div>
-                    <img src={getProfilePic(props.mandates.mainMandate, props.selectedPerson)} alt={props.selectedPerson.lastName + ' ' + props.selectedPerson.firstName} />
+                    <ProfilePicture person={props.selectedPerson} legislature={props.mandates.mainMandate.legislature} />
     
                     <MainMandate mandate={props.mandates.mainMandate} />
 
