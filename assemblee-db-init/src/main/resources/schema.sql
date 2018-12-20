@@ -51,6 +51,25 @@ create table IF NOT EXISTS scrutins (
     resultat_contre SMALLINT, -- nombre de votants CONTRE ex:30
     resultat_abstention SMALLINT, -- nombre de votants ayant choisi l'abstention ex:5
     resultat_non_votant SMALLINT -- nombre de votants qui n'ont pas voté ex:10
-    -- mise au point
-    -- ventilation votes
+);
+
+create table IF NOT EXISTS scrutins_details (
+    scrutin_id VARCHAR(50) references scrutins,
+    acteur_id VARCHAR(50) references acteurs,
+    organe_id VARCHAR(50) references organes,
+    mandat_id VARCHAR(50) references mandats,
+    position_scrutin VARCHAR(10),
+
+    PRIMARY KEY(scrutin_id, acteur_id)
+);
+
+create table IF NOT EXISTS scrutins_resultats (
+    scrutin_id VARCHAR(50) references scrutins,
+    organe_id VARCHAR(50) references organes,
+    position_majoritaire VARCHAR(10),
+    pour SMALLINT, -- nombre de votants POUR ex: 60
+    contre SMALLINT, -- nombre de votants CONTRE ex:30
+    abstention SMALLINT, -- nombre de votants ayant choisi l'abstention ex:5
+
+    PRIMARY KEY(scrutin_id, organe_id)
 );
