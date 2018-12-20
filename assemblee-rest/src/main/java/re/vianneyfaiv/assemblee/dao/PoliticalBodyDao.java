@@ -24,7 +24,9 @@ public class PoliticalBodyDao {
                     "o.libelle as politicalBodyLabel, " +
                     "o.legislature, " +
                     "m.cause, " +
-                    "m.qualite as quality " +
+                    "m.qualite as quality, " +
+                    "o.date_debut as politicalBodyStartDate, " +
+                    "o.date_fin as politicalBodyEndDate " +
             "from " +
                 "mandats m " +
                 "inner join acteurs a on a.acteur_id = m.acteur_id " +

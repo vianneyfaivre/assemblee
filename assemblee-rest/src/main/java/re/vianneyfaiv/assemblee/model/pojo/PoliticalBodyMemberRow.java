@@ -20,6 +20,8 @@ public class PoliticalBodyMemberRow {
     private int legislature;
     private String cause;
     private String quality;
+    private Date politicalBodyStartDate;
+    private Date politicalBodyEndDate;
 
     public String getPersonId() {
         return personId;
@@ -123,5 +125,21 @@ public class PoliticalBodyMemberRow {
 
     public void setQuality(String quality) {
         this.quality = quality;
+    }
+
+    public Date getPoliticalBodyStartDate() {
+        return politicalBodyStartDate;
+    }
+
+    public void setPoliticalBodyStartDate(Date politicalBodyStartDate) {
+        this.politicalBodyStartDate = politicalBodyStartDate;
+    }
+
+    public Date getPoliticalBodyEndDate() {
+        return politicalBodyEndDate;
+    }
+
+    public void setPoliticalBodyEndDate(Date politicalBodyEndDate) {
+        this.politicalBodyEndDate = politicalBodyEndDate;
     }
 }

@@ -90,6 +90,14 @@ public class PoliticalBodyService {
         // sort members by last name
         members.sort(Comparator.comparing(PoliticalBodyMember::getLastName));
 
+        // Get organe start and end date, if they are null, just take the ones we got from the mandates list
+        if(rows.get(0).getStartDate() != null) {
+            startDate = rows.get(0).getStartDate();
+        }
+        if(rows.get(0).getEndDate() != null) {
+            endDate = rows.get(0).getEndDate();
+        }
+
         return new PoliticalBodyDetails(startDate, endDate, politicalBodyLabel, legislature, members);
     }
 
