@@ -20,8 +20,15 @@ export default class Api {
 
         // Axios transformer that will be called after the response has been received
         responseTransformers.push((data: PoliticalBodySearchItem[], headers) => {
-            data.forEach((politicalBody: PoliticalBodySearchItem) => {
-                Api.convertDateFields(politicalBody);
+            data.forEach((politicalBody: any) => {
+                
+                if(politicalBody.startDate) {
+                    politicalBody.startDate = new Date(Date.parse(politicalBody.startDate));
+                }
+
+                if(politicalBody.endDate) {
+                    politicalBody.endDate = new Date(Date.parse(politicalBody.endDate));
+                }
             });
 
             return data;
