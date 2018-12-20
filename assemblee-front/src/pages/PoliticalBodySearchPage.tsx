@@ -60,7 +60,6 @@ class PoliticalBodySearchPage extends React.Component<RouteComponentProps, IPoli
         if(value.length > 1) {
             Api.searchPoliticalBodyByName(value)
                 .then(response => {
-                    console.log("allo "+response.data);
                     this.setState({
                         politicalBodies: response.data,
                     });

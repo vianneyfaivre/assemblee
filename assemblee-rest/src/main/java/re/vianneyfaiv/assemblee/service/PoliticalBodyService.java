@@ -50,13 +50,13 @@ public class PoliticalBodyService {
 
             if(startDate == null) {
                 startDate = row.getStartDate();
-            } else if(startDate.after(row.getStartDate())) {
+            } else if(row.getStartDate() != null && startDate.after(row.getStartDate())) {
                 startDate = row.getStartDate();
             }
 
             if(endDate == null) {
                 endDate = row.getEndDate();
-            } else if(endDate.before(row.getEndDate())) {
+            } else if(row.getEndDate() != null && endDate.before(row.getEndDate())) {
                 endDate = row.getEndDate();
             }
         }
