@@ -22,25 +22,35 @@ export default class LabelService {
     }
 
     public static getItemTitle(politicalBody: PoliticalBodySearchItem) : string {
-        return LabelService._getTitle(politicalBody.startDate, politicalBody.legislature, politicalBody.label, politicalBody.endDate);
+        return LabelService._getTitle(politicalBody.legislature, politicalBody.label, politicalBody.startDate, politicalBody.endDate);
     }
 
     public static getPageTitle(politicalBody: PoliticalBodyDetails) : string {
-        return LabelService._getTitle(politicalBody.startDate, politicalBody.legislature, politicalBody.politicalBodyLabel, politicalBody.endDate);
+        return LabelService._getTitle(politicalBody.legislature, politicalBody.politicalBodyLabel, politicalBody.startDate, politicalBody.endDate);
     }
 
-    private static _getTitle(startDate: Date, legislature: number, label: string, endDate?: Date) : string {
+    private static _getTitle(legislature: number, label: string, startDate?: Date, endDate?: Date) : string {
         let title = '';
 
-        let period = 'du ' + startDate.toLocaleDateString('fr-FR') + ' à ce jour';
-        if(endDate) {
-            period = 'du ' + startDate.toLocaleDateString('fr-FR') + ' au ' + endDate.toLocaleDateString('fr-FR');
+        if(startDate) {
+            
+            let period = 'du ' + startDate.toLocaleDateString('fr-FR') + ' à ce jour';
+            if(endDate) {
+                period = 'du ' + startDate.toLocaleDateString('fr-FR') + ' au ' + endDate.toLocaleDateString('fr-FR');
+            }
+
+            if(legislature > 0) {
+                title = label + ' (' + period + ', ' + legislature + 'è législature)';
+            } else {
+                title = label + ' (' + period + ')';
+            }
         }
-        
-        if(legislature > 0) {
-            title = label + ' (' + period + ', ' + legislature + 'è législature)';
-        } else {
-            title = label + ' (' + period + ')';
+        else {
+            if(legislature > 0) {
+                title = label + ' (' + legislature + 'è législature)';
+            } else {
+                title = label;
+            }
         }
 
         return title;
