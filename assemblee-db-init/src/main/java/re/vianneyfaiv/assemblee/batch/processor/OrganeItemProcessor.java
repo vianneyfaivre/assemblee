@@ -18,7 +18,12 @@ public class OrganeItemProcessor implements ItemProcessor<OrganeJson, Organe> {
         String organeId = organeJson.getUid();
         String type = organeJson.getCodeType();
         String libelle = organeJson.getLibelle();
+
         Date dateDebut = organeJson.getViMoDe().getDateDebut();
+        if(dateDebut == null) {
+            dateDebut = organeJson.getViMoDe().getDateAgrement();
+        }
+
         Date dateFin = organeJson.getViMoDe().getDateFin();
         String regime = organeJson.getRegime();
         int legislature = organeJson.getLegislature();
