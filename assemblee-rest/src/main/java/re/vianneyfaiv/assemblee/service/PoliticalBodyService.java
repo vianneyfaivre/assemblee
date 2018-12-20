@@ -94,6 +94,6 @@ public class PoliticalBodyService {
     }
 
     public List<PoliticalBody> searchByLastName(String name) {
-        return this.repo.findByLabelStartingWithIgnoreCaseOrderByLabelAscStartDateAsc(name);
+        return this.repo.findFirst50ByLabelStartingWithIgnoreCaseOrderByLabelAscStartDateAsc(name);
     }
 }

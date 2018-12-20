@@ -11,7 +11,8 @@ public interface PoliticalBodyRepository extends JpaRepository<PoliticalBody, St
     /**
      * Search for political bodies by Name that starts with lastName value.
      * Case insensitive.
-     * Ordered by Label and Start Date (asc)
+     * Ordered by Label and Start Date (asc).
+     * Return the first 50 rows.
      */
-    List<PoliticalBody> findByLabelStartingWithIgnoreCaseOrderByLabelAscStartDateAsc(String label);
+    List<PoliticalBody> findFirst50ByLabelStartingWithIgnoreCaseOrderByLabelAscStartDateAsc(String label);
 }
