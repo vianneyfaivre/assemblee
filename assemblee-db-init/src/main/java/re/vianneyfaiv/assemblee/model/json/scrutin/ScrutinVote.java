@@ -3,7 +3,7 @@ package re.vianneyfaiv.assemblee.model.json.scrutin;
 public class ScrutinVote {
 
     private String positionMajoritaire;
-    private Decompte decompteVoix;
+    private DecompteVoix decompteVoix;
     private DecompteNominatif decompteNominatif;
 
     public String getPositionMajoritaire() {
@@ -22,11 +22,11 @@ public class ScrutinVote {
         this.decompteNominatif = decompteNominatif;
     }
 
-    public Decompte getDecompteVoix() {
+    public DecompteVoix getDecompteVoix() {
         return decompteVoix;
     }
 
-    public void setDecompteVoix(Decompte decompteVoix) {
+    public void setDecompteVoix(DecompteVoix decompteVoix) {
         this.decompteVoix = decompteVoix;
     }
 }

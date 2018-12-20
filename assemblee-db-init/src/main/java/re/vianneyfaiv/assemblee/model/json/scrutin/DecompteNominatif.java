@@ -3,8 +3,8 @@ package re.vianneyfaiv.assemblee.model.json.scrutin;
 public class DecompteNominatif {
 
     private VotantsWrapper nonVotants;
-    private VotantsWrapper pours;
-    private VotantsWrapper contres;
+    private VotantsWrapper pour;
+    private VotantsWrapper contre;
     private VotantsWrapper abstentions;
 
     public VotantsWrapper getNonVotants() {
@@ -15,20 +15,20 @@ public class DecompteNominatif {
         this.nonVotants = nonVotants;
     }
 
-    public VotantsWrapper getPours() {
-        return pours;
+    public VotantsWrapper getPour() {
+        return pour;
     }
 
-    public void setPours(VotantsWrapper pours) {
-        this.pours = pours;
+    public void setPour(VotantsWrapper pour) {
+        this.pour = pour;
     }
 
-    public VotantsWrapper getContres() {
-        return contres;
+    public VotantsWrapper getContre() {
+        return contre;
     }
 
-    public void setContres(VotantsWrapper contres) {
-        this.contres = contres;
+    public void setContre(VotantsWrapper contre) {
+        this.contre = contre;
     }
 
     public VotantsWrapper getAbstentions() {

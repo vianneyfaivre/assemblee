@@ -5,7 +5,7 @@ public class DecompteVoix {
     private int nonVotants;
     private int pour;
     private int contre;
-    private int abstentions;
+    private int abstention;
     private int nonVotantsVolontaires;
 
     public int getNonVotants() {
@@ -20,8 +20,8 @@ public class DecompteVoix {
         return contre;
     }
 
-    public int getAbstentions() {
-        return abstentions;
+    public int getAbstention() {
+        return abstention;
     }
 
     public int getNonVotantsVolontaires() {

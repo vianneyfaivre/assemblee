@@ -6,8 +6,8 @@ import org.springframework.core.io.ClassPathResource;
 import re.vianneyfaiv.assemblee.config.JsonMapperConfiguration;
 import re.vianneyfaiv.assemblee.model.json.acteur.ActeurWrapper;
 import re.vianneyfaiv.assemblee.model.json.mandat.MandatWrapper;
-import re.vianneyfaiv.assemblee.model.json.organe.OrganeJson;
 import re.vianneyfaiv.assemblee.model.json.organe.OrganeWrapper;
+import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinGroupe;
 import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinJson;
 
 import java.io.IOException;
@@ -49,8 +49,8 @@ public class ConvertFromJsonTests {
     }
 
     @Test
-    public void convertScrutin() throws IOException {
-        ScrutinJson scrutin = mapper.readValue(new ClassPathResource("stubs/scrutin.json").getInputStream(), ScrutinJson.class);
+    public void convertScrutinDissidents() throws IOException {
+        ScrutinJson scrutin = mapper.readValue(new ClassPathResource("stubs/scrutin_dissidents.json").getInputStream(), ScrutinJson.class);
 
         assertThat(scrutin.getOrganeRef(), is("PO644420"));
         assertThat(scrutin.getTypeVote().getCodeTypeVote(), is("SPO"));
@@ -61,5 +61,57 @@ public class ConvertFromJsonTests {
         assertThat(scrutin.getVentilationVotes().getOrgane().getGroupes().getGroupe().get(0).getVote().getPositionMajoritaire(), is("pour"));
         assertThat(scrutin.getMiseAuPoint().getPour().getVotant().get(0).getActeurRef(), is("PA2051"));
         assertThat(scrutin.getMiseAuPoint().getContre().getVotant().get(0).getMandatRef(), is("PM645474"));
+    }
+
+    @Test
+    public void convertScrutinNominatifs() throws IOException {
+        ScrutinJson scrutin = mapper.readValue(new ClassPathResource("stubs/scrutin_nominatif.json").getInputStream(), ScrutinJson.class);
+
+        // nombreVotants = pour + contre + abstentions
+        int totalVotants = scrutin.getSyntheseVote().getNombreVotants();
+
+        // suffragesExprimes = pour + contre
+        int totalExprimes = scrutin.getSyntheseVote().getSuffragesExprimes();
+
+        int pourDecompte = scrutin.getSyntheseVote().getDecompte().getPour();
+        int contreDecompte = scrutin.getSyntheseVote().getDecompte().getContre();
+        int abstentionDecompte = scrutin.getSyntheseVote().getDecompte().getAbstentions();
+
+        assertThat(totalVotants, is(pourDecompte+contreDecompte+abstentionDecompte));
+        assertThat(totalExprimes, is(pourDecompte+contreDecompte));
+
+        int pourDecompteVoix = 0;
+        int pourDecompteVoixNominatif = 0;
+        int contreDecompteVoix = 0;
+        int contreDecompteVoixNominatif = 0;
+        int abstentionDecompteVoix = 0;
+        int abstentionDecompteVoixNominatif = 0;
+
+        // Ventilation
+        for(ScrutinGroupe groupe : scrutin.getVentilationVotes().getOrgane().getGroupes().getGroupe()) {
+
+            pourDecompteVoix += groupe.getVote().getDecompteVoix().getPour();
+            if(groupe.getVote().getDecompteNominatif().getPour() != null) {
+                pourDecompteVoixNominatif += groupe.getVote().getDecompteNominatif().getPour().getVotant().size();
+            }
+
+            contreDecompteVoix += groupe.getVote().getDecompteVoix().getContre();
+            if(groupe.getVote().getDecompteNominatif().getContre() != null) {
+                contreDecompteVoixNominatif += groupe.getVote().getDecompteNominatif().getContre().getVotant().size();
+            }
+
+            abstentionDecompteVoix += groupe.getVote().getDecompteVoix().getAbstention();
+            if(groupe.getVote().getDecompteNominatif().getAbstentions() != null) {
+                abstentionDecompteVoixNominatif += groupe.getVote().getDecompteNominatif().getAbstentions().getVotant().size();
+            }
+        }
+
+        // Verification
+        assertThat(pourDecompteVoix, is(pourDecompte));
+        assertThat(pourDecompteVoixNominatif, is(pourDecompte));
+        assertThat(contreDecompteVoix, is(contreDecompte));
+        assertThat(contreDecompteVoixNominatif, is(contreDecompte));
+        assertThat(abstentionDecompteVoix, is(abstentionDecompte));
+        assertThat(abstentionDecompteVoixNominatif, is(abstentionDecompte));
     }
 }
