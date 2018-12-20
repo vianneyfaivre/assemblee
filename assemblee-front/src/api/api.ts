@@ -81,11 +81,17 @@ export default class Api {
         }
 
         // Axios transformer that will be called after the response has been received
-        responseTransformers.push((data, headers) => {
+        responseTransformers.push((data: PersonMandates, headers) => {
 
             Api.convertDateFields(data.mainMandate);
 
-            data.politicalMandates.forEach((mandatesGrouped: MandateGrouped) => {
+            data.politicalPartyMandates.forEach((mandatesGrouped: MandateGrouped) => {
+                mandatesGrouped.mandates.forEach(mandate => {
+                    Api.convertDateFields(mandate);
+                });
+            });
+
+            data.politicalGroupMandates.forEach((mandatesGrouped: MandateGrouped) => {
                 mandatesGrouped.mandates.forEach(mandate => {
                     Api.convertDateFields(mandate);
                 });

@@ -35,11 +35,11 @@ public class PersonService {
         List<Mandate> personMandates = this.dao.getPersonMandates(personId);
 
         Mandate assembleeMandate = null;
-        List<Mandate> politicalMandates = new ArrayList<>();
+        List<Mandate> politicalPartyMandates = new ArrayList<>();
+        List<Mandate> politicalGroupMandates = new ArrayList<>();
         List<Mandate> governmentMandates = new ArrayList<>();
         List<Mandate> otherMandates = new ArrayList<>();
 
-        EnumSet<PoliticalBodyType> politicalTypes = EnumSet.of(PoliticalBodyType.GROUPE_POLITIQUE, PoliticalBodyType.PARTI_POLITIQUE);
         EnumSet<PoliticalBodyType> governmentTypes = EnumSet.of(PoliticalBodyType.GOUVERNEMENT, PoliticalBodyType.MINISTERE);
 
         // Sort mandates based on their type
@@ -50,8 +50,11 @@ public class PersonService {
             if (PoliticalBodyType.ASSEMBLEE_NATIONALE == type) {
                 assembleeMandate = mandate;
             }
-            else if(politicalTypes.contains(type)) {
-                politicalMandates.add(mandate);
+            else if(PoliticalBodyType.PARTI_POLITIQUE == type) {
+                politicalPartyMandates.add(mandate);
+            }
+            else if(PoliticalBodyType.GROUPE_POLITIQUE == type) {
+                politicalGroupMandates.add(mandate);
             }
             else if(governmentTypes.contains(type)) {
                 governmentMandates.add(mandate);
@@ -66,11 +69,12 @@ public class PersonService {
         }
 
         // Group all mandates list by political body (because the same person may have had multiple roles in the same political body)
-        List<MandateGrouped> politicalMandatesGrouped = groupByPoliticalBody(personId, politicalMandates);
+        List<MandateGrouped> politicalPartyMandatesGrouped = groupByPoliticalBody(personId, politicalPartyMandates);
+        List<MandateGrouped> politicalGroupMandatesGrouped = groupByPoliticalBody(personId, politicalGroupMandates);
         List<MandateGrouped> governmentMandatesGrouped = groupByPoliticalBody(personId, governmentMandates);
         List<MandateGrouped> otherMandatesGrouped = groupByPoliticalBody(personId, otherMandates);
 
-        return Optional.of(new PersonMandates(assembleeMandate, politicalMandatesGrouped, governmentMandatesGrouped, otherMandatesGrouped));
+        return Optional.of(new PersonMandates(assembleeMandate, politicalPartyMandatesGrouped, politicalGroupMandatesGrouped, governmentMandatesGrouped, otherMandatesGrouped));
     }
 
     public Optional<Person> findById(String personId) {
