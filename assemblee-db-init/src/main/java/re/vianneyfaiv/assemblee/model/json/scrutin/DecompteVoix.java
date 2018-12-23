@@ -2,14 +2,13 @@ package re.vianneyfaiv.assemblee.model.json.scrutin;
 
 public class DecompteVoix {
 
-    private int nonVotants;
+    private int nonVotant;
     private int pour;
     private int contre;
     private int abstention;
-    private int nonVotantsVolontaires;
 
-    public int getNonVotants() {
-        return nonVotants;
+    public int getNonVotant() {
+        return nonVotant;
     }
 
     public int getPour() {
@@ -22,9 +21,5 @@ public class DecompteVoix {
 
     public int getAbstention() {
         return abstention;
-    }
-
-    public int getNonVotantsVolontaires() {
-        return nonVotantsVolontaires;
     }
 }

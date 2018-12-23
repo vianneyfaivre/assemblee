@@ -74,6 +74,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     private ItemWriter<ScrutinDetail> writerScrutinDetails;
 
     @Autowired
+    private ItemWriter<ScrutinResultat> writerScrutinResultats;
+
+    @Autowired
     private ItemWriter<Scrutin> writerScrutins;
 
     @Autowired
@@ -157,7 +160,17 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                         try {
                             writerScrutinDetails.write(details);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            throw new RuntimeException(e);
+                        }
+
+                        List<ScrutinResultat> resultats = items.stream()
+                                .flatMap(m -> m.getScrutinResultats().stream())
+                                .collect(Collectors.toList());
+
+                        try {
+                            writerScrutinResultats.write(resultats);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
                         }
                     }
 

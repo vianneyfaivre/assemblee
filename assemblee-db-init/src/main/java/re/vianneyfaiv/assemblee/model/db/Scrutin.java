@@ -23,13 +23,13 @@ public class Scrutin {
     private int resultatAbstention;
     private int resultatNonVotant;
 
-    // Will be empty if typeVote != DecompteNominatif
     private List<ScrutinDetail> scrutinDetails;
+    private List<ScrutinResultat> scrutinResultats;
 
     public Scrutin(String scrutinId, String titre, int numero, String organeId, int legislature, String sessionId,
                    String seanceId, Date dateScrutin, String typeVote, String sort, String demandeur, String modePublicationVotes,
                    int resultatNombreVotants, int resultatPour, int resultatContre, int resultatAbstention,
-                   int resultatNonVotant, List<ScrutinDetail> scrutinDetails) {
+                   int resultatNonVotant, List<ScrutinDetail> scrutinDetails, List<ScrutinResultat> scrutinResultats) {
         this.scrutinId = scrutinId;
         this.titre = titre;
         this.numero = numero;
@@ -48,6 +48,7 @@ public class Scrutin {
         this.resultatAbstention = resultatAbstention;
         this.resultatNonVotant = resultatNonVotant;
         this.scrutinDetails = scrutinDetails;
+        this.scrutinResultats = scrutinResultats;
     }
 
     public String getScrutinId() {
@@ -120,5 +121,9 @@ public class Scrutin {
 
     public List<ScrutinDetail> getScrutinDetails() {
         return scrutinDetails;
+    }
+
+    public List<ScrutinResultat> getScrutinResultats() {
+        return scrutinResultats;
     }
 }

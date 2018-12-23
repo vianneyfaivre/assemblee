@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import re.vianneyfaiv.assemblee.model.db.Scrutin;
 import re.vianneyfaiv.assemblee.model.db.ScrutinChoix;
 import re.vianneyfaiv.assemblee.model.db.ScrutinDetail;
+import re.vianneyfaiv.assemblee.model.db.ScrutinResultat;
 import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinGroupe;
 import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinJson;
 import re.vianneyfaiv.assemblee.model.json.scrutin.VotantRef;
@@ -39,34 +40,40 @@ public class ScrutinsItemProcessor implements ItemProcessor<ScrutinJson, Scrutin
         int resultatNonVotant = scrutinJson.getSyntheseVote().getDecompte().getNonVotants();
 
         List<ScrutinDetail> scrutinDetails = new ArrayList<>();
-        if("DecompteNominatif".equalsIgnoreCase(modePublicationVotes)) {
+        List<ScrutinResultat> scrutinResultats = new ArrayList<>();
 
-            for(ScrutinGroupe groupe : scrutinJson.getVentilationVotes().getOrgane().getGroupes().getGroupe()) {
+        for(ScrutinGroupe groupe : scrutinJson.getVentilationVotes().getOrgane().getGroupes().getGroupe()) {
 
-                String groupeOrganeId = groupe.getOrganeRef();
+            String groupeOrganeId = groupe.getOrganeRef();
 
-                if(groupe.getVote().getDecompteNominatif().getPour() != null) {
-                    scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getPour().getVotant(), groupeOrganeId, ScrutinChoix.POUR));
-                }
-
-                if(groupe.getVote().getDecompteNominatif().getContre() != null) {
-                    scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getContre().getVotant(), groupeOrganeId, ScrutinChoix.CONTRE));
-                }
-
-                if(groupe.getVote().getDecompteNominatif().getAbstentions() != null) {
-                    scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getAbstentions().getVotant(), groupeOrganeId, ScrutinChoix.ABSTENTION));
-                }
-
-                if(groupe.getVote().getDecompteNominatif().getNonVotants() != null) {
-                    scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getNonVotants().getVotant(), groupeOrganeId, ScrutinChoix.NON_VOTANT));
-                }
-
+            if(groupe.getVote().getDecompteNominatif().getPour() != null) {
+                scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getPour().getVotant(), groupeOrganeId, ScrutinChoix.POUR));
             }
+
+            if(groupe.getVote().getDecompteNominatif().getContre() != null) {
+                scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getContre().getVotant(), groupeOrganeId, ScrutinChoix.CONTRE));
+            }
+
+            if(groupe.getVote().getDecompteNominatif().getAbstentions() != null) {
+                scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getAbstentions().getVotant(), groupeOrganeId, ScrutinChoix.ABSTENTION));
+            }
+
+            if(groupe.getVote().getDecompteNominatif().getNonVotants() != null) {
+                scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getNonVotants().getVotant(), groupeOrganeId, ScrutinChoix.NON_VOTANT));
+            }
+
+            String positionMajoritaire = groupe.getVote().getPositionMajoritaire();
+            int pour = groupe.getVote().getDecompteVoix().getPour();
+            int contre = groupe.getVote().getDecompteVoix().getContre();
+            int abstention = groupe.getVote().getDecompteVoix().getAbstention();
+            int nonVotant = groupe.getVote().getDecompteVoix().getNonVotant();
+
+            scrutinResultats.add(new ScrutinResultat(scrutinId, groupeOrganeId, positionMajoritaire, pour, contre, abstention, nonVotant));
         }
 
         return new Scrutin(scrutinId, titre, numero, organeId, legislature, sessionId, seanceId, dateScrutin,
                 typeVote, sort, demandeur, modePublicationVotes, resultatNombreVotants, resultatPour, resultatContre,
-                resultatAbstention, resultatNonVotant, scrutinDetails);
+                resultatAbstention, resultatNonVotant, scrutinDetails, scrutinResultats);
     }
 
     private List<ScrutinDetail> extractDetails(String scrutinId, List<VotantRef> votants, String groupeOrganeId, ScrutinChoix choix) {

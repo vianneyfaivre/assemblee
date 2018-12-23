@@ -66,11 +66,12 @@ create table IF NOT EXISTS scrutins_details (
 
 create table IF NOT EXISTS scrutins_resultats (
     scrutin_id VARCHAR(50) references scrutins,
-    organe_id VARCHAR(50) references organes,
+    organe_id VARCHAR(50), -- references organes (can't enable it because some acteurs are missing),
     position_majoritaire VARCHAR(10),
     pour SMALLINT, -- nombre de votants POUR ex: 60
     contre SMALLINT, -- nombre de votants CONTRE ex:30
     abstention SMALLINT, -- nombre de votants ayant choisi l'abstention ex:5
+    non_votant SMALLINT, -- nombre de votants qui n'ont pas voté ex:10
 
     PRIMARY KEY(scrutin_id, organe_id)
 );
