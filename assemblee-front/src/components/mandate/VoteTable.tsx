@@ -1,6 +1,7 @@
 import * as React from 'react';
 import PersonVote from 'src/model/PersonVote';
 import PersonSearchItem from 'src/model/PersonSearchItem';
+import { Link } from 'react-router-dom';
 
 interface IVoteTableProps {
     votes: PersonVote[],
@@ -17,7 +18,11 @@ export const VoteTable : React.StatelessComponent<IVoteTableProps> = (props) => 
                 <td>Séance link:n°{vote.meetingId} de la session link:n°{vote.sessionId} du {vote.voteDate.toLocaleDateString('fr-FR')}</td>
                 <td>{vote.result}</td>
                 <td>{vote.choice} {vote.choiceCause}</td>
-                <td>link:{vote.politicalBodyId} {vote.politicalBodyName}</td>
+                <td>
+                    <Link to={'/organes/'+vote.politicalBodyId}>
+                        {vote.politicalBodyName}
+                    </Link>
+                </td>
             </tr>
         );
     });
