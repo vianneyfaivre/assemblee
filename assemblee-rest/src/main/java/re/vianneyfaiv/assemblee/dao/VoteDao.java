@@ -29,7 +29,7 @@ public class VoteDao {
                 "inner join organes o on sd.organe_id = o.organe_id " +
             "where  " +
                 "sd.acteur_id = ? " +
-            "order by s.numero";
+            "order by s.date_scrutin";
 
     private JdbcTemplate jdbcTemplate;
 
