@@ -3,11 +3,13 @@ import Api from 'src/api/api';
 import PersonMandates from 'src/model/PersonMandates';
 import { SelectedPerson } from 'src/components/person/SelectedPerson';
 import PersonSearchItem from 'src/model/PersonSearchItem';
+import PersonVote from 'src/model/PersonVote';
 
 interface IPersonDetailsState {
     personId: string,
     selectedPerson?: PersonSearchItem,
-    selectedPersonMandates?: PersonMandates
+    selectedPersonMandates?: PersonMandates,
+    selectedPersonVotes?: PersonVote[]
 }
 
 export default class PersonDetailsPage extends React.Component<{}, IPersonDetailsState> {
@@ -46,6 +48,17 @@ export default class PersonDetailsPage extends React.Component<{}, IPersonDetail
                 // TODO handle error
                 alert(error);
             });
+
+        Api.getPersonVotes(this.state.personId)
+            .then(response => {
+                this.setState({
+                    selectedPersonVotes: response.data,
+                });
+            })
+            .catch(error => {
+                // TODO handle error
+                alert(error);
+            });
     }
 
     public render() {
@@ -56,6 +69,7 @@ export default class PersonDetailsPage extends React.Component<{}, IPersonDetail
                         <SelectedPerson 
                             selectedPerson={this.state.selectedPerson}
                             mandates={this.state.selectedPersonMandates} 
+                            votes={this.state.selectedPersonVotes}
                         />
                     }
                 </div>

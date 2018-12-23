@@ -5,6 +5,7 @@ import PoliticalBodyDetails from 'src/model/PoliticalBodyDetails';
 import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
 import MandateGrouped from 'src/model/MandateGrouped';
 import PoliticalBodySearchItem from 'src/model/PoliticalBodySearchItem';
+import PersonVote from 'src/model/PersonVote';
 
 export default class Api {
 
@@ -153,6 +154,34 @@ export default class Api {
             {
                 method: 'get',
                 url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/political-bodies/' + politicalBodyId + '/members',
+                transformResponse:  responseTransformers
+            });
+    }
+
+    /**
+     * Returns the members of a political body
+     */
+    public static getPersonVotes(personId: string): AxiosPromise<PersonVote[]> {
+
+        let responseTransformers: AxiosTransformer[] = [];
+        if(axios.defaults.transformResponse){
+            responseTransformers = responseTransformers.concat(axios.defaults.transformResponse);
+        }
+
+        // Axios transformer that will be called after the response has been received
+        responseTransformers.push((data, headers) => {
+
+            data.forEach((vote:any) => {
+                vote.voteDate = new Date(Date.parse(vote.voteDate));
+            });
+
+            return data;
+        });
+
+        return axios.request<PersonVote[]>(
+            {
+                method: 'get',
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/persons/' + personId + '/votes',
                 transformResponse:  responseTransformers
             });
     }
