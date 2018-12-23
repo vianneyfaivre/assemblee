@@ -94,7 +94,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .incrementer(new RunIdIncrementer())
                 .start(stepActeurs())
                 .next(stepOrganes())
-                //.next(stepMandats())
+                .next(stepMandats())
                 .next(stepScrutins())
                 .build();
     }

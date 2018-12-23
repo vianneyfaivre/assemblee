@@ -56,8 +56,8 @@ create table IF NOT EXISTS scrutins (
 create table IF NOT EXISTS scrutins_details (
     scrutin_id VARCHAR(50) references scrutins,
     acteur_id VARCHAR(50), -- references acteurs (can't enable it because some acteurs are missing),
-    organe_id VARCHAR(50), -- references organes (can't enable it because some acteurs are missing),
-    mandat_id VARCHAR(50), -- references mandats,
+    organe_id VARCHAR(50), -- references organes (can't enable it because some organes are missing),
+    mandat_id VARCHAR(50), -- references mandats  (can't enable it because some mandats are missing),
     position_scrutin VARCHAR(10),
     cause_position_vote VARCHAR(10),
 
@@ -66,7 +66,7 @@ create table IF NOT EXISTS scrutins_details (
 
 create table IF NOT EXISTS scrutins_resultats (
     scrutin_id VARCHAR(50) references scrutins,
-    organe_id VARCHAR(50), -- references organes (can't enable it because some acteurs are missing),
+    organe_id VARCHAR(50), -- references organes (can't enable it because some organes are missing),
     position_majoritaire VARCHAR(10),
     pour SMALLINT, -- nombre de votants POUR ex: 60
     contre SMALLINT, -- nombre de votants CONTRE ex:30
