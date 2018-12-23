@@ -1,6 +1,7 @@
 package re.vianneyfaiv.assemblee.model.db;
 
 import java.util.Date;
+import java.util.List;
 
 public class Scrutin {
 
@@ -22,7 +23,13 @@ public class Scrutin {
     private int resultatAbstention;
     private int resultatNonVotant;
 
-    public Scrutin(String scrutinId, String titre, int numero, String organeId, int legislature, String sessionId, String seanceId, Date dateScrutin, String typeVote, String sort, String demandeur, String modePublicationVotes, int resultatNombreVotants, int resultatPour, int resultatContre, int resultatAbstention, int resultatNonVotant) {
+    // Will be empty if typeVote != DecompteNominatif
+    private List<ScrutinDetail> scrutinDetails;
+
+    public Scrutin(String scrutinId, String titre, int numero, String organeId, int legislature, String sessionId,
+                   String seanceId, Date dateScrutin, String typeVote, String sort, String demandeur, String modePublicationVotes,
+                   int resultatNombreVotants, int resultatPour, int resultatContre, int resultatAbstention,
+                   int resultatNonVotant, List<ScrutinDetail> scrutinDetails) {
         this.scrutinId = scrutinId;
         this.titre = titre;
         this.numero = numero;
@@ -40,6 +47,7 @@ public class Scrutin {
         this.resultatContre = resultatContre;
         this.resultatAbstention = resultatAbstention;
         this.resultatNonVotant = resultatNonVotant;
+        this.scrutinDetails = scrutinDetails;
     }
 
     public String getScrutinId() {
@@ -108,5 +116,9 @@ public class Scrutin {
 
     public int getResultatNonVotant() {
         return resultatNonVotant;
+    }
+
+    public List<ScrutinDetail> getScrutinDetails() {
+        return scrutinDetails;
     }
 }

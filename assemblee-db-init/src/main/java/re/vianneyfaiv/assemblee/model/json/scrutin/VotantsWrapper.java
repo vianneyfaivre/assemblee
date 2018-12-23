@@ -1,11 +1,8 @@
 package re.vianneyfaiv.assemblee.model.json.scrutin;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import re.vianneyfaiv.assemblee.config.VotantsWrapperDeserializer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @JsonDeserialize(using = VotantsWrapperDeserializer.class)

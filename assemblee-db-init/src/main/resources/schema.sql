@@ -55,10 +55,11 @@ create table IF NOT EXISTS scrutins (
 
 create table IF NOT EXISTS scrutins_details (
     scrutin_id VARCHAR(50) references scrutins,
-    acteur_id VARCHAR(50) references acteurs,
-    organe_id VARCHAR(50) references organes,
-    mandat_id VARCHAR(50) references mandats,
+    acteur_id VARCHAR(50), -- references acteurs (can't enable it because some acteurs are missing),
+    organe_id VARCHAR(50), -- references organes (can't enable it because some acteurs are missing),
+    mandat_id VARCHAR(50), -- references mandats,
     position_scrutin VARCHAR(10),
+    cause_position_vote VARCHAR(10),
 
     PRIMARY KEY(scrutin_id, acteur_id)
 );

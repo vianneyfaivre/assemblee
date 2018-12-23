@@ -2,6 +2,8 @@ package re.vianneyfaiv.assemblee.model.json.scrutin;
 
 public class VotantRef {
 
+    // If you want to add/remove fields in that class, be sure to also edit VotantsWrapperDeserializer.java
+
     private String acteurRef;
     private String mandatRef;
     private String causePositionVote;

@@ -71,6 +71,9 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
     private ScrutinsItemProcessor processorScrutins;
 
     @Autowired
+    private ItemWriter<ScrutinDetail> writerScrutinDetails;
+
+    @Autowired
     private ItemWriter<Scrutin> writerScrutins;
 
     @Autowired
@@ -88,14 +91,14 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
                 .incrementer(new RunIdIncrementer())
                 .start(stepActeurs())
                 .next(stepOrganes())
-                .next(stepMandats())
+                //.next(stepMandats())
                 .next(stepScrutins())
                 .build();
     }
 
     public Step stepActeurs() {
         return stepBuilderFactory.get("Import-Acteurs")
-                .<ActeurJson, Acteur> chunk(50)
+                .<ActeurJson, Acteur> chunk(100)
                 .reader(readerActeurs)
                 .processor(processorActeurs)
                 .writer(writerActeurs)
@@ -104,7 +107,7 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 
     public Step stepMandats() {
         return stepBuilderFactory.get("Import-Mandats")
-                .<MandatJson, Mandat> chunk(50)
+                .<MandatJson, Mandat> chunk(100)
                 .reader(readerMandats)
                 .processor(processorMandats)
                 .writer(writerMandats)
@@ -129,7 +132,6 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 
                     @Override
                     public void onWriteError(Exception exception, List<? extends Mandat> items) {
-
                     }
                 })
                 .build();
@@ -137,16 +139,38 @@ public class BatchConfiguration extends DefaultBatchConfigurer {
 
     public Step stepScrutins() {
         return stepBuilderFactory.get("Import-Scrutins")
-                .<ScrutinJson, Scrutin> chunk(50)
+                .<ScrutinJson, Scrutin> chunk(100)
                 .reader(readerScrutins)
                 .processor(processorScrutins)
                 .writer(writerScrutins)
+                .listener(new ItemWriteListener<Scrutin>() {
+                    @Override
+                    public void beforeWrite(List<? extends Scrutin> items) {
+                    }
+
+                    @Override
+                    public void afterWrite(List<? extends Scrutin> items) {
+                        List<ScrutinDetail> details = items.stream()
+                                .flatMap(m -> m.getScrutinDetails().stream())
+                                .collect(Collectors.toList());
+
+                        try {
+                            writerScrutinDetails.write(details);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onWriteError(Exception exception, List<? extends Scrutin> items) {
+                    }
+                })
                 .build();
     }
 
     public Step stepOrganes() {
         return stepBuilderFactory.get("Import-Organes")
-                .<OrganeJson, Organe> chunk(50)
+                .<OrganeJson, Organe> chunk(100)
                 .reader(readerOrganes)
                 .processor(processorOrganes)
                 .writer(writerOrganes)

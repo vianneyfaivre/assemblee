@@ -3,9 +3,16 @@ package re.vianneyfaiv.assemblee.batch.processor;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 import re.vianneyfaiv.assemblee.model.db.Scrutin;
+import re.vianneyfaiv.assemblee.model.db.ScrutinChoix;
+import re.vianneyfaiv.assemblee.model.db.ScrutinDetail;
+import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinGroupe;
 import re.vianneyfaiv.assemblee.model.json.scrutin.ScrutinJson;
+import re.vianneyfaiv.assemblee.model.json.scrutin.VotantRef;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ScrutinsItemProcessor implements ItemProcessor<ScrutinJson, Scrutin> {
@@ -13,42 +20,67 @@ public class ScrutinsItemProcessor implements ItemProcessor<ScrutinJson, Scrutin
     @Override
     public Scrutin process(ScrutinJson scrutinJson) {
 
-        String scrutinId;
-        String titre;
-        int numero;
-        String organeId;
-        int legislature;
-        String sessionId;
-        String seanceId;
-        Date dateScrutin;
-        String typeVote;
-        String sort;
-        String demandeur;
-        String modePublicationVotes;
-        int resultatNombreVotants;
-        int resultatPour;
-        int resultatContre;
-        int resultatAbstention;
-        int resultatNonVotant;
+        String scrutinId = scrutinJson.getUid();
+        String titre = scrutinJson.getTitre();
+        int numero = scrutinJson.getNumero();
+        String organeId = scrutinJson.getOrganeRef();
+        int legislature = scrutinJson.getLegislature();
+        String sessionId = scrutinJson.getSessionRef();
+        String seanceId = scrutinJson.getSeanceRef();
+        Date dateScrutin = scrutinJson.getDateScrutin();
+        String typeVote = scrutinJson.getTypeVote().getCodeTypeVote();
+        String sort = scrutinJson.getSort().getCode();
+        String demandeur = scrutinJson.getDemandeur().getTexte();
+        String modePublicationVotes = scrutinJson.getModePublicationDesVotes();
+        int resultatNombreVotants = scrutinJson.getSyntheseVote().getNombreVotants();
+        int resultatPour = scrutinJson.getSyntheseVote().getDecompte().getPour();
+        int resultatContre = scrutinJson.getSyntheseVote().getDecompte().getContre();
+        int resultatAbstention = scrutinJson.getSyntheseVote().getDecompte().getAbstentions();
+        int resultatNonVotant = scrutinJson.getSyntheseVote().getDecompte().getNonVotants();
 
-        scrutinId = scrutinJson.getUid();
-        titre = scrutinJson.getTitre();
-        numero = scrutinJson.getNumero();
-        organeId = scrutinJson.getOrganeRef();
-        legislature = scrutinJson.getLegislature();
-        sessionId = scrutinJson.getSessionRef();
-        seanceId = scrutinJson.getSeanceRef();
-        dateScrutin = scrutinJson.getDateScrutin();
-        typeVote = scrutinJson.getTypeVote().getCodeTypeVote();
-        sort = scrutinJson.getSort().getCode();
-        demandeur = scrutinJson.getDemandeur().getTexte();
-        modePublicationVotes = scrutinJson.getModePublicationDesVotes();
-        resultatNombreVotants = scrutinJson.getSyntheseVote().getNombreVotants();
-        resultatPour = scrutinJson.getSyntheseVote().getDecompte().getPour();
-        resultatContre = scrutinJson.getSyntheseVote().getDecompte().getContre();
-        resultatAbstention = scrutinJson.getSyntheseVote().getDecompte().getAbstentions();
-        resultatNonVotant = scrutinJson.getSyntheseVote().getDecompte().getNonVotants();
+        List<ScrutinDetail> scrutinDetails = new ArrayList<>();
+        if("DecompteNominatif".equalsIgnoreCase(modePublicationVotes)) {
 
-        return new Scrutin(scrutinId, titre, numero, organeId, legislature, sessionId, seanceId, dateScrutin, typeVote, sort, demandeur, modePublicationVotes, resultatNombreVotants, resultatPour, resultatContre, resultatAbstention, resultatNonVotant);
+            for(ScrutinGroupe groupe : scrutinJson.getVentilationVotes().getOrgane().getGroupes().getGroupe()) {
+
+                String groupeOrganeId = groupe.getOrganeRef();
+
+                if(groupe.getVote().getDecompteNominatif().getPour() != null) {
+                    scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getPour().getVotant(), groupeOrganeId, ScrutinChoix.POUR));
+                }
+
+                if(groupe.getVote().getDecompteNominatif().getContre() != null) {
+                    scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getContre().getVotant(), groupeOrganeId, ScrutinChoix.CONTRE));
+                }
+
+                if(groupe.getVote().getDecompteNominatif().getAbstentions() != null) {
+                    scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getAbstentions().getVotant(), groupeOrganeId, ScrutinChoix.ABSTENTION));
+                }
+
+                if(groupe.getVote().getDecompteNominatif().getNonVotants() != null) {
+                    scrutinDetails.addAll(extractDetails(scrutinId, groupe.getVote().getDecompteNominatif().getNonVotants().getVotant(), groupeOrganeId, ScrutinChoix.NON_VOTANT));
+                }
+
+            }
+        }
+
+        return new Scrutin(scrutinId, titre, numero, organeId, legislature, sessionId, seanceId, dateScrutin,
+                typeVote, sort, demandeur, modePublicationVotes, resultatNombreVotants, resultatPour, resultatContre,
+                resultatAbstention, resultatNonVotant, scrutinDetails);
+    }
+
+    private List<ScrutinDetail> extractDetails(String scrutinId, List<VotantRef> votants, String groupeOrganeId, ScrutinChoix choix) {
+        List<ScrutinDetail> scrutinDetails = new ArrayList<>();
+
+        if(votants != null) {
+            for(VotantRef votant : votants) {
+                scrutinDetails.add(
+                        new ScrutinDetail(scrutinId, votant.getActeurRef(), groupeOrganeId,
+                                            votant.getMandatRef(), choix,
+                                            Optional.ofNullable(votant.getCausePositionVote())));
+            }
+        }
+
+        return scrutinDetails;
     }
 }

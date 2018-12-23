@@ -33,10 +33,8 @@ public class VotantsWrapperDeserializer extends JsonDeserializer<VotantsWrapper>
 
             // weird structure, it can be an array of VotantRef or a single VotantRef (not in an array)
             if(votantsNode.isArray()) {
-                Iterator<JsonNode> votantsIt = votantsNode.iterator();
 
-                while(votantsIt.hasNext()) {
-                    JsonNode votantNode = votantsIt.next();
+                for (JsonNode votantNode : votantsNode) {
                     votants.add(getVotantRef(votantNode));
                 }
             } else {
@@ -53,6 +51,11 @@ public class VotantsWrapperDeserializer extends JsonDeserializer<VotantsWrapper>
         VotantRef votantRef = new VotantRef();
         votantRef.setActeurRef(votantNode.get("acteurRef").asText());
         votantRef.setMandatRef(votantNode.get("mandatRef").asText());
+
+        if(votantNode.hasNonNull("causePositionVote")) {
+            votantRef.setCausePositionVote(votantNode.get("causePositionVote").asText());
+        }
+
         return votantRef;
     }
 }
