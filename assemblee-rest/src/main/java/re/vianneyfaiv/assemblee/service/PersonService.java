@@ -6,11 +6,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import re.vianneyfaiv.assemblee.dao.PersonDetailsDao;
 import re.vianneyfaiv.assemblee.dao.PersonRepository;
+import re.vianneyfaiv.assemblee.dao.VoteDao;
 import re.vianneyfaiv.assemblee.model.jpa.Person;
-import re.vianneyfaiv.assemblee.model.pojo.Mandate;
-import re.vianneyfaiv.assemblee.model.pojo.MandateGrouped;
-import re.vianneyfaiv.assemblee.model.pojo.PersonMandates;
-import re.vianneyfaiv.assemblee.model.pojo.PoliticalBodyType;
+import re.vianneyfaiv.assemblee.model.pojo.*;
 
 import java.util.*;
 
@@ -19,20 +17,22 @@ public class PersonService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
 
-    private PersonRepository repo;
-    private PersonDetailsDao dao;
+    private PersonRepository personRepo;
+    private PersonDetailsDao personDao;
+    private VoteDao voteDao;
 
-    public PersonService(PersonRepository repo, PersonDetailsDao dao) {
-        this.repo = repo;
-        this.dao = dao;
+    public PersonService(PersonRepository personRepo, PersonDetailsDao personDao, VoteDao voteDao) {
+        this.personRepo = personRepo;
+        this.personDao = personDao;
+        this.voteDao = voteDao;
     }
 
     public List<Person> searchByLastName(String lastName) {
-        return this.repo.findByLastNameStartingWithIgnoreCaseOrderByLastName(lastName);
+        return this.personRepo.findByLastNameStartingWithIgnoreCaseOrderByLastName(lastName);
     }
 
     public Optional<PersonMandates> getPersonDetails(String personId) {
-        List<Mandate> personMandates = this.dao.getPersonMandates(personId);
+        List<Mandate> personMandates = this.personDao.getPersonMandates(personId);
 
         Mandate assembleeMandate = null;
         List<Mandate> politicalPartyMandates = new ArrayList<>();
@@ -78,11 +78,11 @@ public class PersonService {
     }
 
     public Optional<Person> findById(String personId) {
-        return this.repo.findById(personId);
+        return this.personRepo.findById(personId);
     }
 
     public List<Person> findAll() {
-        return this.repo.findAll(Sort.by("lastName", "firstName"));
+        return this.personRepo.findAll(Sort.by("lastName", "firstName"));
     }
 
     private List<MandateGrouped> groupByPoliticalBody(String personId, List<Mandate> allMandates) {
@@ -124,5 +124,9 @@ public class PersonService {
         });
 
         return mandatesGrouped;
+    }
+
+    public List<PersonVote> getPersonVotes(String personId) {
+        return this.voteDao.getVotesByPerson(personId);
     }
 }

@@ -65,7 +65,6 @@ public class Vote {
     @Column(name = "resultatNonVotant")
     private int resultDidNotVote;
 
-
     public String getId() {
         return id;
     }

@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import re.vianneyfaiv.assemblee.exception.PersonNotFound;
 import re.vianneyfaiv.assemblee.model.jpa.Person;
 import re.vianneyfaiv.assemblee.model.pojo.PersonMandates;
+import re.vianneyfaiv.assemblee.model.pojo.PersonVote;
 import re.vianneyfaiv.assemblee.service.PersonService;
 
 import java.util.List;
@@ -35,6 +36,11 @@ public class PersonController {
         return this.service
                 .getPersonDetails(personId)
                 .orElseThrow(() -> new PersonNotFound("Person with id "+personId+" has not been found or has not any mandates"));
+    }
+
+    @GetMapping("/persons/{personId}/votes")
+    public List<PersonVote> getPersonVotes(@PathVariable String personId) {
+        return this.service.getPersonVotes(personId);
     }
 
     @GetMapping("/persons/search")
