@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import re.vianneyfaiv.assemblee.model.pojo.PersonVote;
+import re.vianneyfaiv.assemblee.model.pojo.VoteOverview;
 
 import java.util.List;
 
@@ -31,10 +32,34 @@ public class VoteDao {
                 "sd.acteur_id = ? " +
             "order by s.date_scrutin";
 
+    private static final String QUERY_GET_VOTE_OVERVIEW =
+            "select " +
+                "o.organe_id as politicalBodyId, " +
+                "o.libelle as politicalBodyName, " +
+                "sr.position_majoritaire as choice, " +
+                "sr.pour as numberFor, " +
+                "sr.contre as numberAgainst, " +
+                "sr.abstention as numberAbstention, " +
+                "sr.non_votant as numberNoVote " +
+            "from " +
+                "assemblee.scrutins_resultats sr " +
+                "inner join assemblee.organes o on sr.organe_id = o.organe_id " +
+            "where " +
+                "sr.scrutin_id = ?";
+
     private JdbcTemplate jdbcTemplate;
 
     public VoteDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public List<VoteOverview> getVoteOverview(String voteId) {
+
+        return jdbcTemplate.query(
+                QUERY_GET_VOTE_OVERVIEW,
+                new Object[]{voteId},
+                BeanPropertyRowMapper.newInstance(VoteOverview.class)
+        );
     }
 
     public List<PersonVote> getVotesByPerson(String personId) {

@@ -1,24 +1,24 @@
 package re.vianneyfaiv.assemblee.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import re.vianneyfaiv.assemblee.dao.VoteRepository;
-import re.vianneyfaiv.assemblee.model.jpa.Vote;
+import re.vianneyfaiv.assemblee.model.pojo.VoteOverview;
+import re.vianneyfaiv.assemblee.service.VoteService;
 
 import java.util.List;
 
 @RestController
 public class VoteController {
 
-    private VoteRepository voteRepository;
+    private VoteService voteService;
 
-    public VoteController(VoteRepository voteRepository) {
-        this.voteRepository = voteRepository;
+    public VoteController(VoteService voteService) {
+        this.voteService = voteService;
     }
 
-    @GetMapping("/votes")
-    public List<Vote> getAllVotes() {
-        return this.voteRepository.findAll();
+    @GetMapping("/scrutins/{voteId}")
+    public List<VoteOverview> getVoteOverview(@PathVariable String voteId) {
+        return this.voteService.getOverview(voteId);
     }
-
 }
