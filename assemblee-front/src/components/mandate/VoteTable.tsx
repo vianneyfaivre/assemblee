@@ -14,7 +14,7 @@ export const VoteTable : React.StatelessComponent<IVoteTableProps> = (props) => 
         return (
             <tr key={vote.scrutinId}>
                 <td>link:{vote.scrutinId} {vote.title}</td>
-                <td>link:{vote.applicant}</td>
+                <td>{vote.applicant}</td>
                 <td>Séance link:n°{vote.meetingId} de la session link:n°{vote.sessionId} du {vote.voteDate.toLocaleDateString('fr-FR')}</td>
                 <td>{vote.result}</td>
                 <td>{vote.choice} {vote.choiceCause}</td>
