@@ -4,6 +4,7 @@ import PersonSearchPage from 'src/pages/PersonSearchPage';
 import PersonDetailsPage from 'src/pages/PersonDetailsPage';
 import PoliticalBodyDetailsPage from 'src/pages/PoliticalBodyDetailsPage';
 import PoliticalBodySearchPage from 'src/pages/PoliticalBodySearchPage';
+import ScrutinsDetailsPage from 'src/pages/ScrutinsDetailsPage';
 
 export default class App extends React.Component {
 
@@ -25,6 +26,7 @@ export default class App extends React.Component {
           <Route path="/recherche-organe" exact={true} component={PoliticalBodySearchPage} />
           <Route path="/deputes/:id" exact={true} component={PersonDetailsPage} />
           <Route path="/organes/:id" exact={true} component={PoliticalBodyDetailsPage} />
+          <Route path="/scrutins/:id" exact={true} component={ScrutinsDetailsPage} />
           <Route path="/" exact={true} component={PersonSearchPage} />
 
         </div>

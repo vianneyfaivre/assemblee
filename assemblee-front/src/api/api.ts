@@ -6,6 +6,7 @@ import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
 import MandateGrouped from 'src/model/MandateGrouped';
 import PoliticalBodySearchItem from 'src/model/PoliticalBodySearchItem';
 import PersonVote from 'src/model/PersonVote';
+import VoteOverview from 'src/model/VoteOverview';
 
 export default class Api {
 
@@ -183,6 +184,17 @@ export default class Api {
                 method: 'get',
                 url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/persons/' + personId + '/votes',
                 transformResponse:  responseTransformers
+            });
+    }
+
+    /**
+     * Returns vote results overview (one object by political body)
+     */
+    public static getVoteOverview(scrutinId: string) : AxiosPromise<VoteOverview[]>{
+        return axios.request<VoteOverview[]>(
+            {
+                method: 'get',
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/scrutins/' + scrutinId
             });
     }
 
