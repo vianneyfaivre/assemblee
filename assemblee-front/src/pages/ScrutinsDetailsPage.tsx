@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Api from 'src/api/api';
 import VoteOverview from 'src/model/VoteOverview';
+import { Link } from 'react-router-dom';
 
 interface IScrutinsDetailsPageState {
     scrutinId: string,
@@ -43,13 +44,20 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
             rows = this.state.voteOverview.map((voteOverview) => {
                 return (
                     <tr key={voteOverview.politicalBodyId}>
-                        <td>link:{voteOverview.politicalBodyName}</td>
-                        <td>{voteOverview.choice}</td>
+                        
                         <td>
-                            Pour: {voteOverview.numberFor}<br />
-                            Contre: {voteOverview.numberAgainst}<br />
-                            Abstention: {voteOverview.numberAbstention}<br />
-                            Non-Votant: {voteOverview.numberNoVote}
+                            <Link to={'/organes/'+voteOverview.politicalBodyId}>
+                                {voteOverview.politicalBodyName}
+                            </Link> 
+                        </td>
+                        
+                        <td>{voteOverview.choice}</td>
+                        
+                        <td>
+                            Pour : {voteOverview.numberFor}<br />
+                            Contre : {voteOverview.numberAgainst}<br />
+                            Abstention : {voteOverview.numberAbstention}<br />
+                            Non-Votant : {voteOverview.numberNoVote}
                         </td>
                     </tr>
                 );
