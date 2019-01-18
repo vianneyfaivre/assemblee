@@ -190,11 +190,11 @@ export default class Api {
     /**
      * Returns vote results overview (one object by political body)
      */
-    public static getVoteOverview(scrutinId: string) : AxiosPromise<VoteOverview[]>{
+    public static getVoteDetailsByGroup(scrutinId: string) : AxiosPromise<VoteOverview[]>{
         return axios.request<VoteOverview[]>(
             {
                 method: 'get',
-                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/scrutins/' + scrutinId
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/scrutins/' + scrutinId + '/details-par-groupe'
             });
     }
 

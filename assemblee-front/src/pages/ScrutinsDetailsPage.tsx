@@ -24,7 +24,7 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
 
     public componentDidMount() {
         
-        Api.getVoteOverview(this.state.scrutinId)
+        Api.getVoteDetailsByGroup(this.state.scrutinId)
         .then(response => {
             this.setState({
                 voteOverview: response.data,
