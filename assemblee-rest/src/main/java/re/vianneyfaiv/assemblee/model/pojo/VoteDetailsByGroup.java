@@ -1,6 +1,6 @@
 package re.vianneyfaiv.assemblee.model.pojo;
 
-public class VoteOverview {
+public class VoteDetailsByGroup {
 
     private String politicalBodyId;
     private String politicalBodyName;

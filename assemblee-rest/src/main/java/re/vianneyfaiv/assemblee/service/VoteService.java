@@ -2,7 +2,7 @@ package re.vianneyfaiv.assemblee.service;
 
 import org.springframework.stereotype.Component;
 import re.vianneyfaiv.assemblee.dao.VoteDao;
-import re.vianneyfaiv.assemblee.model.pojo.VoteOverview;
+import re.vianneyfaiv.assemblee.model.pojo.VoteDetailsByGroup;
 
 import java.util.List;
 
@@ -15,8 +15,8 @@ public class VoteService {
         this.voteDao = voteDao;
     }
 
-    public List<VoteOverview> getOverview(String voteId) {
-        return voteDao.getVoteOverview(voteId);
+    public List<VoteDetailsByGroup> getVoteDetailsByGroup(String voteId) {
+        return voteDao.getVoteDetailsByGroup(voteId);
     }
 
 }
