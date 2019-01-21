@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import re.vianneyfaiv.assemblee.model.pojo.PersonVote;
 import re.vianneyfaiv.assemblee.model.pojo.VoteDetailsByGroup;
+import re.vianneyfaiv.assemblee.model.pojo.VoteOverview;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class VoteDao {
                 "sd.acteur_id = ? " +
             "order by s.date_scrutin";
 
-    private static final String QUERY_GET_VOTE_OVERVIEW =
+    private static final String QUERY_GET_VOTE_DETAILS_BY_GROUP =
             "select " +
                 "o.organe_id as politicalBodyId, " +
                 "o.libelle as politicalBodyName, " +
@@ -47,7 +48,7 @@ public class VoteDao {
             "where " +
                 "sr.scrutin_id = ?";
 
-    private static final String QUERY_GET_VOTE =
+    private static final String QUERY_GET_VOTE_OVERVIEW =
             "select " +
                 "s.titre as title, " +
                 "s.session_id as sessionId, " +
@@ -73,7 +74,7 @@ public class VoteDao {
     public List<VoteDetailsByGroup> getVoteDetailsByGroup(String voteId) {
 
         return jdbcTemplate.query(
-                QUERY_GET_VOTE_OVERVIEW,
+                QUERY_GET_VOTE_DETAILS_BY_GROUP,
                 new Object[]{voteId},
                 BeanPropertyRowMapper.newInstance(VoteDetailsByGroup.class)
         );
@@ -85,6 +86,14 @@ public class VoteDao {
                 QUERY_GET_VOTES_BY_PERSON,
                 new Object[]{personId},
                 BeanPropertyRowMapper.newInstance(PersonVote.class)
+        );
+    }
+
+    public VoteOverview getVoteOverview(String voteId) {
+        return jdbcTemplate.queryForObject(
+                QUERY_GET_VOTE_OVERVIEW,
+                new Object[]{voteId},
+                BeanPropertyRowMapper.newInstance(VoteOverview.class)
         );
     }
 
