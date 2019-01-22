@@ -77,15 +77,19 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
             });
         }
 
+        let title = 'Scrutin ' + this.state.scrutinId;
+
+        if(this.state.voteOverview) {
+            title = this.state.voteOverview.title
+        }
+
         return (
             <section className="section">
                 <div className="container">
 
-                    <h2 className="title">Scrutin {this.state.scrutinId}</h2>
+                    <h2 className="title">{title}</h2>
 
                     <div>TODO SCRUTIN DETAILS</div>
-
-
 
                     <h3 className="subtitle">Répartition des votes par groupe politique :</h3>
 
