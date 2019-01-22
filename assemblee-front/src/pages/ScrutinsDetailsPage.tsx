@@ -1,11 +1,13 @@
 import * as React from 'react';
 import Api from 'src/api/api';
 import VoteDetailsByGroup from 'src/model/VoteDetailsByGroup';
+import VoteOverview from 'src/model/VoteOverview';
 import { Link } from 'react-router-dom';
 
 interface IScrutinsDetailsPageState {
     scrutinId: string,
     voteDetailsByGroup?: VoteDetailsByGroup[],
+    voteOverview?: VoteOverview
 }
 
 export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDetailsPageState> {
@@ -23,6 +25,17 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
     }
 
     public componentDidMount() {
+
+        Api.getVoteOverview(this.state.scrutinId)
+        .then(response => {
+            this.setState({
+                voteOverview: response.data,
+            });
+        })
+        .catch(error => {
+            // TODO handle error
+            alert(error);
+        });
         
         Api.getVoteDetailsByGroup(this.state.scrutinId)
         .then(response => {

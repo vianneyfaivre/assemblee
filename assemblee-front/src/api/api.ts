@@ -7,6 +7,7 @@ import MandateGrouped from 'src/model/MandateGrouped';
 import PoliticalBodySearchItem from 'src/model/PoliticalBodySearchItem';
 import PersonVote from 'src/model/PersonVote';
 import VoteDetailsByGroup from 'src/model/VoteDetailsByGroup';
+import VoteOverview from 'src/model/VoteOverview';
 
 export default class Api {
 
@@ -188,13 +189,24 @@ export default class Api {
     }
 
     /**
-     * Returns vote results overview (one object by political body)
+     * Returns vote results details by group (one object by political body)
      */
     public static getVoteDetailsByGroup(scrutinId: string) : AxiosPromise<VoteDetailsByGroup[]>{
         return axios.request<VoteDetailsByGroup[]>(
             {
                 method: 'get',
                 url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/scrutins/' + scrutinId + '/details-par-groupe'
+            });
+    }
+
+    /**
+     * Returns vote results overview
+     */
+    public static getVoteOverview(scrutinId: string) : AxiosPromise<VoteOverview>{
+        return axios.request<VoteOverview>(
+            {
+                method: 'get',
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/scrutins/' + scrutinId + '/details'
             });
     }
 
