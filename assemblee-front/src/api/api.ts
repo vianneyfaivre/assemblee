@@ -6,7 +6,7 @@ import PoliticalBodyMember from 'src/model/PoliticalBodyMember';
 import MandateGrouped from 'src/model/MandateGrouped';
 import PoliticalBodySearchItem from 'src/model/PoliticalBodySearchItem';
 import PersonVote from 'src/model/PersonVote';
-import VoteOverview from 'src/model/VoteOverview';
+import VoteDetailsByGroup from 'src/model/VoteDetailsByGroup';
 
 export default class Api {
 
@@ -190,8 +190,8 @@ export default class Api {
     /**
      * Returns vote results overview (one object by political body)
      */
-    public static getVoteDetailsByGroup(scrutinId: string) : AxiosPromise<VoteOverview[]>{
-        return axios.request<VoteOverview[]>(
+    public static getVoteDetailsByGroup(scrutinId: string) : AxiosPromise<VoteDetailsByGroup[]>{
+        return axios.request<VoteDetailsByGroup[]>(
             {
                 method: 'get',
                 url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/scrutins/' + scrutinId + '/details-par-groupe'

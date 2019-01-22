@@ -25,7 +25,7 @@ public class VoteController {
         return this.voteService.getVoteDetailsByGroup(voteId);
     }
 
-    @GetMapping("/scrutins/{voteId}/overview")
+    @GetMapping("/scrutins/{voteId}/details")
     public VoteOverview getVoteOverview(@PathVariable String voteId) {
         return this.voteService.getVoteOverview(voteId);
     }

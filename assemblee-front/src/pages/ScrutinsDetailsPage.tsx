@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Api from 'src/api/api';
-import VoteOverview from 'src/model/VoteOverview';
+import VoteDetailsByGroup from 'src/model/VoteDetailsByGroup';
 import { Link } from 'react-router-dom';
 
 interface IScrutinsDetailsPageState {
     scrutinId: string,
-    voteOverview?: VoteOverview[],
+    voteDetailsByGroup?: VoteDetailsByGroup[],
 }
 
 export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDetailsPageState> {
@@ -27,7 +27,7 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
         Api.getVoteDetailsByGroup(this.state.scrutinId)
         .then(response => {
             this.setState({
-                voteOverview: response.data,
+                voteDetailsByGroup: response.data,
             });
         })
         .catch(error => {
@@ -40,24 +40,24 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
 
         let rows;
         
-        if(this.state.voteOverview) {
-            rows = this.state.voteOverview.map((voteOverview) => {
+        if(this.state.voteDetailsByGroup) {
+            rows = this.state.voteDetailsByGroup.map((voteDetailsByGroup) => {
                 return (
-                    <tr key={voteOverview.politicalBodyId}>
+                    <tr key={voteDetailsByGroup.politicalBodyId}>
                         
                         <td>
-                            <Link to={'/organes/'+voteOverview.politicalBodyId}>
-                                {voteOverview.politicalBodyName}
+                            <Link to={'/organes/'+voteDetailsByGroup.politicalBodyId}>
+                                {voteDetailsByGroup.politicalBodyName}
                             </Link> 
                         </td>
                         
-                        <td>{voteOverview.choice}</td>
+                        <td>{voteDetailsByGroup.choice}</td>
                         
                         <td>
-                            Pour : {voteOverview.numberFor}<br />
-                            Contre : {voteOverview.numberAgainst}<br />
-                            Abstention : {voteOverview.numberAbstention}<br />
-                            Non-Votant : {voteOverview.numberNoVote}
+                            Pour : {voteDetailsByGroup.numberFor}<br />
+                            Contre : {voteDetailsByGroup.numberAgainst}<br />
+                            Abstention : {voteDetailsByGroup.numberAbstention}<br />
+                            Non-Votant : {voteDetailsByGroup.numberNoVote}
                         </td>
                     </tr>
                 );

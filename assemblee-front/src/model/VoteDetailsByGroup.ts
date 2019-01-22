@@ -1,4 +1,4 @@
-export default class VoteOverview {
+export default class VoteDetailsByGroup {
 
     public politicalBodyId: string;
     public politicalBodyName: string;
