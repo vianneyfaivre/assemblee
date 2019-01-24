@@ -77,10 +77,17 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
             });
         }
 
-        let title = 'Scrutin ' + this.state.scrutinId;
-
+        let title = `Scrutin n°${this.state.scrutinId}`;
+        let voteOverviewText;
+        
         if(this.state.voteOverview) {
-            title = this.state.voteOverview.title
+            title += ' : ' + this.state.voteOverview.title;
+
+            voteOverviewText = (
+                <div>
+                    <p>Séance n°{this.state.voteOverview.meetingId} du {this.state.voteOverview.voteDate.toLocaleDateString('fr-FR')}</p>
+                    <p>Décision : {this.state.voteOverview.result}</p>
+                </div>);
         }
 
         return (
@@ -89,7 +96,9 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
 
                     <h2 className="title">{title}</h2>
 
-                    <div>TODO SCRUTIN DETAILS</div>
+                    <div>{voteOverviewText}</div>
+
+                    <br />
 
                     <h3 className="subtitle">Répartition des votes par groupe politique :</h3>
 
