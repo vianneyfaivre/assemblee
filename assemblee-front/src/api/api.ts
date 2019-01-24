@@ -203,10 +203,25 @@ export default class Api {
      * Returns vote results overview
      */
     public static getVoteOverview(scrutinId: string) : AxiosPromise<VoteOverview>{
+
+        let responseTransformers: AxiosTransformer[] = [];
+        if(axios.defaults.transformResponse){
+            responseTransformers = responseTransformers.concat(axios.defaults.transformResponse);
+        }
+
+        // Axios transformer that will be called after the response has been received
+        responseTransformers.push((data, headers) => {
+
+            data.voteDate = new Date(Date.parse(data.voteDate));
+
+            return data;
+        });
+
         return axios.request<VoteOverview>(
             {
                 method: 'get',
-                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/scrutins/' + scrutinId + '/details'
+                url: process.env.REACT_APP_ASSEMBLEE_BACKEND_URL + '/scrutins/' + scrutinId + '/details',
+                transformResponse:  responseTransformers
             });
     }
 

@@ -86,7 +86,15 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
             voteOverviewText = (
                 <div>
                     <p>Séance n°{this.state.voteOverview.meetingId} du {this.state.voteOverview.voteDate.toLocaleDateString('fr-FR')}</p>
-                    <p>Décision : {this.state.voteOverview.result}</p>
+                    <div>
+                        Détails du vote : 
+                        <ul>
+                            <li>Pour : {this.state.voteOverview.numberFor}</li>
+                            <li>Contre : {this.state.voteOverview.numberAgainst}</li>
+                            <li>Abstention : {this.state.voteOverview.numberAbstention}</li>
+                            <li>Non-Votant : {this.state.voteOverview.numberNoVote}</li> 
+                        </ul>
+                    </div>
                 </div>);
         }
 
@@ -96,7 +104,7 @@ export default class ScrutinsDetailsPage extends React.Component<{}, IScrutinsDe
 
                     <h2 className="title">{title}</h2>
 
-                    <div>{voteOverviewText}</div>
+                    <div className="content">{voteOverviewText}</div>
 
                     <br />
 
